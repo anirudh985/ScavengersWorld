@@ -18,6 +18,10 @@ public class User implements Parcelable{
     private List<Hunt> mRegisteredHuntList;
     private String mDisplayName;
 
+    public User(){
+
+    }
+
     public String getUserId() {
         return mUserId;
     }

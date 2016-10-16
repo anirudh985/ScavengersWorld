@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,7 +15,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.aj.scavengersworld.Activities.HomeScreen.HomeScreenActivity;
+import com.example.aj.scavengersworld.Model.Hunt;
+import com.example.aj.scavengersworld.Model.User;
 import com.example.aj.scavengersworld.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -149,9 +156,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 mPassword.getText().toString() != null && mPassword.getText().toString() != ""){
             //TODO: validate login and call homescreen intent
             //if(validateLogin())
-//            Intent homeScreen = new Intent(this, HomeScreenAcitivity.class);
-//            homeScreen.putExtra(R.string.USER, user);
-//            startActivity(homeScreen);
+            Intent homeScreen = new Intent(getActivity(), HomeScreenActivity.class);
+            homeScreen.putExtra(getString(R.string.USER), createUser());
+            startActivity(homeScreen);
             //TODO: need to save session
         }
     }
@@ -194,4 +201,23 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 //        // TODO: Update argument type and name
 //        void onFragmentInteraction(Uri uri);
 //    }
+
+    private User createUser(){
+
+
+        List<Hunt> mCreatedHuntList = new ArrayList<>();
+        List<Hunt> mRegisteredHuntList = new ArrayList<>();
+
+        User user = new User();
+        user.setUserId("abcd");
+        user.setUserEmail("qwerty@xyz.com");
+        user.setDisplayName("$$ABCD$$");
+
+//        Hunt h = new Hunt();
+//        h.
+//
+//        createdHuntList.add(new Hunt());
+
+        return user;
+    }
 }
