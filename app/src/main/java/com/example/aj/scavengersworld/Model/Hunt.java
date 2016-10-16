@@ -8,7 +8,8 @@ import java.util.List;
  */
 
 public class Hunt {
-    private int mEventId;
+    private int mHuntId;
+    private String mHuntName;
     private String mCreatedByUserId;
     private Date mStartTime;
     private Date mEndTime;
@@ -17,12 +18,20 @@ public class Hunt {
     private List<User> mListOfAdmins;
     private int mFirstClueId;
 
-    public int getEventId() {
-        return mEventId;
+    public int getHuntId() {
+        return mHuntId;
     }
 
-    public void setEventId(int eventId) {
-        this.mEventId = eventId;
+    public void setHuntId(int mHuntId) {
+        this.mHuntId = mHuntId;
+    }
+
+    public String getHuntName() {
+        return mHuntName;
+    }
+
+    public void setHuntName(String mHuntName) {
+        this.mHuntName = mHuntName;
     }
 
     public String getCreatedByUserId() {

@@ -40,6 +40,12 @@
     <string name="signupTab">SignUp</string>
     <string name="USER">USER</string>
 
+    <!-- TOOLBAR -->
     <string name="signout">Sign Out</string>
+
+    <!-- HOME SCREEN ACTIVITY -->
+    <string name="createdHuntsTab">Created Hunts</string>
+    <string name="joinedHuntsTab">Your Hunts</string>
+
 
 </resources>
