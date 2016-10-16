@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">ScavengersWorld</string>
-                                <!-- FACEBOOK -->
+    <!-- FACEBOOK -->
     <string name="facebook_app_id">566074280252089</string>
 
     <!-- Strings related to login -->
@@ -20,7 +20,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
-                                        <!-- SIGN UP FRAGMENT -->
+    <!-- SIGN UP FRAGMENT -->
     <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -30,16 +30,16 @@
     <string name="googleLogin">Log in with Google</string>
 
 
-
     <string name="loginUsername">Username</string>
     <string name="loginPassword">Password</string>
     <string name="login">Login</string>
-    
-    
-    
-                                        <!-- LOGIN ACTIVITY -->
+
+
+    <!-- LOGIN ACTIVITY -->
     <string name="loginTab">Login</string>
     <string name="signupTab">SignUp</string>
     <string name="USER">USER</string>
+
+    <string name="signout">Sign Out</string>
 
 </resources>
