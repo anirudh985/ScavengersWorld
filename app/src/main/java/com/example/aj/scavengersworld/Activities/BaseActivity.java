@@ -1,5 +1,6 @@
 package com.example.aj.scavengersworld.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
@@ -75,6 +76,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void openProfileActivity(){
         Log.d(LOG_TAG, "openProfileActivitiy()");
+        Intent profileActivity = new Intent(this, ProfileActivity.class);
+        startActivity(profileActivity);
         //TODO: use SessionManager to retrieve username and query for Profile Information
 
     }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ScavengersWorld</string>
+    <string name="app_name">Scavenger's World</string>
     <!-- FACEBOOK -->
     <string name="facebook_app_id">566074280252089</string>
 
@@ -43,9 +43,27 @@
     <!-- TOOLBAR -->
     <string name="signout">Sign Out</string>
 
+<<<<<<< HEAD
     <!-- HOME SCREEN ACTIVITY -->
     <string name="createdHuntsTab">Created Hunts</string>
     <string name="joinedHuntsTab">Your Hunts</string>
 
 
+=======
+    <!-- PROFILE ACTIVITY-->
+    <string name="profile_header">Player Stats</string>
+    <string name="profile_point">Points Earned: </string>
+    <string name="profile_badge">Badges Earned: </string>
+    <string name="profile_completed">Hunts Completed: </string>
+    <string name="profile_joined">Hunts Joined: </string>
+    <string name="profile_temp">Nothing to show.</string>
+
+    <!-- NOTIFICATIONS ACTIVITY -->
+    <string name="notifications_header">Notifications</string>
+    <string name="notifications_temp">Nothing to show.</string>
+
+    <!-- HUNT ACTIVITY -->
+    <string name="hunt_join">Join Hunt</string>
+    <string name="hunt_leaders">View Leaderboard</string>
+>>>>>>> master
 </resources>
