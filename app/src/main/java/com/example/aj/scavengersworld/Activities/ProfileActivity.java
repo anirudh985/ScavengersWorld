@@ -18,7 +18,7 @@ public abstract class ProfileActivity extends AppCompatActivity {
 
     Toolbar toolbar;
 
-    private final String LOG_TAG = getClass().getSimpleName()+" Toolbar";
+    private final String LOG_TAG = getClass().getSimpleName();
     private int i = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
