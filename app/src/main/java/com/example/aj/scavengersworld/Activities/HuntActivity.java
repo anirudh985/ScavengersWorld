@@ -1,19 +1,17 @@
 package com.example.aj.scavengersworld.Activities;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.aj.scavengersworld.R;
 
 /**
  * Created by Jennifer on 10/17/2016.
  */
-public class NotificationsActivity extends AppCompatActivity {
+public class HuntActivity extends AppCompatActivity {
 	Toolbar toolbar;
 
 	private final String LOG_TAG = getClass().getSimpleName();
@@ -21,9 +19,16 @@ public class NotificationsActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(LOG_TAG, "onCreate()");
-		setContentView(R.layout.activity_notifications);
+		setContentView(R.layout.activity_hunt);
 		configureToolbar();
+
+		TextView hunt = (TextView) findViewById(R.id.hunt_name);
+		hunt.setText("Hunt Name Here"); //TODO
+
+		TextView description = (TextView) findViewById(R.id.hunt_description);
+		description.setText("Hunt Description Here"); //TODO
 	}
+
 	//protected abstract String getScreenName(); TODO??
 
 	private void configureToolbar() {
@@ -35,47 +40,6 @@ public class NotificationsActivity extends AppCompatActivity {
 			//getSupportActionBar().setTitle(getScreenName()); TODO??
 
 		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		Log.d(LOG_TAG, "onCreateOptionsMenu()");
-		getMenuInflater().inflate(R.menu.menu_main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.d(LOG_TAG, "onOptionsItemSelected()");
-		switch (item.getItemId()) {
-			case android.R.id.home:
-				FragmentManager fm = getSupportFragmentManager();
-				if (fm != null && fm.getBackStackEntryCount() > 0) {
-					fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-				} else {
-					finish();
-				}
-				return true;
-			case R.id.signout:
-				signout();
-				return true;
-			case R.id.profile:
-				openProfileActivity();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-		}
-	}
-
-	private void openProfileActivity(){
-		Log.d(LOG_TAG, "openProfileActivity()");
-		//TODO: use SessionManager to retrieve username and query for Profile Information
-
-	}
-
-	private void signout(){
-		Log.d(LOG_TAG, "signout()");
-		//TODO: use SessionManager to retireve username and signout
 	}
 
 	@Override
