@@ -101,7 +101,7 @@
 
     <!-- HUNT ACTIVITY -->
     <string name="hunt_join">Join Hunt</string>
-    <string name="hunt_leaders">View Leaderboard</string>
+    <string name="hunt_leaders">View Leader Board</string>
     
     <!-- Hunt create modify activity -->
     <string name="start_time">Start time</string>
