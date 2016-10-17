@@ -24,8 +24,10 @@ public abstract class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate()");
-        setContentView(getLayoutResource());
+        setContentView(R.layout.activity_profile);
         configureToolbar();
+
+
 
         TextView username = (TextView) findViewById(R.id.profile_username);
         username.setText("Username here"); //TODO utilize User.getUserName()
