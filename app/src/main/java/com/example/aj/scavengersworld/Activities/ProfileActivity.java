@@ -22,7 +22,7 @@ public class ProfileActivity extends BaseActivity {
         Log.d(LOG_TAG, "onCreate()");
 
         TextView username = (TextView) findViewById(R.id.profile_username);
-        username.setText(getScreenName()); //TODO utilize User.getUserName()
+        username.setText(getScreenName());
 
         TextView score = (TextView) findViewById(R.id.profile_points);
         score.setText("0/5000"); //TODO utilize User class to get score
