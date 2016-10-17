@@ -28,7 +28,7 @@
     <string name="eula_accepted_key">eula_accepted</string>
     <string name="get_location">Get Current Location</string>
     <string name="title_activity_modify_clue_location">Map</string>
-    <string name="about_app">About Scavernger World</string>
+    <string name="about_app">About Scavenger\'s World</string>
     <string name="prefs">Prefs</string>
     <string name="mylocation_button">My Location Button</string>
     <string name="mylocation_layer">My Location Layer</string>
