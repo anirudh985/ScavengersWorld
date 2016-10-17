@@ -1,7 +1,6 @@
 package com.example.aj.scavengersworld.Activities;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.example.aj.scavengersworld.R;
@@ -10,7 +9,6 @@ import com.example.aj.scavengersworld.R;
  * Created by Jennifer on 10/17/2016.
  */
 public class NotificationsActivity extends BaseActivity {
-	Toolbar toolbar;
 
 	private final String LOG_TAG = getClass().getSimpleName();
 	@Override
