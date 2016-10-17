@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Scavenger\'s World</string>
+    <string name="log_onCreate">+ onCreate() +</string>
+    <string name="log_onStart">++ onStart() ++</string>
+    <string name="log_onResume">+++ onResume() +++</string>
+    <string name="log_onPause">--- onPause() ---</string>
+    <string name="log_onStop">-- onStop() --</string>
+    <string name="log_onDestroy">- onDestroy() -</string>
+    <string name="log_onRestart">* onRestart() *</string>
+
     <!-- FACEBOOK -->
     <string name="facebook_app_id">566074280252089</string>
 
