@@ -94,5 +94,11 @@
     <!-- HUNT ACTIVITY -->
     <string name="hunt_join">Join Hunt</string>
     <string name="hunt_leaders">View Leaderboard</string>
+    
+    <!-- Hunt create modify activity -->
+    <string name="start_time">Start time</string>
+    <string name="end_time">End Time</string>
+    <string name="clues">Clues</string>
+    <string name="public_event">Public Event</string>
 
 </resources>
