@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+    android:gravity="center_horizontal">
 
     <TextView
         android:layout_width="wrap_content"
@@ -15,5 +16,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/hunt_description"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hunt_join"
+        android:id="@+id/hunt_join_button"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hunt_leaders"
+        android:id="@+id/hunt_leaders_button"/>
 
 </LinearLayout>

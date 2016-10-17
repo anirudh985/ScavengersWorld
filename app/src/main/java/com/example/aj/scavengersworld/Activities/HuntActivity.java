@@ -1,9 +1,12 @@
 package com.example.aj.scavengersworld.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.aj.scavengersworld.R;
@@ -11,7 +14,7 @@ import com.example.aj.scavengersworld.R;
 /**
  * Created by Jennifer on 10/17/2016.
  */
-public class HuntActivity extends AppCompatActivity {
+public class HuntActivity extends AppCompatActivity implements onClickListener {
 	Toolbar toolbar;
 
 	private final String LOG_TAG = getClass().getSimpleName();
@@ -27,6 +30,23 @@ public class HuntActivity extends AppCompatActivity {
 
 		TextView description = (TextView) findViewById(R.id.hunt_description);
 		description.setText("Hunt Description Here"); //TODO
+
+		Button join = (Button) findViewById(R.id.hunt_join_button);
+		join.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				super.onClick(v);
+			}
+		});
+
+		Button leaders = (Button) findViewById(R.id.hunt_leaders_button);
+		leaders.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				super.onClick(v);
+				Intent leaderboard = new Intent(HuntActivity.this,LeaderboardActivity.class);
+			}
+		});
 	}
 
 	//protected abstract String getScreenName(); TODO??
