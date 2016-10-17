@@ -42,4 +42,11 @@
 
     <string name="signout">Sign Out</string>
 
+    <!-- PROFILE ACTIVITY-->
+    <string name="profile_header">Player Stats</string>
+    <string name="profile_point">Points Earned: </string>
+    <string name="profile_badge">Badges Earned: </string>
+    <string name="profile_completed">Hunts Completed: </string>
+    <string name="profile_joined">Hunts Joined: </string>
+    <string name="profile_temp">Nothing to show.</string>
 </resources>

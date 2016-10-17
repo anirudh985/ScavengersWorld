@@ -1,20 +1,20 @@
 package com.example.aj.scavengersworld.Activities;
 
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.aj.scavengersworld.R;
 
 /**
- * Created by aj on 10/14/16.
+ * Created by aj on 10/16/16.
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class ProfileActivity extends AppCompatActivity {
 
     Toolbar toolbar;
 
@@ -26,6 +26,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "onCreate()");
         setContentView(getLayoutResource());
         configureToolbar();
+
+        TextView username = (TextView) findViewById(R.id.profile_username);
+        username.setText("Username here"); //TODO utilize User.getUserName()
+
+        TextView score = (TextView) findViewById(R.id.profile_username);
+        score.setText("0/5000"); //TODO utilize User class to get score
     }
 
     protected abstract int getLayoutResource();
@@ -74,7 +80,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void openProfileActivity(){
-        Log.d(LOG_TAG, "openProfileActivitiy()");
+        Log.d(LOG_TAG, "openProfileActivity()");
         //TODO: use SessionManager to retrieve username and query for Profile Information
 
     }
