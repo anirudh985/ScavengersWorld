@@ -30,7 +30,7 @@ public abstract class ProfileActivity extends AppCompatActivity {
         TextView username = (TextView) findViewById(R.id.profile_username);
         username.setText("Username here"); //TODO utilize User.getUserName()
 
-        TextView score = (TextView) findViewById(R.id.profile_username);
+        TextView score = (TextView) findViewById(R.id.profile_points);
         score.setText("0/5000"); //TODO utilize User class to get score
     }
 
@@ -88,5 +88,41 @@ public abstract class ProfileActivity extends AppCompatActivity {
     private void signout(){
         Log.d(LOG_TAG, "signout()");
         //TODO: use SessionManager to retireve username and signout
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(LOG_TAG, "******* onStart() **********");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(LOG_TAG, "******* onResume() **********");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(LOG_TAG, "******* onPause() **********");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(LOG_TAG, "******* onStop() **********");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(LOG_TAG, "******* onDestroy() **********");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(LOG_TAG, "******* onRestart() **********");
     }
 }
