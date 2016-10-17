@@ -14,7 +14,7 @@ import com.example.aj.scavengersworld.R;
 /**
  * Created by Jennifer on 10/17/2016.
  */
-public class HuntActivity extends AppCompatActivity implements onClickListener {
+public class HuntActivity extends AppCompatActivity implements View.OnClickListener {
 	Toolbar toolbar;
 
 	private final String LOG_TAG = getClass().getSimpleName();
@@ -32,21 +32,10 @@ public class HuntActivity extends AppCompatActivity implements onClickListener {
 		description.setText("Hunt Description Here"); //TODO
 
 		Button join = (Button) findViewById(R.id.hunt_join_button);
-		join.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				super.onClick(v);
-			}
-		});
+		join.setOnClickListener(this);
 
 		Button leaders = (Button) findViewById(R.id.hunt_leaders_button);
-		leaders.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				super.onClick(v);
-				Intent leaderboard = new Intent(HuntActivity.this,LeaderboardActivity.class);
-			}
-		});
+		leaders.setOnClickListener(this);
 	}
 
 	//protected abstract String getScreenName(); TODO??
@@ -96,5 +85,16 @@ public class HuntActivity extends AppCompatActivity implements onClickListener {
 	protected void onRestart() {
 		super.onRestart();
 		Log.d(LOG_TAG, "******* onRestart() **********");
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()){
+			case R.id.hunt_leaders_button:
+				Intent leaderboard = new Intent(HuntActivity.this,LeaderboardActivity.class);
+				break;
+			default:
+				break;
+		}
 	}
 }

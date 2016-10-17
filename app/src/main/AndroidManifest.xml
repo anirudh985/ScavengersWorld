@@ -20,15 +20,17 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <application>
-        <activity android:name=".MainActivity">
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!--<application android:theme="@style/Theme.AppCompat.DayNight">-->
     <application android:theme="@style/AppTheme">
         <activity android:name=".Activities.Login.LoginActivity">
+        <intent-filter>
+                        <action android:name="android.intent.action.MAIN" />
 
+                        <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
