@@ -40,8 +40,16 @@
     <string name="signupTab">SignUp</string>
     <string name="USER">USER</string>
 
+    <!-- TOOLBAR -->
     <string name="signout">Sign Out</string>
 
+<<<<<<< HEAD
+    <!-- HOME SCREEN ACTIVITY -->
+    <string name="createdHuntsTab">Created Hunts</string>
+    <string name="joinedHuntsTab">Your Hunts</string>
+
+
+=======
     <!-- PROFILE ACTIVITY-->
     <string name="profile_header">Player Stats</string>
     <string name="profile_point">Points Earned: </string>
@@ -57,4 +65,5 @@
     <!-- HUNT ACTIVITY -->
     <string name="hunt_join">Join Hunt</string>
     <string name="hunt_leaders">View Leaderboard</string>
+>>>>>>> master
 </resources>

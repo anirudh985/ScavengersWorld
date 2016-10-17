@@ -33,6 +33,7 @@
             tools:replace="android:theme" />
         <!-- FACEBOOK STUFF - END -->
 
+        <activity android:name=".Activities.HomeScreen.HomeScreenActivity"></activity>
 
     </application>
 
