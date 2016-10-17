@@ -1,12 +1,8 @@
 package com.example.aj.scavengersworld.Activities;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.aj.scavengersworld.R;
@@ -26,7 +22,7 @@ public class ProfileActivity extends BaseActivity {
         Log.d(LOG_TAG, "onCreate()");
 
         TextView username = (TextView) findViewById(R.id.profile_username);
-        username.setText("Username here"); //TODO utilize User.getUserName()
+        username.setText(getScreenName()); //TODO utilize User.getUserName()
 
         TextView score = (TextView) findViewById(R.id.profile_points);
         score.setText("0/5000"); //TODO utilize User class to get score
