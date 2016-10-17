@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.aj.scavengersworld">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.aj.scavengersworld"
+    android:installLocation="preferExternal">
+
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -20,12 +23,12 @@
 
     <application>
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+    <!--<application android:theme="@style/Theme.AppCompat.DayNight">-->
+    <application android:theme="@style/AppTheme">
+        <activity android:name=".Activities.Login.LoginActivity">
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -52,6 +55,22 @@
             android:name=".GamePlayActivity"
             android:label="@string/title_activity_game_play" />
         <activity android:name=".ClueInfoActivity"></activity>
+
+        <!-- FACEBOOK STUFF - START -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            tools:replace="android:theme" />
+        <!-- FACEBOOK STUFF - END -->
+
+        <activity android:name=".Activities.HomeScreen.HomeScreenActivity"></activity>
+
     </application>
 
 </manifest>

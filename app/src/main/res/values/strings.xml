@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">ScavengersWorld</string>
+    <string name="app_name">Scavenger's World</string>
+    <!-- FACEBOOK -->
+    <string name="facebook_app_id">566074280252089</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -13,6 +15,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+<<<<<<< HEAD
     <string name="decline">Decline</string>
     <string name="eula"><p>By using this app, you agree to abide by the <a href="https://developers.google.com/maps/terms">Google Maps Terms of Service</a> and <a href="https://www.google.com/intl/en/policies/terms/">Google\'s Terms of Service</a>.</p><p><strong>Privacy Policy:</strong> Upon request, this app uses your location in order to show it via Google Maps. Internet access permission is necessary for this purpose. No other information is collected, stored, or transmitted.</p></string>
     <string name="eula_accepted_key">eula_accepted</string>
@@ -44,4 +47,57 @@
     <string name="beacon">Beacon</string>
     <string name="edit_location">Edit Location</string>
     <string name="edit_beacon_id">Edit Beacon String</string>
+=======
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- SIGN UP FRAGMENT -->
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="signUp">Sign Up</string>
+    <string name="facebookLogin">Log in with Facebook</string>
+    <string name="googleLogin">Log in with Google</string>
+
+
+    <string name="loginUsername">Username</string>
+    <string name="loginPassword">Password</string>
+    <string name="login">Login</string>
+
+
+    <!-- LOGIN ACTIVITY -->
+    <string name="loginTab">Login</string>
+    <string name="signupTab">SignUp</string>
+    <string name="USER">USER</string>
+
+    <!-- TOOLBAR -->
+    <string name="signout">Sign Out</string>
+
+<<<<<<< HEAD
+    <!-- HOME SCREEN ACTIVITY -->
+    <string name="createdHuntsTab">Created Hunts</string>
+    <string name="joinedHuntsTab">Your Hunts</string>
+
+
+=======
+    <!-- PROFILE ACTIVITY-->
+    <string name="profile_header">Player Stats</string>
+    <string name="profile_point">Points Earned: </string>
+    <string name="profile_badge">Badges Earned: </string>
+    <string name="profile_completed">Hunts Completed: </string>
+    <string name="profile_joined">Hunts Joined: </string>
+    <string name="profile_temp">Nothing to show.</string>
+
+    <!-- NOTIFICATIONS ACTIVITY -->
+    <string name="notifications_header">Notifications</string>
+    <string name="notifications_temp">Nothing to show.</string>
+
+    <!-- HUNT ACTIVITY -->
+    <string name="hunt_join">Join Hunt</string>
+    <string name="hunt_leaders">View Leaderboard</string>
+>>>>>>> master
+>>>>>>> master
 </resources>
