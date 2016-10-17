@@ -2,18 +2,18 @@ package com.example.aj.scavengersworld.Activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.example.aj.scavengersworld.R;
 
 /**
  * Created by Jennifer on 10/17/2016.
  */
-public class NotificationsActivity {
+public class NotificationsActivity extends AppCompatActivity {
 	Toolbar toolbar;
 
 	private final String LOG_TAG = getClass().getSimpleName();
@@ -25,9 +25,7 @@ public class NotificationsActivity {
 		configureToolbar();
 	}
 
-	protected abstract int getLayoutResource();
-
-	protected abstract String getScreenName();
+	//protected abstract String getScreenName(); TODO??
 
 	private void configureToolbar() {
 		Log.d(LOG_TAG, "configureToolbar()");
@@ -35,7 +33,7 @@ public class NotificationsActivity {
 		if (toolbar != null) {
 			setSupportActionBar(toolbar);
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-			getSupportActionBar().setTitle(getScreenName());
+			//getSupportActionBar().setTitle(getScreenName()); TODO??
 
 		}
 	}
