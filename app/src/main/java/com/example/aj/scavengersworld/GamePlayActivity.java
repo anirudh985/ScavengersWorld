@@ -95,10 +95,6 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
         mUiSettings.setZoomControlsEnabled(true);
         mUiSettings.setCompassEnabled(true);
         enableCurrentLocation();
-        //setMyLocationButtonEnabled();
-        //setMyLocationLayerEnabled();
-        //setMyLocationButtonEnabled();
-        // mUiSettings.setMyLocationButtonEnabled(true);
         mUiSettings.setScrollGesturesEnabled(true);
         mUiSettings.setZoomGesturesEnabled(true);
         mUiSettings.setTiltGesturesEnabled(true);
@@ -107,18 +103,10 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
 
     protected void onResume() {
         super.onResume();
-        setUpEula();
-        // setUpMapIfNeeded();
+        mSettings = getSharedPreferences(getString(R.string.prefs), 0);
+        MapUtils.setUpEula(this,mSettings);
     }
 
-    private void setUpEula() {
-        mSettings = getSharedPreferences(getString(R.string.prefs), 0);
-        boolean isEulaAccepted = mSettings.getBoolean(getString(R.string.eula_accepted_key), false);
-        if (!isEulaAccepted) {
-            DialogFragment eulaDialogFragment = new EulaDialogFragment();
-            eulaDialogFragment.show(getSupportFragmentManager(), "eula");
-        }
-    }
 
     /**
      * Checks if the map is ready (which depends on whether the Google Play services APK is
@@ -132,27 +120,6 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
         return true;
     }
 
-    private boolean isChecked(int id) {
-        return ((CheckBox) findViewById(id)).isChecked();
-    }
-
-//    public void setMyLocationButtonEnabled() {
-//        if (!checkReady()) {
-//            return;
-//        }
-//        // Enables/disables the my location button (this DOES NOT enable/disable the my location
-//        // dot/chevron on the map). The my location button will never appear if the my location
-//        // layer is not enabled.
-//        // First verify that the location permission has been granted.
-//        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED) {
-//            mUiSettings.setMyLocationButtonEnabled(true);
-//        } else {
-//            // Uncheck the box and request missing location permission.
-//            //mMyLocationButtonCheckbox.setChecked(false);
-//            PermissionUtils.requestLocationPermission(this,MY_LOCATION_PERMISSION_REQUEST_CODE);
-//        }
-//    }
 
     public void enableCurrentLocation() {
         if (!checkReady()) {

@@ -38,4 +38,10 @@
     <string name="title_activity_game_play">Map</string>
     <string name="solve_clue">Solve Clue</string>
     <string name="show_clues">Show Clues</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="location">Location</string>
+    <string name="beacon">Beacon</string>
+    <string name="edit_location">Edit Location</string>
+    <string name="edit_beacon_id">Edit Beacon String</string>
 </resources>

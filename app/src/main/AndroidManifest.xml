@@ -50,7 +50,8 @@
 
         <activity
             android:name=".GamePlayActivity"
-            android:label="@string/title_activity_game_play"></activity>
+            android:label="@string/title_activity_game_play" />
+        <activity android:name=".ClueInfoActivity"></activity>
     </application>
 
 </manifest>

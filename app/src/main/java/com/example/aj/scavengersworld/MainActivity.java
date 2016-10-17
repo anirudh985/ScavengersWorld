@@ -39,12 +39,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.button2){
-            Intent editLocationIntent = new Intent(MainActivity.this,ModifyClueLocationActivity.class);
+            Intent editLocationIntent = new Intent(MainActivity.this,ClueInfoActivity.class);
             //Intent editLocationIntent = new Intent(MainActivity.this,GamePlayActivity.class);
             //Bundle initLocation = new Bundle();
             editLocationIntent.putExtra("LATITUDE",mCurrentLatitude);
             editLocationIntent.putExtra("LONGITUDE",mCurrentLongitude);
-            startActivityForResult(editLocationIntent,2);
+            startActivity(editLocationIntent);
         }
         else if(v.getId() == R.id.button3){
             //Intent editLocationIntent = new Intent(MainActivity.this,ModifyClueLocationActivity.class);

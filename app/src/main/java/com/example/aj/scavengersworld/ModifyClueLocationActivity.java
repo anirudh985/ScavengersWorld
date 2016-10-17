@@ -81,23 +81,14 @@ public class ModifyClueLocationActivity extends FragmentActivity implements OnMa
 
     protected void onResume() {
         super.onResume();
-        setUpEula();
-        // setUpMapIfNeeded();
-    }
-
-    private void setUpEula() {
         mSettings = getSharedPreferences(getString(R.string.prefs), 0);
-        boolean isEulaAccepted = mSettings.getBoolean(getString(R.string.eula_accepted_key), false);
-        if (!isEulaAccepted) {
-            DialogFragment eulaDialogFragment = new EulaDialogFragment();
-            eulaDialogFragment.show(getSupportFragmentManager(), "eula");
-        }
+        MapUtils.setUpEula(this,mSettings);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mMapFragment.onSaveInstanceState(outState);
+        //mMapFragment.onSaveInstanceState(outState);
         outState.putParcelable(MARKER_POSITION, mCurrentSelectedLocation);
     }
     /**
@@ -119,15 +110,10 @@ public class ModifyClueLocationActivity extends FragmentActivity implements OnMa
         mUiSettings.setZoomControlsEnabled(true);
         mUiSettings.setCompassEnabled(true);
         enableCurrentLocation();
-        //setMyLocationButtonEnabled();
-        //setMyLocationLayerEnabled();
-        setMyLocationButtonEnabled();
-       // mUiSettings.setMyLocationButtonEnabled(true);
         mUiSettings.setScrollGesturesEnabled(true);
         mUiSettings.setZoomGesturesEnabled(true);
         mUiSettings.setTiltGesturesEnabled(true);
         mUiSettings.setRotateGesturesEnabled(true);
-        // Add a marker in Sydney and move the camera
 
         AddMarkerAtLocation(mCurrentSelectedLocation);
 
@@ -149,27 +135,6 @@ public class ModifyClueLocationActivity extends FragmentActivity implements OnMa
         return true;
     }
 
-    private boolean isChecked(int id) {
-        return ((CheckBox) findViewById(id)).isChecked();
-    }
-    public void setMyLocationButtonEnabled() {
-        if (!checkReady()) {
-            return;
-        }
-        // Enables/disables the my location button (this DOES NOT enable/disable the my location
-        // dot/chevron on the map). The my location button will never appear if the my location
-        // layer is not enabled.
-        // First verify that the location permission has been granted.
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mUiSettings.setMyLocationButtonEnabled(true);
-        } else {
-            // Uncheck the box and request missing location permission.
-            //mMyLocationButtonCheckbox.setChecked(false);
-            PermissionUtils.requestLocationPermission(this,MY_LOCATION_PERMISSION_REQUEST_CODE);
-        }
-    }
-
     public void enableCurrentLocation() {
         if (!checkReady()) {
             return;
@@ -180,6 +145,7 @@ public class ModifyClueLocationActivity extends FragmentActivity implements OnMa
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
+            mUiSettings.setMyLocationButtonEnabled(true);
         } else {
             // Uncheck the box and request missing location permission.
            // mMyLocationLayerCheckbox.setChecked(false);
@@ -188,9 +154,6 @@ public class ModifyClueLocationActivity extends FragmentActivity implements OnMa
         }
     }
 
-
-
-/*
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
@@ -222,7 +185,7 @@ public class ModifyClueLocationActivity extends FragmentActivity implements OnMa
                 mLocationPermissionDenied = true;
             }
         }
-    }*/
+    }
 
     public void AddMarkerAtLocation(LatLng latLng){
         // Creating a marker
