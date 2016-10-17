@@ -109,4 +109,8 @@
     <string name="clues">Clues</string>
     <string name="public_event">Public Event</string>
 
+    <!-- LEADERBOARD ACTIVITY -->
+    <string name="leaderboard_header">Leaderboard</string>
+    <string name="leaderboard_temp">Nothing to show.</string>
+
 </resources>
