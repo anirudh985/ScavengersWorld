@@ -38,7 +38,7 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 
 	@Override
 	public int getLayoutResource(){
-		return R.layout.activity_profile;
+		return R.layout.activity_hunt;
 	}
 
 	public String getScreenName(){
