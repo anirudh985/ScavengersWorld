@@ -2,7 +2,6 @@ package com.example.aj.scavengersworld.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +13,7 @@ import com.example.aj.scavengersworld.R;
 /**
  * Created by Jennifer on 10/17/2016.
  */
-public class HuntActivity extends AppCompatActivity implements View.OnClickListener {
+public class HuntActivity extends BaseActivity implements View.OnClickListener {
 	Toolbar toolbar;
 
 	private final String LOG_TAG = getClass().getSimpleName();
@@ -23,7 +22,6 @@ public class HuntActivity extends AppCompatActivity implements View.OnClickListe
 		super.onCreate(savedInstanceState);
 		Log.d(LOG_TAG, "onCreate()");
 		setContentView(R.layout.activity_hunt);
-		configureToolbar();
 
 		TextView hunt = (TextView) findViewById(R.id.hunt_name);
 		hunt.setText("Hunt Name Here"); //TODO
@@ -38,17 +36,13 @@ public class HuntActivity extends AppCompatActivity implements View.OnClickListe
 		leaders.setOnClickListener(this);
 	}
 
-	//protected abstract String getScreenName(); TODO??
+	@Override
+	public int getLayoutResource(){
+		return R.layout.activity_profile;
+	}
 
-	private void configureToolbar() {
-		Log.d(LOG_TAG, "configureToolbar()");
-		toolbar = (Toolbar) findViewById(R.id.toolbar);
-		if (toolbar != null) {
-			setSupportActionBar(toolbar);
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-			//getSupportActionBar().setTitle(getScreenName()); TODO??
-
-		}
+	public String getScreenName(){
+		return "Profile";
 	}
 
 	@Override
