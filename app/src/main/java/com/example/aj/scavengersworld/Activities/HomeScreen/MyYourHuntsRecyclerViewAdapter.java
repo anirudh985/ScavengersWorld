@@ -39,7 +39,7 @@ public class MyYourHuntsRecyclerViewAdapter extends RecyclerView.Adapter<MyYourH
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Hunt hunt = mValues.get(position);
+        final Hunt hunt = mValues.get(position);
         holder.mIdView.setText(String.valueOf(hunt.getHuntId()));
         holder.mContentView.setText(hunt.getHuntName());
         holder.mCreatedUser.setText(hunt.getCreatedByUserId());
@@ -55,6 +55,7 @@ public class MyYourHuntsRecyclerViewAdapter extends RecyclerView.Adapter<MyYourH
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
 //                    mListener.onListFragmentInteraction(holder.);
+                    mListener.onListYourHuntsFragmentInteraction(hunt);
                 }
             }
         });

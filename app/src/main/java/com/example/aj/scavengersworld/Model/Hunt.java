@@ -81,4 +81,9 @@ public class Hunt {
     public void setFirstClueId(int firstClueId) {
         this.mFirstClueId = firstClueId;
     }
+
+    @Override
+    public String toString(){
+        return String.valueOf(mHuntId) + mHuntName + mCreatedByUserId;
+    }
 }

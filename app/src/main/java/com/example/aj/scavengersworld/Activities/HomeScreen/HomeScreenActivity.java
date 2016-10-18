@@ -7,6 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.example.aj.scavengersworld.Activities.BaseActivity;
+import com.example.aj.scavengersworld.GamePlayActivity;
+import com.example.aj.scavengersworld.HuntCreateModify;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.Model.User;
 import com.example.aj.scavengersworld.R;
@@ -62,8 +64,20 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
     }
 
     @Override
-    public void onListFragmentInteraction(Hunt hunt) {
+    public void onListYourHuntsFragmentInteraction(Hunt hunt) {
+        Log.d(LOG_TAG, "Your Hunt   "+hunt.toString());
+        Intent modifyHunt = new Intent(this, GamePlayActivity.class);
+        modifyHunt.putExtra("NAME", hunt.getHuntName());
+        startActivity(modifyHunt);
 
+    }
+
+    @Override
+    public void onListCreatedHuntsFragmentInteraction(Hunt hunt){
+        Log.d(LOG_TAG, "Created Hunt    " + hunt.toString());
+        Intent modifyHunt = new Intent(this, HuntCreateModify.class);
+        modifyHunt.putExtra("NAME", hunt.getHuntName());
+        startActivity(modifyHunt);
     }
 
     @Override
