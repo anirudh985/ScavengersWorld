@@ -31,6 +31,7 @@ public class YourHuntsFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     //TODO: Need to get huntslist from another class. Don't make a call to retrieve them here.
     private List<Hunt> yourHuntsList;
+    public static final String TAG = "YourHunts";
 
 
     /**
@@ -110,7 +111,7 @@ public class YourHuntsFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Hunt hunt);
+        void onListYourHuntsFragmentInteraction(Hunt hunt);
     }
 
     private List<Hunt> getHuntsList(){
@@ -144,4 +145,5 @@ public class YourHuntsFragment extends Fragment {
 
         return huntsList;
     }
+
 }
