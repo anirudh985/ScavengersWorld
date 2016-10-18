@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Scavenger\'s World</string>
+    <string name="log_onCreate">+ onCreate() +</string>
+    <string name="log_onStart">++ onStart() ++</string>
+    <string name="log_onResume">+++ onResume() +++</string>
+    <string name="log_onPause">--- onPause() ---</string>
+    <string name="log_onStop">-- onStop() --</string>
+    <string name="log_onDestroy">- onDestroy() -</string>
+    <string name="log_onRestart">* onRestart() *</string>
+
     <!-- FACEBOOK -->
     <string name="facebook_app_id">566074280252089</string>
 
@@ -20,7 +28,7 @@
     <string name="eula_accepted_key">eula_accepted</string>
     <string name="get_location">Get Current Location</string>
     <string name="title_activity_modify_clue_location">Map</string>
-    <string name="about_app">About Scavernger World</string>
+    <string name="about_app">About Scavenger\'s World</string>
     <string name="prefs">Prefs</string>
     <string name="mylocation_button">My Location Button</string>
     <string name="mylocation_layer">My Location Layer</string>
@@ -93,12 +101,16 @@
 
     <!-- HUNT ACTIVITY -->
     <string name="hunt_join">Join Hunt</string>
-    <string name="hunt_leaders">View Leaderboard</string>
+    <string name="hunt_leaders">View Leader Board</string>
     
     <!-- Hunt create modify activity -->
     <string name="start_time">Start time</string>
     <string name="end_time">End Time</string>
     <string name="clues">Clues</string>
     <string name="public_event">Public Event</string>
+
+    <!-- LEADERBOARD ACTIVITY -->
+    <string name="leaderboard_header">Leaderboard</string>
+    <string name="leaderboard_temp">Nothing to show.</string>
 
 </resources>
