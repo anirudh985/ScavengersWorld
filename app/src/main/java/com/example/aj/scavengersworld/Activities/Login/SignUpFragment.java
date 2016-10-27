@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.aj.scavengersworld.Activities.HomeScreen.HomeScreenActivity;
 import com.example.aj.scavengersworld.Model.User;
 import com.example.aj.scavengersworld.R;
 import com.facebook.AccessToken;
@@ -26,8 +28,14 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -49,36 +57,15 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
 //
 //    private OnFragmentInteractionListener mListener;
 
-    private TextView mTextView;
+    // TODO: Use AccessToken.getCurrentAccessToken and Profile.getCurrentProfile() to check whether a user is already logged in
 
-    private CallbackManager mCallbackManager;
-    private FacebookCallback<LoginResult> mCallbackResult = new FacebookCallback<LoginResult>() {
-        @Override
-        public void onSuccess(LoginResult loginResult) {
-            AccessToken accessToken = loginResult.getAccessToken();
-            Profile profile = Profile.getCurrentProfile();
-            displayWelcomeMessage(profile);
-        }
 
-        @Override
-        public void onCancel() {
 
-        }
 
-        @Override
-        public void onError(FacebookException error) {
 
-        }
-    };
 
-    private AccessTokenTracker mAccessTokenTracker;
-    private ProfileTracker mProfileTracker;
-
-    private void displayWelcomeMessage(Profile profile){
-        if(profile != null){
-            mTextView.setText("Welcome "+profile.getName());
-        }
-    }
+    // FIREBASE STUFF //
+    private FirebaseAuth mFirebaseAuth;
 
 
 
@@ -117,24 +104,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate()");
-        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
-        mCallbackManager = CallbackManager.Factory.create();
 
-        mAccessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-
-            }
-        };
-
-        mProfileTracker = new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                displayWelcomeMessage(currentProfile);
-            }
-        };
-
-
+        mFirebaseAuth = FirebaseAuth.getInstance();
 //        if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
@@ -144,8 +115,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
-        Profile profile = Profile.getCurrentProfile();
-        displayWelcomeMessage(profile);
+
     }
 
     private void bindUItoVariables(View view){
@@ -187,8 +157,30 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         Log.d(LOG_TAG, "onClick()");
         switch (view.getId()){
             case R.id.btnSignUp:
-                User user = validateInput();
+                final User user = validateInput();
                 registerUser(user);
+
+                String email = mEmail.getText().toString().trim();
+                String username = mUsername.getText().toString().trim();
+                String password = mPassword.getText().toString().trim();
+
+                mFirebaseAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    openHomeScreen(createUser(task.getResult().getUser()));
+                                }
+                                else{
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                    builder.setMessage(task.getException().getMessage())
+                                            .setTitle(R.string.login_error_title)
+                                            .setPositiveButton(android.R.string.ok, null);
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
+                            }
+                        });
                 break;
             default:
                 break;
@@ -225,12 +217,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         super.onViewCreated(view, savedInstanceState);
         Log.d(LOG_TAG, "onViewCreated()");
         bindUItoVariables(view);
-        LoginButton fbLoginButton = (LoginButton) view.findViewById(R.id.facebook_login_button);
-//        fbLoginButton.setReadPermissions("user_friends");
-        fbLoginButton.setFragment(this);
-        fbLoginButton.registerCallback(mCallbackManager, mCallbackResult);
-
-        mTextView = (TextView) view.findViewById(R.id.welcomeText);
     }
 
     @Override
@@ -247,12 +233,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         saveUIVariables(outState);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d(LOG_TAG, "onActivityResult()");
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
-    }
 
 //    // TODO: Rename method, update argument and hook method into UI event
 //    public void onButtonPressed(Uri uri) {
@@ -292,4 +272,18 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
 //        // TODO: Update argument type and name
 //        void onFragmentInteraction(Uri uri);
 //    }
+
+    private void openHomeScreen(User user){
+        Intent homeScreen = new Intent(getActivity(), HomeScreenActivity.class);
+        homeScreen.putExtra(getString(R.string.USER), user);
+        startActivity(homeScreen);
+    }
+
+    private User createUser(FirebaseUser firebaseUser){
+        User user = new User();
+        user.setUserId(firebaseUser.getUid());
+        user.setUserName(firebaseUser.getEmail());
+        user.setDisplayName(firebaseUser.getDisplayName());
+        return user;
+    }
 }

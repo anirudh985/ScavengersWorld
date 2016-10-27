@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.aj.scavengersworld.Activities.Login.LoginActivity;
 import com.example.aj.scavengersworld.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Created by aj on 10/14/16.
@@ -85,5 +87,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void signout(){
         Log.d(LOG_TAG, "signout()");
         //TODO: use SessionManager to retireve username and signout
+        FirebaseAuth.getInstance().signOut();
+        openLoginScreen();
+    }
+
+    private void openLoginScreen(){
+        Intent login = new Intent(this, LoginActivity.class);
+        startActivity(login);
     }
 }

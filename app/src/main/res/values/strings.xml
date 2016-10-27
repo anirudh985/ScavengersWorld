@@ -11,6 +11,13 @@
     <!-- FACEBOOK -->
     <string name="facebook_app_id">566074280252089</string>
 
+    <!-- FIREBASE -->
+    <string name="fb_login_protocol_scheme">fb566074280252089</string>
+
+    <!-- GOOGLE -->
+    <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="server_client_id">435212579805-gvug6do3kbp6q6dkuchsa27u367sbj7p.apps.googleusercontent.com</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
@@ -20,6 +27,8 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+    <string name="login_error_title">There is no user record corresponding to this identifier. The user may have been deleted.</string>
+
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
@@ -102,7 +111,7 @@
     <!-- HUNT ACTIVITY -->
     <string name="hunt_join">Join Hunt</string>
     <string name="hunt_leaders">View Leader Board</string>
-    
+
     <!-- Hunt create modify activity -->
     <string name="start_time">Start time</string>
     <string name="end_time">End Time</string>
@@ -112,5 +121,9 @@
     <!-- LEADERBOARD ACTIVITY -->
     <string name="leaderboard_header">Leaderboard</string>
     <string name="leaderboard_temp">Nothing to show.</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <!-- HUNT CREATE MODIFY ACTIVITY -->
+    <string name="newHuntName">New Hunt</string>
 
 </resources>

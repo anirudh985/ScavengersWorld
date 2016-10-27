@@ -1,6 +1,7 @@
 package com.example.aj.scavengersworld;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +17,12 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
         if(savedInstanceState == null) {
             Intent createdIntent = getIntent();
             Bundle extrasBundle = createdIntent.getExtras();
-            mHuntName = extrasBundle.getString("Name");
+            if(extrasBundle != null && extrasBundle.get("Name") != null){
+                mHuntName = extrasBundle.getString("Name");
+            }
+            else{
+                mHuntName = getString(R.string.newHuntName);
+            }
             Button clueEditButton = (Button)findViewById(R.id.clueEditButton);
             clueEditButton.setOnClickListener(this);
         }

@@ -56,36 +56,5 @@
         android:id="@+id/btnSignUp"
         android:layout_gravity="center_horizontal" />
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/facebook_login_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp" />
-
-    <!--<Button-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/facebookLogin"-->
-        <!--android:id="@+id/btnFacebookLogin"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:drawableLeft="@mipmap/ic_launcher"/>-->
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/googleLogin"
-        android:id="@+id/btnGoogleLogin"
-        android:layout_gravity="center_horizontal"
-        android:drawableLeft="@mipmap/ic_launcher"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="&quot;&quot;"
-        android:id="@+id/welcomeText"
-        android:layout_gravity="center_horizontal" />
 </LinearLayout>
 </ScrollView>

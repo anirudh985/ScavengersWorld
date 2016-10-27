@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/createdHuntListFragmentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
 <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
+    android:id="@+id/createdHuntListRecyclerView"
     android:name="com.example.aj.scavengersworld.Activities.HomeScreen.CreatedHuntsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,3 +18,14 @@
     app:layoutManager="LinearLayoutManager"
     tools:context="com.example.aj.scavengersworld.Activities.HomeScreen.CreatedHuntsFragment"
     tools:listitem="@layout/fragment_createdhunts" />
+
+
+<android.support.design.widget.FloatingActionButton
+android:id="@+id/fab"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_gravity="bottom|end"
+android:layout_margin="@dimen/fab_margin"
+android:src="@mipmap/ic_add_white_24dp" />
+
+</android.support.design.widget.CoordinatorLayout>

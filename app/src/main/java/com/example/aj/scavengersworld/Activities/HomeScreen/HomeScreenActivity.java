@@ -12,6 +12,8 @@ import com.example.aj.scavengersworld.HuntCreateModify;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.Model.User;
 import com.example.aj.scavengersworld.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class HomeScreenActivity extends BaseActivity implements YourHuntsFragment.OnListFragmentInteractionListener, CreatedHuntsFragment.OnListFragmentInteractionListener{
 
@@ -20,6 +22,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         if(savedInstanceState != null){
 
         }
