@@ -3,6 +3,7 @@ package com.example.aj.scavengersworld.Activities.HomeScreen;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,7 @@ import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.Activities.HomeScreen.dummy.DummyContent;
 import com.example.aj.scavengersworld.Activities.HomeScreen.dummy.DummyContent.DummyItem;
+import com.example.aj.scavengersworld.UserSessionManager;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,17 +41,14 @@ import java.util.List;
  */
 public class CreatedHuntsFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    //TODO: Need to get huntslist from another class. Don't make a call to retrieve them here.
     private List<Hunt> createdHuntsList = new ArrayList<>();
     private final String LOG_TAG = getClass().getSimpleName();
 
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference mDatabaseRef = mDatabase.getReference("hunts");
+    private DatabaseReference mDatabaseRef;
+    private UserSessionManager session = UserSessionManager.INSTANCE;
 
     ValueEventListener createdHuntsListener = new ValueEventListener() {
         @Override
@@ -60,7 +59,7 @@ public class CreatedHuntsFragment extends Fragment {
                     createdHuntsList.add(hunt);
                 }
             }
-            updateUI(createdHuntsList);
+            updateUI();
         }
 
         @Override
@@ -78,21 +77,11 @@ public class CreatedHuntsFragment extends Fragment {
     public CreatedHuntsFragment() {
     }
 
-    // TODO: Customize parameter initialization
-//    @SuppressWarnings("unused")
-//    public static CreatedHuntsFragment newInstance(int columnCount) {
-//        CreatedHuntsFragment fragment = new CreatedHuntsFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(ARG_COLUMN_COUNT, columnCount);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate Called");
-//        mDatabaseRef.addValueEventListener(createdHuntsListener);
+        mDatabaseRef = mDatabase.getReference(getString(R.string.userCreatedHuntsTable));
         getCreatedHuntsList();
     }
 
@@ -106,9 +95,9 @@ public class CreatedHuntsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent createHunt = new Intent(getActivity(), HuntCreateModify.class);
-//                startActivity(createHunt);
-                addNewHunt();
+                Intent createHunt = new Intent(getActivity(), HuntCreateModify.class);
+                startActivity(createHunt);
+//                addNewHunt();
             }
         });
 
@@ -121,18 +110,16 @@ public class CreatedHuntsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-//            createdHuntsList = getCreatedHuntsList();
             recyclerView.setAdapter(new MyCreatedHuntsRecyclerViewAdapter(createdHuntsList, mListener));
         }
         return view;
     }
 
-    private void updateUI(List<Hunt> createdHuntsList){
+    private void updateUI(){
         Log.d(LOG_TAG, "updateUI Called");
         RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.createdHuntListRecyclerView);
         if(recyclerView != null){
             MyCreatedHuntsRecyclerViewAdapter createdHuntsRecyclerViewAdapter = (MyCreatedHuntsRecyclerViewAdapter) recyclerView.getAdapter();
-//            createdHuntsRecyclerViewAdapter.swap(createdHuntsList);
             createdHuntsRecyclerViewAdapter.notifyDataSetChanged();
         }
     }
@@ -172,45 +159,18 @@ public class CreatedHuntsFragment extends Fragment {
         void onListCreatedHuntsFragmentInteraction(Hunt hunt);
     }
 
-//    private List<Hunt> getCreatedHuntsList(){
-//        List<Hunt> huntsList = new ArrayList<>();
-//
-//        Hunt hunt1 = new Hunt();
-//        hunt1.setHuntId(1);
-//        hunt1.setHuntName("CreatedHunt1");
-//        huntsList.add(hunt1);
-//
-//        Hunt hunt2 = new Hunt();
-//        hunt2.setHuntId(2);
-//        hunt2.setHuntName("CreatedHunt2");
-//        huntsList.add(hunt2);
-//
-//        Hunt hunt3 = new Hunt();
-//        hunt3.setHuntId(3);
-//        hunt3.setHuntName("CreatedHunt3");
-//        huntsList.add(hunt3);
-//
-//        Hunt hunt4 = new Hunt();
-//        hunt4.setHuntId(4);
-//        hunt4.setHuntName("CreatedHunt4");
-//        huntsList.add(hunt4);
-//
-//
-//
-//        return huntsList;
-//    }
-
     private void getCreatedHuntsList(){
         Log.d(LOG_TAG, "getCreatedHuntsList Called");
-//        final List<Hunt> createdHuntsList = new ArrayList<>();
-        mDatabaseRef.orderByChild("huntId").addChildEventListener(new ChildEventListener() {
+        mDatabaseRef.child(session.getUniqueUserId())
+                    .orderByChild(getString(R.string.orderByHuntId))
+                    .addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d(LOG_TAG, "onChildAdded Called");
                 Hunt hunt = dataSnapshot.getValue(Hunt.class);
                 if(!createdHuntsList.contains(hunt)){
                     createdHuntsList.add(hunt);
-                    updateUI(createdHuntsList);
+                    updateUI();
                 }
             }
 
@@ -220,7 +180,7 @@ public class CreatedHuntsFragment extends Fragment {
                 Hunt hunt = dataSnapshot.getValue(Hunt.class);
                 if(!createdHuntsList.contains(hunt)){
                     createdHuntsList.add(hunt);
-                    updateUI(createdHuntsList);
+                    updateUI();
                 }
             }
 
@@ -254,8 +214,6 @@ public class CreatedHuntsFragment extends Fragment {
         Log.d(LOG_TAG, "addNewHunt Called");
         int newHuntId = createdHuntsList.size() + 1;
         Hunt newHunt = createNewHunt(newHuntId, "CreatedHunt"+newHuntId, "anirudh985");
-//        createdHuntsList.add(newHunt);
-//        mDatabaseRef.child(""+newHuntId).setValue(newHunt);
-        mDatabaseRef.push().setValue(newHunt);
+        mDatabaseRef.child(session.getUniqueUserId()).push().setValue(newHunt);
     }
 }

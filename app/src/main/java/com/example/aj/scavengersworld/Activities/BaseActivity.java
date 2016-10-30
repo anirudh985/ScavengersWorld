@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.example.aj.scavengersworld.Activities.Login.LoginActivity;
 import com.example.aj.scavengersworld.R;
+import com.example.aj.scavengersworld.UserSessionManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -80,19 +81,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "openProfileActivitiy()");
         Intent profileActivity = new Intent(this, ProfileActivity.class);
         startActivity(profileActivity);
-        //TODO: use SessionManager to retrieve username and query for Profile Information
+        //TODO: use UserSessionManager to retrieve username and query for Profile Information
 
     }
 
     private void signout(){
         Log.d(LOG_TAG, "signout()");
-        //TODO: use SessionManager to retireve username and signout
+        //TODO: use UserSessionManager to retireve username and signout
         FirebaseAuth.getInstance().signOut();
+        clearSession();
         openLoginScreen();
     }
 
     private void openLoginScreen(){
         Intent login = new Intent(this, LoginActivity.class);
         startActivity(login);
+    }
+
+    private void clearSession(){
+        UserSessionManager sessionManager = UserSessionManager.INSTANCE;
+        sessionManager.clearSession();
     }
 }

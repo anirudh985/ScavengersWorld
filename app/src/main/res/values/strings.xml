@@ -94,6 +94,7 @@
     <!-- HOME SCREEN ACTIVITY -->
     <string name="createdHuntsTab">Created Hunts</string>
     <string name="joinedHuntsTab">Your Hunts</string>
+    <string name="welcomeMessage">Hello </string>
 
 
     <!-- PROFILE ACTIVITY-->
@@ -125,5 +126,10 @@
 
     <!-- HUNT CREATE MODIFY ACTIVITY -->
     <string name="newHuntName">New Hunt</string>
+
+
+    <!-- DATABASE REFERENCE POINTS -->
+    <string name="userCreatedHuntsTable">userCreatedHunts</string>
+    <string name="orderByHuntId">huntId</string>
 
 </resources>
