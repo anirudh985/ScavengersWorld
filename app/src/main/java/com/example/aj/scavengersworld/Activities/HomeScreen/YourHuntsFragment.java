@@ -2,16 +2,23 @@ package com.example.aj.scavengersworld.Activities.HomeScreen;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +38,32 @@ public class YourHuntsFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     //TODO: Need to get huntslist from another class. Don't make a call to retrieve them here.
     private List<Hunt> yourHuntsList;
-    public static final String TAG = "YourHunts";
+    public static final String LOG_TAG = "YourHunts";
 
+    private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
+
+    ValueEventListener yourHuntsListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            Hunt hunt = dataSnapshot.child("hunts").getValue(Hunt.class);
+            if(!yourHuntsList.contains(hunt)){
+                yourHuntsList.add(hunt);
+            }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            // Getting Post failed, log a message
+            Log.w(LOG_TAG, "loadPost:onCancelled", databaseError.toException());
+            // ...
+        }
+    };
+
     public YourHuntsFragment() {
     }
 
@@ -54,7 +80,7 @@ public class YourHuntsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        mDatabaseRef.addValueEventListener(yourHuntsListener);
 //        if (getArguments() != null) {
 //            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
 //        }
@@ -77,6 +103,7 @@ public class YourHuntsFragment extends Fragment {
             //TODO: Need to get huntslist from another class. Don't make a call to retrieve them here.
             yourHuntsList = getHuntsList();
             recyclerView.setAdapter(new MyYourHuntsRecyclerViewAdapter(yourHuntsList, mListener));
+//            recyclerView.setAdapter(new FirebaseRec);
         }
         return view;
     }
@@ -145,5 +172,4 @@ public class YourHuntsFragment extends Fragment {
 
         return huntsList;
     }
-
 }

@@ -12,6 +12,9 @@ import com.example.aj.scavengersworld.HuntCreateModify;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.Model.User;
 import com.example.aj.scavengersworld.R;
+import com.example.aj.scavengersworld.UserSessionManager;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class HomeScreenActivity extends BaseActivity implements YourHuntsFragment.OnListFragmentInteractionListener, CreatedHuntsFragment.OnListFragmentInteractionListener{
 
@@ -58,9 +61,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
 
     @Override
     protected String getScreenName() {
-        Intent currentIntent = getIntent();
-        User u = currentIntent.getParcelableExtra(getString(R.string.USER));
-        return "Hello "+u.getDisplayName();
+        return getString(R.string.welcomeMessage) + UserSessionManager.INSTANCE.getUserName();
     }
 
     @Override

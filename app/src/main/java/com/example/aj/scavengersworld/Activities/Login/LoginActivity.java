@@ -13,6 +13,8 @@ import android.util.Log;
 import com.example.aj.scavengersworld.R;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -24,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private final String LOG_TAG = getClass().getSimpleName();
     private final String CONTEXT = "FragmentContext";
+
     @Override
     protected void onCreate(Bundle savedInstaceState){
         super.onCreate(savedInstaceState);
