@@ -81,6 +81,8 @@
     <string name="loginUsername">Username</string>
     <string name="loginPassword">Password</string>
     <string name="login">Login</string>
+    <string name="passwordMismatch">Password Mismatch</string>
+    <string name="passwordMismatchMessage">Please make sure that both the passwords are same.</string>
 
 
     <!-- LOGIN ACTIVITY -->

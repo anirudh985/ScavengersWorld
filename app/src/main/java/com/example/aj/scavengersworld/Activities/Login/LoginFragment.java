@@ -213,12 +213,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-////                            mFirebaseUser = task.getResult().getUser();
-////                            setupSession();
-////                            openHomeScreen(createUser(mFirebaseUser));
-////                        }
-//                        else{
+                        if(task.isSuccessful()){
+//                            mFirebaseUser = task.getResult().getUser();
+//                            setupSession();
+//                            openHomeScreen();
+                        }
+                        else{
                             loginFailed(task);
                         }
                     }

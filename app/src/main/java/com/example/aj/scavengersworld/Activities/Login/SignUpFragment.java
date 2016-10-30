@@ -1,8 +1,6 @@
 package com.example.aj.scavengersworld.Activities.Login;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,28 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.aj.scavengersworld.Activities.HomeScreen.HomeScreenActivity;
 import com.example.aj.scavengersworld.Model.User;
 import com.example.aj.scavengersworld.R;
-import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookActivity;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.Profile;
-import com.facebook.ProfileTracker;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+import com.example.aj.scavengersworld.UserSessionManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -46,27 +33,11 @@ import com.google.firebase.auth.FirebaseUser;
 // * create an instance of this fragment.
 // */
 public class SignUpFragment extends Fragment implements View.OnClickListener{
-//    // TODO: Rename parameter arguments, choose names that match
-//    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-//
-//    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
-//
-//    private OnFragmentInteractionListener mListener;
-
-    // TODO: Use AccessToken.getCurrentAccessToken and Profile.getCurrentProfile() to check whether a user is already logged in
-
-
-
-
-
 
     // FIREBASE STUFF //
     private FirebaseAuth mFirebaseAuth;
-
+    private FirebaseUser mFirebaseUser;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
 
     private EditText mUsername;
@@ -82,40 +53,50 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         // Required empty public constructor
     }
 
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment SignUpFragment.
-//     */
-//    // TODO: Rename and change types and number of parameters
-//    public static SignUpFragment newInstance(String param1, String param2) {
-//        SignUpFragment fragment = new SignUpFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate()");
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
+
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+                if(mFirebaseUser != null){
+                    // User is signed in
+                    Log.d(LOG_TAG, "onAuthStateChanged:signed_in:" + mFirebaseUser.getUid());
+                    setupSession();
+                    openHomeScreen();
+                }
+                else{
+                    // User is signed out
+                    Log.d(LOG_TAG, "onAuthStateChanged:signed_out");
+                }
+            }
+        };
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthStateListener != null) {
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+        }
     }
 
     private void bindUItoVariables(View view){
@@ -157,51 +138,65 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         Log.d(LOG_TAG, "onClick()");
         switch (view.getId()){
             case R.id.btnSignUp:
-                final User user = validateInput();
-                registerUser(user);
-
-                String email = mEmail.getText().toString().trim();
-                String username = mUsername.getText().toString().trim();
-                String password = mPassword.getText().toString().trim();
-
-                mFirebaseAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
-                                    openHomeScreen(createUser(task.getResult().getUser()));
-                                }
-                                else{
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                    builder.setMessage(task.getException().getMessage())
-                                            .setTitle(R.string.login_error_title)
-                                            .setPositiveButton(android.R.string.ok, null);
-                                    AlertDialog dialog = builder.create();
-                                    dialog.show();
-                                }
-                            }
-                        });
+                if(validateInput()){
+                    registerUser();
+                }
                 break;
             default:
                 break;
         }
     }
 
-    private User validateInput(){
+    private boolean validateInput(){
         Log.d(LOG_TAG, "validateInput()");
-
-        return null;
+        if(!mPassword.getText().toString().trim().equals(mConfirmPassword.getText().toString().trim())){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(getString(R.string.passwordMismatch))
+                    .setTitle(getString(R.string.passwordMismatchMessage))
+                    .setPositiveButton(android.R.string.ok, null);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            return false;
+        }
+        return true;
     }
 
-    private void registerUser(@NonNull User user){
+    private void registerUser(){
         Log.d(LOG_TAG, "registerUser()");
-        // TODO: network call to register user in our database
+        String email = mEmail.getText().toString().trim();
+        String password = mPassword.getText().toString().trim();
 
-        //TODO: validate login and call homescreen intent
-//            Intent homeScreen = new Intent(this, HomeScreenAcitivity.class);
-//            homeScreen.putExtra(R.string.USER, user);
-//            startActivity(homeScreen);
-        //TODO: need to save session
+        mFirebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            mFirebaseUser = task.getResult().getUser();
+
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(mUsername.getText().toString().trim())
+                                    .build();
+
+                            mFirebaseUser.updateProfile(profileUpdates)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d(LOG_TAG, "User profile updated.");
+                                            }
+                                        }
+                                    });
+                        }
+                        else{
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setMessage(task.getException().getMessage())
+                                    .setTitle(R.string.login_error_title)
+                                    .setPositiveButton(android.R.string.ok, null);
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+                    }
+                });
     }
 
     @Override
@@ -273,17 +268,13 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
 //        void onFragmentInteraction(Uri uri);
 //    }
 
-    private void openHomeScreen(User user){
+    private void openHomeScreen(){
         Intent homeScreen = new Intent(getActivity(), HomeScreenActivity.class);
-        homeScreen.putExtra(getString(R.string.USER), user);
         startActivity(homeScreen);
     }
 
-    private User createUser(FirebaseUser firebaseUser){
-        User user = new User();
-        user.setUserId(firebaseUser.getUid());
-        user.setUserName(firebaseUser.getEmail());
-        user.setDisplayName(firebaseUser.getDisplayName());
-        return user;
+    private void setupSession(){
+        UserSessionManager sessionManager = UserSessionManager.INSTANCE;
+        sessionManager.setUpSession(mFirebaseUser, getContext());
     }
 }
