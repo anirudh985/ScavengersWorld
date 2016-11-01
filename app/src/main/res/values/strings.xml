@@ -97,6 +97,7 @@
     <string name="createdHuntsTab">Created Hunts</string>
     <string name="joinedHuntsTab">Your Hunts</string>
     <string name="welcomeMessage">Hello </string>
+    <string name="progressMessage">Progress: </string>
 
 
     <!-- PROFILE ACTIVITY-->
@@ -131,7 +132,14 @@
 
 
     <!-- DATABASE REFERENCE POINTS -->
-    <string name="userCreatedHuntsTable">userCreatedHunts</string>
+    <string name="userToHunts">user-hunts</string>
     <string name="orderByHuntId">huntId</string>
+    <string name="orderByProgress">progress</string>
+    <string name="allHuntsTableRef">allhunts</string>
+
+    <!-- HUNTFEED ACTIVITY -->
+    <string name="allFeeds">All</string>
+    <string name="popularFeeds">Popular</string>
+    <string name="huntKey">OPENHUNTSCREEN</string>
 
 </resources>

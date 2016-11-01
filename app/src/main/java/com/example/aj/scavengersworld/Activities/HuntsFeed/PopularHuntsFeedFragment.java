@@ -1,7 +1,11 @@
-package com.example.aj.scavengersworld.Activities.HomeScreen;
+package com.example.aj.scavengersworld.Activities.HuntsFeed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,59 +15,80 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.aj.scavengersworld.Activities.HomeScreen.MyCreatedHuntsRecyclerViewAdapter;
+import com.example.aj.scavengersworld.HuntCreateModify;
 import com.example.aj.scavengersworld.Model.Hunt;
-import com.example.aj.scavengersworld.Model.User;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A fragment representing a list of Items.
- * <p/>
+ * <p>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class YourHuntsFragment extends Fragment {
+public class PopularHuntsFeedFragment extends Fragment {
 
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    private UserSessionManager session = UserSessionManager.INSTANCE;
-    private List<Hunt> yourHuntsList = session.getParticipatingHuntsList();
-    public final String LOG_TAG = getClass().getSimpleName();
+    private List<Hunt> createdHuntsList = new ArrayList<>();
+    private final String LOG_TAG = getClass().getSimpleName();
 
-    public YourHuntsFragment() {
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public PopularHuntsFeedFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(LOG_TAG, "onCreate Called");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_yourhunts_list, container, false);
+        Log.d(LOG_TAG, "onCreateView Called");
+        View view = inflater.inflate(R.layout.fragment_createdhunts_list, container, false);
 
-//        yourHuntsList = session.getCreatedHunts();
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent createHunt = new Intent(getActivity(), HuntCreateModify.class);
+//                startActivity(createHunt);
+//                addNewHunt();
+            }
+        });
+
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (view instanceof CoordinatorLayout) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.createdHuntListRecyclerView);
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyYourHuntsRecyclerViewAdapter(yourHuntsList, mListener));
+//            recyclerView.setAdapter(new MyPopularHuntsRecyclerViewAdapter(createdHuntsList, mListener));
         }
         return view;
     }
 
-
     @Override
     public void onAttach(Context context) {
+        Log.d(LOG_TAG, "onAttach Called");
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
@@ -75,63 +100,25 @@ public class YourHuntsFragment extends Fragment {
 
     @Override
     public void onDetach() {
+        Log.d(LOG_TAG, "onDetach Called");
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListYourHuntsFragmentInteraction(Hunt hunt);
+        void onListPopularHuntsFragmentInteraction(Hunt hunt);
     }
 
-//    private List<Hunt> getHuntsList(){
-//        List<Hunt> huntsList = new ArrayList<>();
-//
-//        Hunt hunt1 = new Hunt();
-//        hunt1.setHuntId(1);
-//        hunt1.setHuntName("Hunt1");
-//        hunt1.setCreatedByUserId("anirudh985");
-//        huntsList.add(hunt1);
-//
-//        Hunt hunt2 = new Hunt();
-//        hunt2.setHuntId(2);
-//        hunt2.setHuntName("Hunt2");
-//        hunt2.setCreatedByUserId("kavskalyan");
-//        huntsList.add(hunt2);
-//
-//        Hunt hunt3 = new Hunt();
-//        hunt3.setHuntId(3);
-//        hunt3.setHuntName("Hunt3");
-//        hunt3.setCreatedByUserId("anirudh985");
-//        huntsList.add(hunt3);
-//
-//        Hunt hunt4 = new Hunt();
-//        hunt4.setHuntId(4);
-//        hunt4.setHuntName("Hunt4");
-//        hunt4.setCreatedByUserId("kavskalyan");
-//        huntsList.add(hunt4);
-//
-//
-//
-//        return huntsList;
-//    }
-
-    public void updateUI(){
-        Log.d(LOG_TAG, "updateUI Called");
-        RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.yourHuntsListRecyclerView);
-        if(recyclerView != null){
-            MyYourHuntsRecyclerViewAdapter yourHuntsRecyclerViewAdapter = (MyYourHuntsRecyclerViewAdapter) recyclerView.getAdapter();
-            yourHuntsRecyclerViewAdapter.notifyDataSetChanged();
-        }
-    }
 }

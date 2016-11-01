@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/createdHuntLayout"
+    android:id="@+id/popularHuntsLayout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
@@ -10,13 +10,13 @@
     android:background="?android:attr/activatedBackgroundIndicator">
 
     <ImageView
-        android:id="@+id/createdHuntImageLetter"
+        android:id="@+id/popularHuntsImageLetter"
         android:layout_height="match_parent"
         android:layout_width="55dp"
         android:layout_marginLeft="5dp"/>
 
     <LinearLayout
-        android:id="@+id/createdHuntLayout1"
+        android:id="@+id/popularHuntsLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -26,24 +26,28 @@
 
 
         <TextView
-            android:id="@+id/createdHuntName"
+            android:id="@+id/popularHuntsName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="horizontal">-->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <!--<TextView-->
-                <!--android:id="@+id/progress"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="5dp" />-->
+            <TextView
+                android:id="@+id/popularHuntsId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp" />
 
-        <!--</LinearLayout>-->
+            <TextView
+                android:id="@+id/popularHuntsCreatedUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp" />
+        </LinearLayout>
 
     </LinearLayout>
-
 </LinearLayout>
