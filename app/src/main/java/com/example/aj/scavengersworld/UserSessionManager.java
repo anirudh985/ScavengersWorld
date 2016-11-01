@@ -122,50 +122,48 @@ public enum UserSessionManager {
         this.mUserEmail = null;
     }
 
-    public void updateHunts(UserToHunts userToHunts){
-        if(userToHunts != null){
-            if(userToHunts.getState() == ADMIN){
+    public void updateHunts(@NonNull List<UserToHunts> listOfUserToHunts){
+        for(UserToHunts userToHunts : listOfUserToHunts) {
+            if (userToHunts.getState().equals(ADMIN)) {
                 // update Created Hunts
-                if(createdHunts.containsKey(userToHunts.getHuntName())){
+                if (createdHunts.containsKey(userToHunts.getHuntName())) {
                     Hunt hunt = createdHunts.get(userToHunts.getHuntName());
                     updateHuntObject(hunt, userToHunts);
-                }
-                else{
+                } else {
                     Hunt hunt = createHuntObject(userToHunts);
                     createdHunts.put(userToHunts.getHuntName(), hunt);
                     //TODO: need to add to createdHuntsList and sort OR some other mechanism if we want to
                     //TODO  display the hunts in sorted order
                     createdHuntsList.add(hunt);
                 }
-            }
-            else if(userToHunts.getState() == INPROGRESS){
+            } else if (userToHunts.getState().equals(INPROGRESS)) {
                 // update Participating Hunts
-                if(participatingHunts.containsKey(userToHunts.getHuntName())){
+                if (participatingHunts.containsKey(userToHunts.getHuntName())) {
                     Hunt hunt = participatingHunts.get(userToHunts.getHuntName());
                     updateHuntObject(hunt, userToHunts);
-                }
-                else{
+                } else {
                     Hunt hunt = createHuntObject(userToHunts);
                     participatingHunts.put(userToHunts.getHuntName(), hunt);
                     //TODO: need to add to participatingHuntsList and sort OR some other mechanism if we want to
                     //TODO  display the hunts in sorted order
                     participatingHuntsList.add(hunt);
                 }
-            }
-            else if(userToHunts.getState() == REQUESTED){
+            } else if (userToHunts.getState().equals(REQUESTED)) {
 
-            }
-            else if(userToHunts.getState() == INVITED){
+            } else if (userToHunts.getState().equals(INVITED)) {
 
-            }
-            else if(userToHunts.getState() == COMPLETED){
+            } else if (userToHunts.getState().equals(COMPLETED)) {
 
             }
         }
     }
 
     private void updateHuntObject(@NonNull Hunt hunt, @NonNull UserToHunts userToHunts){
-        // hunt.set(userToHunts.get)
+        hunt.setHuntName(userToHunts.getHuntName());
+        hunt.setCurrentClueId(userToHunts.getClueId());
+        hunt.setState(userToHunts.getState());
+        hunt.setScore(userToHunts.getScore());
+        hunt.setProgress(userToHunts.getProgress());
     }
 
     private Hunt createHuntObject(@NonNull UserToHunts userToHunts){

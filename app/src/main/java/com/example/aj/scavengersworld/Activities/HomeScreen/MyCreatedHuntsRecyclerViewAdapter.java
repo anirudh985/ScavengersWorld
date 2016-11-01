@@ -11,6 +11,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
+import static com.example.aj.scavengersworld.Constants.progressMessage;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class MyCreatedHuntsRecyclerViewAdapter extends RecyclerView.Adapter<MyCr
     public void onBindViewHolder(final ViewHolder holder, int position) {
         //TODO: need to change this later
         final Hunt hunt = mValues.get(position);
-        holder.mIdView.setText(String.valueOf(hunt.getHuntId()));
+//        holder.mProgressView.setText(progressMessage + String.valueOf(hunt.getProgress()));
         holder.mContentView.setText(hunt.getHuntName());
 
         String letter = String.valueOf(hunt.getHuntName().charAt(0));
@@ -70,7 +71,7 @@ public class MyCreatedHuntsRecyclerViewAdapter extends RecyclerView.Adapter<MyCr
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
+//        public final TextView mProgressView;
         public final TextView mContentView;
         public final ImageView mImageLetter;
 //        public Hunt mItem;
@@ -78,7 +79,7 @@ public class MyCreatedHuntsRecyclerViewAdapter extends RecyclerView.Adapter<MyCr
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.createdHuntId);
+//            mProgressView = (TextView) view.findViewById(R.id.progress);
             mContentView = (TextView) view.findViewById(R.id.createdHuntName);
             mImageLetter = (ImageView) view.findViewById(R.id.createdHuntImageLetter);
         }

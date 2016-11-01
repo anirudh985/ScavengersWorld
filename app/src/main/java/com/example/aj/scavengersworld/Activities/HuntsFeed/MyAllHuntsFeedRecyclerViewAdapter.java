@@ -54,7 +54,7 @@ public class MyAllHuntsFeedRecyclerViewAdapter extends RecyclerView.Adapter<MyAl
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
 //                    mListener.onListFragmentInteraction(holder.);
-                    mListener.onListYourHuntsFragmentInteraction(hunt);
+                    mListener.onListAllHuntsFeedFragmentInteraction(hunt);
                 }
             }
         });
@@ -76,9 +76,9 @@ public class MyAllHuntsFeedRecyclerViewAdapter extends RecyclerView.Adapter<MyAl
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.yourHuntId);
+            mIdView = (TextView) view.findViewById(R.id.progress);
             mContentView = (TextView) view.findViewById(R.id.yourHuntName);
-            mCreatedUser = (TextView) view.findViewById(R.id.yourHuntCreatedUser);
+            mCreatedUser = (TextView) view.findViewById(R.id.yourHuntName);
             mImageLetter = (ImageView) view.findViewById(R.id.yourHuntImageLetter);
         }
 

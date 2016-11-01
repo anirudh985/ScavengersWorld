@@ -43,30 +43,6 @@ public class PopularHuntsFeedFragment extends Fragment {
     private List<Hunt> createdHuntsList = new ArrayList<>();
     private final String LOG_TAG = getClass().getSimpleName();
 
-    private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference mDatabaseRef;
-    private UserSessionManager session = UserSessionManager.INSTANCE;
-
-    ValueEventListener createdHuntsListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            for(DataSnapshot huntSnapshot : dataSnapshot.getChildren()){
-                Hunt hunt = huntSnapshot.getValue(Hunt.class);
-                if(!createdHuntsList.contains(hunt)){
-                    createdHuntsList.add(hunt);
-                }
-            }
-            updateUI();
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-            // Getting Post failed, log a message
-            Log.w(LOG_TAG, "loadPost:onCancelled", databaseError.toException());
-            // ...
-        }
-    };
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -78,8 +54,6 @@ public class PopularHuntsFeedFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate Called");
-        mDatabaseRef = mDatabase.getReference(getString(R.string.userCreatedHuntsTable));
-        getCreatedHuntsList();
     }
 
     @Override
@@ -92,8 +66,8 @@ public class PopularHuntsFeedFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent createHunt = new Intent(getActivity(), HuntCreateModify.class);
-                startActivity(createHunt);
+//                Intent createHunt = new Intent(getActivity(), HuntCreateModify.class);
+//                startActivity(createHunt);
 //                addNewHunt();
             }
         });
@@ -107,18 +81,9 @@ public class PopularHuntsFeedFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyCreatedHuntsRecyclerViewAdapter(createdHuntsList, mListener));
+//            recyclerView.setAdapter(new MyPopularHuntsRecyclerViewAdapter(createdHuntsList, mListener));
         }
         return view;
-    }
-
-    private void updateUI(){
-        Log.d(LOG_TAG, "updateUI Called");
-        RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.createdHuntListRecyclerView);
-        if(recyclerView != null){
-            MyCreatedHuntsRecyclerViewAdapter createdHuntsRecyclerViewAdapter = (MyCreatedHuntsRecyclerViewAdapter) recyclerView.getAdapter();
-            createdHuntsRecyclerViewAdapter.notifyDataSetChanged();
-        }
     }
 
     @Override
@@ -153,64 +118,7 @@ public class PopularHuntsFeedFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListCreatedHuntsFragmentInteraction(Hunt hunt);
+        void onListPopularHuntsFragmentInteraction(Hunt hunt);
     }
 
-    private void getCreatedHuntsList(){
-        Log.d(LOG_TAG, "getCreatedHuntsList Called");
-        mDatabaseRef.child(session.getUniqueUserId())
-                    .orderByChild(getString(R.string.orderByHuntId))
-                    .addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d(LOG_TAG, "onChildAdded Called");
-                Hunt hunt = dataSnapshot.getValue(Hunt.class);
-                if(!createdHuntsList.contains(hunt)){
-                    createdHuntsList.add(hunt);
-                    updateUI();
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.d(LOG_TAG, "onChildChanged Called");
-                Hunt hunt = dataSnapshot.getValue(Hunt.class);
-                if(!createdHuntsList.contains(hunt)){
-                    createdHuntsList.add(hunt);
-                    updateUI();
-                }
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private Hunt createNewHunt(@NonNull int huntId, @NonNull String huntName, @NonNull String createdByUser){
-        Log.d(LOG_TAG, "createNewHunt Called");
-        Hunt hunt = new Hunt();
-        hunt.setHuntId(huntId);
-        hunt.setHuntName(huntName);
-        hunt.setCreatedByUserId(createdByUser);
-        return hunt;
-    }
-
-    private void addNewHunt(){
-        Log.d(LOG_TAG, "addNewHunt Called");
-        int newHuntId = createdHuntsList.size() + 1;
-        Hunt newHunt = createNewHunt(newHuntId, "CreatedHunt"+newHuntId, "anirudh985");
-        mDatabaseRef.child(session.getUniqueUserId()).push().setValue(newHunt);
-    }
 }

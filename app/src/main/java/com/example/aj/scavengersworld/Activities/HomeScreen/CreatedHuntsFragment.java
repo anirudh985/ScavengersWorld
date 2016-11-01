@@ -1,8 +1,8 @@
 package com.example.aj.scavengersworld.Activities.HomeScreen;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -14,12 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.aj.scavengersworld.HuntCreateModify;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +35,9 @@ public class CreatedHuntsFragment extends Fragment {
     private UserSessionManager session = UserSessionManager.INSTANCE;
     private List<Hunt> createdHuntsList = session.getCreatedHunts();
     private final String LOG_TAG = getClass().getSimpleName();;
+
+    private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference mDatabaseRef;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -62,9 +65,9 @@ public class CreatedHuntsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent createHunt = new Intent(getActivity(), HuntCreateModify.class);
-                startActivity(createHunt);
-//                addNewHunt();
+//                Intent createHunt = new Intent(getActivity(), HuntCreateModify.class);
+//                startActivity(createHunt);
+                addNewHunt();
             }
         });
 
@@ -126,19 +129,20 @@ public class CreatedHuntsFragment extends Fragment {
         void onListCreatedHuntsFragmentInteraction(Hunt hunt);
     }
 
-//    private Hunt createNewHunt(@NonNull int huntId, @NonNull String huntName, @NonNull String createdByUser){
-//        Log.d(LOG_TAG, "createNewHunt Called");
-//        Hunt hunt = new Hunt();
-//        hunt.setHuntId(huntId);
-//        hunt.setHuntName(huntName);
-//        hunt.setCreatedByUserId(createdByUser);
-//        return hunt;
-//    }
+    private Hunt createNewHunt(@NonNull int huntId, @NonNull String huntName, @NonNull String createdByUser){
+        Log.d(LOG_TAG, "createNewHunt Called");
+        Hunt hunt = new Hunt();
+        hunt.setHuntId(huntId);
+        hunt.setHuntName(huntName);
+        hunt.setCreatedByUserId(createdByUser);
+        return hunt;
+    }
 
-//    private void addNewHunt(){
-//        Log.d(LOG_TAG, "addNewHunt Called");
-//        int newHuntId = createdHuntsList.size() + 1;
-//        Hunt newHunt = createNewHunt(newHuntId, "CreatedHunt"+newHuntId, "anirudh985");
-//        mDatabaseRef.child(session.getUniqueUserId()).push().setValue(newHunt);
-//    }
+    private void addNewHunt(){
+        Log.d(LOG_TAG, "addNewHunt Called");
+        int newHuntId = createdHuntsList.size() + 1;
+        Hunt newHunt = createNewHunt(newHuntId, "CreatedHunt"+newHuntId, "anirudh985");
+        mDatabaseRef = mDatabase.getReference("user-hunts/" + session.getUniqueUserId());
+        mDatabaseRef.child(newHunt.getHuntName()).setValue(newHunt);
+    }
 }

@@ -73,13 +73,13 @@ public class HuntFeedActivity extends BaseActivity implements AllHuntsFeedFragme
         startActivity(huntActivity);
     }
 
-    @Override
-    public void onListPopularHuntFeedFragmentInteraction(Hunt hunt){
-        Log.d(LOG_TAG, "Created Hunt    " + hunt.toString());
-        Intent modifyHunt = new Intent(this, HuntCreateModify.class);
-        modifyHunt.putExtra("NAME", hunt.getHuntName());
-        startActivity(modifyHunt);
-    }
+//    @Override
+//    public void onListPopularHuntsFeedFragmentInteraction(Hunt hunt){
+//        Log.d(LOG_TAG, "Created Hunt    " + hunt.toString());
+//        Intent modifyHunt = new Intent(this, HuntCreateModify.class);
+//        modifyHunt.putExtra("NAME", hunt.getHuntName());
+//        startActivity(modifyHunt);
+//    }
 
     @Override
     protected void onStart() {

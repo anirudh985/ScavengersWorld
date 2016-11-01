@@ -6,8 +6,9 @@ package com.example.aj.scavengersworld.DatabaseModels;
 public class UserToHunts {
     private String huntName;
     private int score;
-    private char state;
+    private String state;
     private String clueId;
+    private double progress;
 
     public String getHuntName() {
         return huntName;
@@ -25,11 +26,11 @@ public class UserToHunts {
         this.score = score;
     }
 
-    public char getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(char state) {
+    public void setState(String state) {
         this.state = state;
     }
 
@@ -40,4 +41,8 @@ public class UserToHunts {
     public void setClueId(String clueId) {
         this.clueId = clueId;
     }
+
+    public double getProgress() {return this.progress; }
+
+    public void setProgress(double progress) { this.progress = progress; }
 }

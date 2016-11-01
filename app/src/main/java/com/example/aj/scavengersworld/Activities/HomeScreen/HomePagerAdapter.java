@@ -24,12 +24,12 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter{
     public Fragment getItem(int position) {
         switch (position){
             case YOUR_HUNTS:
-                if(yourHuntsFragment != null){
+                if(yourHuntsFragment == null){
                     yourHuntsFragment = new YourHuntsFragment();
                 }
                 return yourHuntsFragment;
             case CREATED_HUNTS:
-                if(createdHuntsFragment != null){
+                if(createdHuntsFragment == null){
                     createdHuntsFragment = new CreatedHuntsFragment();
                 }
                 return createdHuntsFragment;
