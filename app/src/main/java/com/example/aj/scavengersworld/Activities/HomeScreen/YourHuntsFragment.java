@@ -2,7 +2,6 @@ package com.example.aj.scavengersworld.Activities.HomeScreen;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,12 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.aj.scavengersworld.Model.Hunt;
+import com.example.aj.scavengersworld.Model.User;
 import com.example.aj.scavengersworld.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.example.aj.scavengersworld.UserSessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,59 +27,18 @@ import java.util.List;
  */
 public class YourHuntsFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    //TODO: Need to get huntslist from another class. Don't make a call to retrieve them here.
-    private List<Hunt> yourHuntsList;
-    public static final String LOG_TAG = "YourHunts";
-
-    private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-
-    ValueEventListener yourHuntsListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            Hunt hunt = dataSnapshot.child("hunts").getValue(Hunt.class);
-            if(!yourHuntsList.contains(hunt)){
-                yourHuntsList.add(hunt);
-            }
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-            // Getting Post failed, log a message
-            Log.w(LOG_TAG, "loadPost:onCancelled", databaseError.toException());
-            // ...
-        }
-    };
+    private UserSessionManager session = UserSessionManager.INSTANCE;
+    private List<Hunt> yourHuntsList = session.getParticipatingHuntsList();
+    public final String LOG_TAG = getClass().getSimpleName();
 
     public YourHuntsFragment() {
     }
 
-//    // TODO: Customize parameter initialization
-//    @SuppressWarnings("unused")
-//    public static YourHuntsFragment newInstance(int columnCount) {
-//        YourHuntsFragment fragment = new YourHuntsFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(ARG_COLUMN_COUNT, columnCount);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        mDatabaseRef.addValueEventListener(yourHuntsListener);
-//        if (getArguments() != null) {
-//            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-//        }
     }
 
     @Override
@@ -91,6 +46,7 @@ public class YourHuntsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_yourhunts_list, container, false);
 
+//        yourHuntsList = session.getCreatedHunts();
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -100,10 +56,7 @@ public class YourHuntsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            //TODO: Need to get huntslist from another class. Don't make a call to retrieve them here.
-            yourHuntsList = getHuntsList();
             recyclerView.setAdapter(new MyYourHuntsRecyclerViewAdapter(yourHuntsList, mListener));
-//            recyclerView.setAdapter(new FirebaseRec);
         }
         return view;
     }
@@ -141,35 +94,44 @@ public class YourHuntsFragment extends Fragment {
         void onListYourHuntsFragmentInteraction(Hunt hunt);
     }
 
-    private List<Hunt> getHuntsList(){
-        List<Hunt> huntsList = new ArrayList<>();
+//    private List<Hunt> getHuntsList(){
+//        List<Hunt> huntsList = new ArrayList<>();
+//
+//        Hunt hunt1 = new Hunt();
+//        hunt1.setHuntId(1);
+//        hunt1.setHuntName("Hunt1");
+//        hunt1.setCreatedByUserId("anirudh985");
+//        huntsList.add(hunt1);
+//
+//        Hunt hunt2 = new Hunt();
+//        hunt2.setHuntId(2);
+//        hunt2.setHuntName("Hunt2");
+//        hunt2.setCreatedByUserId("kavskalyan");
+//        huntsList.add(hunt2);
+//
+//        Hunt hunt3 = new Hunt();
+//        hunt3.setHuntId(3);
+//        hunt3.setHuntName("Hunt3");
+//        hunt3.setCreatedByUserId("anirudh985");
+//        huntsList.add(hunt3);
+//
+//        Hunt hunt4 = new Hunt();
+//        hunt4.setHuntId(4);
+//        hunt4.setHuntName("Hunt4");
+//        hunt4.setCreatedByUserId("kavskalyan");
+//        huntsList.add(hunt4);
+//
+//
+//
+//        return huntsList;
+//    }
 
-        Hunt hunt1 = new Hunt();
-        hunt1.setHuntId(1);
-        hunt1.setHuntName("Hunt1");
-        hunt1.setCreatedByUserId("anirudh985");
-        huntsList.add(hunt1);
-
-        Hunt hunt2 = new Hunt();
-        hunt2.setHuntId(2);
-        hunt2.setHuntName("Hunt2");
-        hunt2.setCreatedByUserId("kavskalyan");
-        huntsList.add(hunt2);
-
-        Hunt hunt3 = new Hunt();
-        hunt3.setHuntId(3);
-        hunt3.setHuntName("Hunt3");
-        hunt3.setCreatedByUserId("anirudh985");
-        huntsList.add(hunt3);
-
-        Hunt hunt4 = new Hunt();
-        hunt4.setHuntId(4);
-        hunt4.setHuntName("Hunt4");
-        hunt4.setCreatedByUserId("kavskalyan");
-        huntsList.add(hunt4);
-
-
-
-        return huntsList;
+    public void updateUI(){
+        Log.d(LOG_TAG, "updateUI Called");
+        RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.yourHuntsListRecyclerView);
+        if(recyclerView != null){
+            MyYourHuntsRecyclerViewAdapter yourHuntsRecyclerViewAdapter = (MyYourHuntsRecyclerViewAdapter) recyclerView.getAdapter();
+            yourHuntsRecyclerViewAdapter.notifyDataSetChanged();
+        }
     }
 }
