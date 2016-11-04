@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import com.example.aj.scavengersworld.Activities.Login.LoginActivity;
 import com.example.aj.scavengersworld.DatabaseModels.UserToHunts;
 import com.example.aj.scavengersworld.Model.Hunt;
-import com.example.aj.scavengersworld.Model.User;
 import com.google.firebase.auth.FirebaseUser;
 
 import static com.example.aj.scavengersworld.Constants.ADMIN;
@@ -22,7 +21,6 @@ import static com.example.aj.scavengersworld.Constants.INVITED;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -61,11 +59,13 @@ public enum UserSessionManager {
 //        mEditor.commit();
 //    }
 
-    private HashMap<String, Hunt> createdHunts = new HashMap<>();
+    private HashMap<String, Hunt> adminHunts = new HashMap<>();
     private HashMap<String, Hunt> participatingHunts = new HashMap<>();
+    private HashMap<String, Hunt> completedHunts = new HashMap<>();
 
-    private List<Hunt> createdHuntsList = new ArrayList<>();
+    private List<Hunt> adminHuntsList = new ArrayList<>();
     private List<Hunt> participatingHuntsList = new ArrayList<>();
+    private List<Hunt> completedHuntsList = new ArrayList<>();
 
     public void checkLogin(){
         if(!this.isLoggedIn() && mContext != null){
@@ -126,15 +126,15 @@ public enum UserSessionManager {
         for(UserToHunts userToHunts : listOfUserToHunts) {
             if (userToHunts.getState().equals(ADMIN)) {
                 // update Created Hunts
-                if (createdHunts.containsKey(userToHunts.getHuntName())) {
-                    Hunt hunt = createdHunts.get(userToHunts.getHuntName());
+                if (adminHunts.containsKey(userToHunts.getHuntName())) {
+                    Hunt hunt = adminHunts.get(userToHunts.getHuntName());
                     updateHuntObject(hunt, userToHunts);
                 } else {
                     Hunt hunt = createHuntObject(userToHunts);
-                    createdHunts.put(userToHunts.getHuntName(), hunt);
-                    //TODO: need to add to createdHuntsList and sort OR some other mechanism if we want to
+                    adminHunts.put(userToHunts.getHuntName(), hunt);
+                    //TODO: need to add to adminHuntsList and sort OR some other mechanism if we want to
                     //TODO  display the hunts in sorted order
-                    createdHuntsList.add(hunt);
+                    adminHuntsList.add(hunt);
                 }
             } else if (userToHunts.getState().equals(INPROGRESS)) {
                 // update Participating Hunts
@@ -172,8 +172,8 @@ public enum UserSessionManager {
         return hunt;
     }
 
-    public List<Hunt> getCreatedHunts(){
-        return createdHuntsList;
+    public List<Hunt> getAdminHunts(){
+        return adminHuntsList;
     }
 
     public List<Hunt> getParticipatingHuntsList(){

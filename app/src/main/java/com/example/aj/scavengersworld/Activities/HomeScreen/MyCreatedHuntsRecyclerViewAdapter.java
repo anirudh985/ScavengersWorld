@@ -58,12 +58,6 @@ public class MyCreatedHuntsRecyclerViewAdapter extends RecyclerView.Adapter<MyCr
         });
     }
 
-    public void swap(List<Hunt> newHuntValues){
-        mValues.clear();
-        mValues.addAll(newHuntValues);
-//        notifyDataSetChanged();
-    }
-
     @Override
     public int getItemCount() {
         return mValues.size();

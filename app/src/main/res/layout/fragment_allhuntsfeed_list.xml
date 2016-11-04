@@ -1,13 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/allHuntsListRecyclerView"
-    android:name="com.example.aj.scavengersworld.Activities.HuntsFeed.AllHuntsFragment"
+
+<LinearLayout android:id="@+id/createdHuntListFragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".Activities.HuntsFeed.AllHuntsFeedFragment"
-    tools:listitem="@layout/fragment_allhuntsfeed" />
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal"
+        android:layout_marginLeft="5dp"
+        android:background="?android:attr/activatedBackgroundIndicator">
+
+        <EditText
+            android:id="@+id/searchText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search For New Hunts"
+            android:layout_toLeftOf="@+id/filterButton"
+            android:drawableLeft="@mipmap/ic_search_black_24dp"
+            android:imeOptions="actionSearch"
+            android:inputType="text"/>
+
+
+        <ImageButton android:src="@mipmap/ic_filter_list_black_24dp"
+            android:id="@+id/filterButton"
+            android:layout_width = "wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/searchText"
+            android:layout_alignBottom="@+id/searchText"
+            android:background="@null"/>
+
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/allHuntsListRecyclerView"
+        android:name="com.example.aj.scavengersworld.Activities.HuntsFeed.AllHuntsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".Activities.HuntsFeed.AllHuntsFeedFragment"
+        tools:listitem="@layout/fragment_allhuntsfeed" />
+
+</LinearLayout>

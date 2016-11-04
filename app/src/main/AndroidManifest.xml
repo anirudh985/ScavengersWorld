@@ -73,6 +73,7 @@
         <!-- FACEBOOK STUFF - END -->
 
         <activity android:name=".Activities.HomeScreen.HomeScreenActivity" />
+        <activity android:name=".Activities.HuntsFeed.HuntFeedActivity" />
         <activity android:name=".HuntCreateModify">
             <intent-filter>
                 <action android:name="com.example.aj.scavengersworld.huntCreateModify" />
@@ -96,9 +97,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.Main2Activity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme"></activity>
+            android:name=".Activities.HuntsFeed.SearchPreferenceActivity"
+            android:label="@string/title_activity_search_preference"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Activities.HuntActivity"
+            android:label="HuntActivity"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

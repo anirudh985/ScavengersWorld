@@ -1,7 +1,10 @@
 package com.example.aj.scavengersworld.Activities.HomeScreen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,12 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.aj.scavengersworld.Activities.HuntsFeed.HuntFeedActivity;
 import com.example.aj.scavengersworld.Model.Hunt;
-import com.example.aj.scavengersworld.Model.User;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,20 +39,31 @@ public class YourHuntsFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
+        Log.d(LOG_TAG, "onCreate() called");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreateView() called");
         View view = inflater.inflate(R.layout.fragment_yourhunts_list, container, false);
 
-//        yourHuntsList = session.getCreatedHunts();
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.hunt_join_button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent huntsFeedActivity = new Intent(getActivity(), HuntFeedActivity.class);
+                getActivity().startActivity(huntsFeedActivity);
+            }
+        });
+
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (view instanceof CoordinatorLayout) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.yourHuntsListRecyclerView);
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -58,6 +71,7 @@ public class YourHuntsFragment extends Fragment {
             }
             recyclerView.setAdapter(new MyYourHuntsRecyclerViewAdapter(yourHuntsList, mListener));
         }
+
         return view;
     }
 
@@ -65,6 +79,7 @@ public class YourHuntsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.d(LOG_TAG, "onAttach() called");
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
@@ -76,6 +91,7 @@ public class YourHuntsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        Log.d(LOG_TAG, "onDetach() called");
         mListener = null;
     }
 
@@ -134,4 +150,5 @@ public class YourHuntsFragment extends Fragment {
             yourHuntsRecyclerViewAdapter.notifyDataSetChanged();
         }
     }
+
 }

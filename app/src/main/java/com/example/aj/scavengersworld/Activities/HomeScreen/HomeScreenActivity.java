@@ -2,6 +2,7 @@ package com.example.aj.scavengersworld.Activities.HomeScreen;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -21,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.example.aj.scavengersworld.Constants.CREATED_HUNTS;
@@ -53,6 +55,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
                 if(!listOfUserToHunts.contains(userToHunts)){
                     listOfUserToHunts.add(userToHunts);
                 }
+                Collections.reverse(listOfUserToHunts);
                 session.updateHunts(listOfUserToHunts);
             }
             updateUI();
@@ -69,11 +72,12 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState != null){
-
-        }
+        Log.d(LOG_TAG, "onCreate called()");
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId());
-        getUserHuntsAndSaveInSession();
+        if(!(savedInstanceState != null && savedInstanceState.getBoolean("isDataPresent"))){
+            getUserHuntsAndSaveInSession();
+        }
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.home_tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.joinedHuntsTab));
@@ -125,7 +129,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
     public void onListCreatedHuntsFragmentInteraction(Hunt hunt){
         Log.d(LOG_TAG, "Created Hunt    " + hunt.toString());
         Intent modifyHunt = new Intent(this, HuntCreateModify.class);
-        modifyHunt.putExtra(MODIFY_HUNT, hunt);
+        modifyHunt.putExtra("NAME", hunt.getHuntName());
         startActivity(modifyHunt);
     }
 
@@ -166,11 +170,13 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
     }
 
     private void getUserHuntsAndSaveInSession(){
+        Log.d(LOG_TAG, "getUserHuntsAndSaveInSession() called");
         mDatabaseRef.orderByChild(getString(R.string.orderByProgress))
                     .addListenerForSingleValueEvent(userToHuntsListener);
     }
 
     private void updateUI(){
+        Log.d(LOG_TAG, "updateUI() called");
         Fragment activeFragment;
         int noOfTabs = adapter.getCount();
         for(int i = 0; i < noOfTabs; i++){
@@ -185,4 +191,10 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
         mDatabaseRef.removeEventListener(userToHuntsListener);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(LOG_TAG, "onSaveInstanceState()");
+        outState.putBoolean("isDataPresent", true);
+    }
 }
