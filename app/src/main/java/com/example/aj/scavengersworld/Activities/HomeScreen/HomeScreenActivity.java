@@ -2,6 +2,7 @@ package com.example.aj.scavengersworld.Activities.HomeScreen;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -69,6 +70,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         if(savedInstanceState != null){
 
         }
@@ -125,7 +127,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
     public void onListCreatedHuntsFragmentInteraction(Hunt hunt){
         Log.d(LOG_TAG, "Created Hunt    " + hunt.toString());
         Intent modifyHunt = new Intent(this, HuntCreateModify.class);
-        modifyHunt.putExtra(MODIFY_HUNT, hunt);
+        modifyHunt.putExtra("NAME", hunt.getHuntName());
         startActivity(modifyHunt);
     }
 

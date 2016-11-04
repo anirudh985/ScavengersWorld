@@ -7,17 +7,14 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.example.aj.scavengersworld.Activities.BaseActivity;
-import com.example.aj.scavengersworld.Activities.HomeScreen.CreatedHuntsFragment;
 import com.example.aj.scavengersworld.Activities.HomeScreen.HomePagerAdapter;
-import com.example.aj.scavengersworld.Activities.HomeScreen.YourHuntsFragment;
 import com.example.aj.scavengersworld.Activities.HuntActivity;
-import com.example.aj.scavengersworld.GamePlayActivity;
-import com.example.aj.scavengersworld.HuntCreateModify;
+import com.example.aj.scavengersworld.DatabaseModels.SearchableHunt;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
 
-public class HuntFeedActivity extends BaseActivity implements AllHuntsFeedFragment.OnListFragmentInteractionListener{
+public class HuntFeedActivity extends BaseActivity implements AllHuntsFeedFragment.OnListFragmentInteractionListener, PopularHuntsFeedFragment.OnListFragmentInteractionListener{
 
     private final String LOG_TAG = getClass().getSimpleName();
 
@@ -29,12 +26,12 @@ public class HuntFeedActivity extends BaseActivity implements AllHuntsFeedFragme
         }
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.huntfeed_tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.allFeeds));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.popularFeeds));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.allFeeds));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.huntfeed_view_pager);
-        final HomePagerAdapter adapter = new HomePagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        final HuntFeedPagerAdapter adapter = new HuntFeedPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -66,20 +63,20 @@ public class HuntFeedActivity extends BaseActivity implements AllHuntsFeedFragme
     }
 
     @Override
-    public void onListAllHuntsFeedFragmentInteraction(Hunt hunt) {
-        Log.d(LOG_TAG, "open hunt from all hunts   "+hunt.toString());
+    public void onListAllHuntsFeedFragmentInteraction(SearchableHunt searchableHunt) {
+        Log.d(LOG_TAG, "open hunt from all hunts   "+searchableHunt.toString());
         Intent huntActivity = new Intent(this, HuntActivity.class);
-        huntActivity.putExtra(getString(R.string.huntKey), hunt);
+        huntActivity.putExtra("NAME", searchableHunt.getHuntName());
         startActivity(huntActivity);
     }
 
-//    @Override
-//    public void onListPopularHuntsFeedFragmentInteraction(Hunt hunt){
-//        Log.d(LOG_TAG, "Created Hunt    " + hunt.toString());
-//        Intent modifyHunt = new Intent(this, HuntCreateModify.class);
-//        modifyHunt.putExtra("NAME", hunt.getHuntName());
-//        startActivity(modifyHunt);
-//    }
+    @Override
+    public void onListPopularHuntsFragmentInteraction(SearchableHunt popularHunt) {
+        Log.d(LOG_TAG, "Popular Hunt   "+popularHunt.toString());
+        Intent openHuntActivity = new Intent(this, HuntActivity.class);
+        openHuntActivity.putExtra("NAME", popularHunt.getHuntName());
+        startActivity(openHuntActivity);
+    }
 
     @Override
     protected void onStart() {

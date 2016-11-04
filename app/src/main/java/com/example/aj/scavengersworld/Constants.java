@@ -23,4 +23,7 @@ public final class Constants {
     // KEYS //
     public static final String MODIFY_HUNT = "MODIFY_HUNTS";
 
+    // POPULARITY THRESHOLD //
+    public static final float POPULARITY_THRESHOLD = 5000.00f;
+
 }

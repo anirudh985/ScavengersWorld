@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<EditTextPreference-->
+        <!--android:title="Location"-->
+        <!--android:key="@string/cityName"-->
+        <!--android:summary="Provide the City in which you want to search"-->
+        <!--android:inputType="text"/>-->
+    <CheckBoxPreference android:title="Show Only Private Events"
+        android:defaultValue="false"
+        android:summary="This option if selected will show only private hunts in the search."
+        android:key="@string/showPrivateHunts" />
+    <EditTextPreference
+        android:title="Max Radius in km"
+        android:key="@string/maxRadius"
+        android:summary="Provide the maximum radius of all the clues"
+        android:inputType="number"/>
+
+</PreferenceScreen>

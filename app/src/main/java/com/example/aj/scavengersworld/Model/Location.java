@@ -5,28 +5,32 @@ package com.example.aj.scavengersworld.Model;
  */
 
 public class Location {
-    private float mLatitude;
-    private float mLongitude;
+    private float latitude;
+    private float longitude;
 
-    public Location(float mLatitude, float mLongitude) {
-        this.mLatitude = mLatitude;
-        this.mLongitude = mLongitude;
+    public Location(){
+
+    }
+
+    public Location(float latitude, float longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public float getLatitude() {
-        return mLatitude;
+        return latitude;
     }
 
     public void setLatitude(float mLatitude) {
-        this.mLatitude = mLatitude;
+        this.latitude = mLatitude;
     }
 
     public float getLongitude() {
-        return mLongitude;
+        return longitude;
     }
 
     public void setLongitude(float mLongitude) {
-        this.mLongitude = mLongitude;
+        this.longitude = mLongitude;
     }
 
     @Override
@@ -36,15 +40,15 @@ public class Location {
 
         Location location = (Location) o;
 
-        if (Float.compare(location.mLatitude, mLatitude) != 0) return false;
-        return Float.compare(location.mLongitude, mLongitude) == 0;
+        if (Float.compare(location.latitude, latitude) != 0) return false;
+        return Float.compare(location.longitude, longitude) == 0;
 
     }
 
     @Override
     public int hashCode() {
-        int result = (mLatitude != +0.0f ? Float.floatToIntBits(mLatitude) : 0);
-        result = 31 * result + (mLongitude != +0.0f ? Float.floatToIntBits(mLongitude) : 0);
+        int result = (latitude != +0.0f ? Float.floatToIntBits(latitude) : 0);
+        result = 31 * result + (longitude != +0.0f ? Float.floatToIntBits(longitude) : 0);
         return result;
     }
 }

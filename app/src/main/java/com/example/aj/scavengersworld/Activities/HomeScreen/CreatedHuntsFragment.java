@@ -1,6 +1,7 @@
 package com.example.aj.scavengersworld.Activities.HomeScreen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.aj.scavengersworld.HuntCreateModify;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
@@ -33,7 +35,7 @@ public class CreatedHuntsFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private UserSessionManager session = UserSessionManager.INSTANCE;
-    private List<Hunt> createdHuntsList = session.getCreatedHunts();
+    private List<Hunt> createdHuntsList = session.getAdminHunts();
     private final String LOG_TAG = getClass().getSimpleName();;
 
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
@@ -58,16 +60,12 @@ public class CreatedHuntsFragment extends Fragment {
         Log.d(LOG_TAG, "onCreateView Called");
         View view = inflater.inflate(R.layout.fragment_createdhunts_list, container, false);
 
-        // Populating hunts data from Session Class
-        createdHuntsList = session.getCreatedHunts();
-
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.create_hunt_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent createHunt = new Intent(getActivity(), HuntCreateModify.class);
-//                startActivity(createHunt);
-                addNewHunt();
+                Intent createHunt = new Intent(getActivity(), HuntCreateModify.class);
+                startActivity(createHunt);
             }
         });
 
