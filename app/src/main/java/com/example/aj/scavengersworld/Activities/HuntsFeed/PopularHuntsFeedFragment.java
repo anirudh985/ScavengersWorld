@@ -2,6 +2,7 @@ package com.example.aj.scavengersworld.Activities.HuntsFeed;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -35,7 +36,8 @@ public class PopularHuntsFeedFragment extends Fragment {
 
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    private List<SearchableHunt> popularHuntsList = new ArrayList<>();
+    // Had to do arraylist because while saving state, bundle explicitly requires arraylist (not list)
+    private ArrayList<SearchableHunt> popularHuntsList = new ArrayList<>();
     private final String LOG_TAG = getClass().getSimpleName();
 
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
@@ -105,7 +107,13 @@ public class PopularHuntsFeedFragment extends Fragment {
 //                    }
 //                }
 //            });
-            loadInitially();
+//            if(savedInstanceState != null && savedInstanceState.get("popular_hunts") != null){
+//                popularHuntsList = savedInstanceState.getParcelableArrayList("popular_hunts");
+////                updateUI(1);
+//            }
+//            else{
+//                loadInitially();
+//            }
         }
 
 
@@ -147,24 +155,15 @@ public class PopularHuntsFeedFragment extends Fragment {
         void onListPopularHuntsFragmentInteraction(SearchableHunt popularHunt);
     }
 
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            //Restore the fragment's state here
-        }
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        //Save the fragment's state here
+        Log.d(LOG_TAG, "onSaveInstanceState() called");
+        outState.putParcelableArrayList("popular_hunts", popularHuntsList);
     }
 
     public void loadInitially(){
+        Log.d(LOG_TAG, "loadInitially() called");
         mDatabaseRef.orderByChild("numberOfPlayers")
                 .addListenerForSingleValueEvent(initialLoadHuntListener);
     }
@@ -205,6 +204,20 @@ public class PopularHuntsFeedFragment extends Fragment {
         if(recyclerView != null){
             MyPopularHuntsRecyclerViewAdapter popularHuntsRecyclerViewAdapter = (MyPopularHuntsRecyclerViewAdapter) recyclerView.getAdapter();
             popularHuntsRecyclerViewAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedBundle){
+        super.onActivityCreated(savedBundle);
+        Log.d(LOG_TAG, "onActivitiyCreated() called");
+        if(savedBundle != null && savedBundle.get("popular_hunts") != null){
+            ArrayList<SearchableHunt> list = savedBundle.getParcelableArrayList("popular_hunts");
+            popularHuntsList.addAll(list);
+                updateUI(1);
+        }
+        else{
+            loadInitially();
         }
     }
 

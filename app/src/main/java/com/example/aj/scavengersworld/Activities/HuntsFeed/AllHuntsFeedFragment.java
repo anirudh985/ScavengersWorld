@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,8 +42,9 @@ public class AllHuntsFeedFragment extends Fragment {
 
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    private List<SearchableHunt> allHuntsList = new ArrayList<>();
-    public static final String LOG_TAG = "AllHuntsFeed";
+    // Had to do arraylist because while saving state, bundle explicitly requires arraylist (not list)
+    private ArrayList<SearchableHunt> allHuntsList = new ArrayList<>();
+    public final String LOG_TAG = getClass().getSimpleName();
 
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference mDatabaseRef;
@@ -148,7 +150,15 @@ public class AllHuntsFeedFragment extends Fragment {
                     startActivity(searchPreferenceActivity);
                 }
             });
-            loadInitially();
+
+//            if(savedInstanceState != null && savedInstanceState.get("All_hunts") != null){
+//                allHuntsList = savedInstanceState.getParcelableArrayList("All_hunts");
+//                updateUI(1);
+//            }
+//            else{
+//                loadInitially();
+//            }
+
         }
         return view;
     }
@@ -188,21 +198,6 @@ public class AllHuntsFeedFragment extends Fragment {
         void onListAllHuntsFeedFragmentInteraction(SearchableHunt hunt);
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.d(LOG_TAG, "onActivityCreated() called");
-        if (savedInstanceState != null) {
-            //Restore the fragment's state here
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.d(LOG_TAG, "onSaveInstanceState() called");
-        //Save the fragment's state here
-    }
 
 //    private void loadMoreHunts(){
 //        if(mLastKeyRetrieved != null) {
@@ -435,4 +430,26 @@ public class AllHuntsFeedFragment extends Fragment {
         maxRadius = Double.parseDouble(maxRadiusString != "" ? maxRadiusString : "-1.0");
         startRadius = 0.0;
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(LOG_TAG, "onSaveInstanceState()");
+        outState.putParcelableArrayList("all_Hunts", allHuntsList);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(LOG_TAG, "onActivityCreated()");
+        if(savedInstanceState != null && savedInstanceState.get("all_Hunts") != null){
+            ArrayList<SearchableHunt> list = savedInstanceState.getParcelableArrayList("all_Hunts");
+            allHuntsList.addAll(list);
+            updateUI(1);
+        }
+        else{
+            loadInitially();
+        }
+    }
+
 }

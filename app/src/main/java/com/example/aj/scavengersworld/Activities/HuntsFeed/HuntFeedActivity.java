@@ -21,6 +21,7 @@ public class HuntFeedActivity extends BaseActivity implements AllHuntsFeedFragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(LOG_TAG, "onCreate() called");
         if(savedInstanceState != null){
 //            mContent = getSupportFragmentManager().getFragment(savedInstanceState, "");
         }
@@ -117,7 +118,7 @@ public class HuntFeedActivity extends BaseActivity implements AllHuntsFeedFragme
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
+        Log.d(LOG_TAG, "onSaveInstanceState() called");
         //Save the fragment's instance
 //        getSupportFragmentManager().putFragment(outState, "mContent", mContent);
     }

@@ -209,6 +209,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     }
 
     private void validateAndLogin(String email, String password){
+        Log.d(LOG_TAG, "validateAndLogin() called");
         mFirebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -228,12 +229,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(LOG_TAG, "onStart() called");
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        Log.d(LOG_TAG, "onStop() called");
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
@@ -242,6 +245,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(LOG_TAG, "onResume() called");
         Profile profile = Profile.getCurrentProfile();
         displayWelcomeMessage(profile);
     }
@@ -360,6 +364,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     }
 
     private void googleSignIn(){
+        Log.d(LOG_TAG, "googleSignIn() called");
         Intent googleSignInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(googleSignInIntent, RC_SIGN_IN);
     }
@@ -374,8 +379,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     }
 
     private void openHomeScreen(){
+        Log.d(LOG_TAG, "openHomeScreen() called");
         Intent homeScreen = new Intent(getActivity(), HomeScreenActivity.class);
         startActivity(homeScreen);
+        getActivity().finish();
     }
 
 //

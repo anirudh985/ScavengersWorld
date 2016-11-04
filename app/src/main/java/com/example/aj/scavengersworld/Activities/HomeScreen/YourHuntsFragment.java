@@ -39,13 +39,16 @@ public class YourHuntsFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
+        Log.d(LOG_TAG, "onCreate() called");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreateView() called");
         View view = inflater.inflate(R.layout.fragment_yourhunts_list, container, false);
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.hunt_join_button);
@@ -76,6 +79,7 @@ public class YourHuntsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.d(LOG_TAG, "onAttach() called");
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
@@ -87,6 +91,7 @@ public class YourHuntsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        Log.d(LOG_TAG, "onDetach() called");
         mListener = null;
     }
 
@@ -145,4 +150,5 @@ public class YourHuntsFragment extends Fragment {
             yourHuntsRecyclerViewAdapter.notifyDataSetChanged();
         }
     }
+
 }
