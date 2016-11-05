@@ -13,8 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.example.aj.scavengersworld.Activities.HuntsFeed.HuntFeedActivity;
+import com.example.aj.scavengersworld.GamePlayActivity;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
@@ -51,8 +54,17 @@ public class YourHuntsFragment extends Fragment {
         Log.d(LOG_TAG, "onCreateView() called");
         View view = inflater.inflate(R.layout.fragment_yourhunts_list, container, false);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.hunt_join_button);
-        fab.setOnClickListener(new View.OnClickListener() {
+//        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.hunt_join_button);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent huntsFeedActivity = new Intent(getActivity(), HuntFeedActivity.class);
+//                getActivity().startActivity(huntsFeedActivity);
+//            }
+//        });
+
+        Button btnHuntJoin = (Button) view.findViewById(R.id.hunt_join_button);
+        btnHuntJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent huntsFeedActivity = new Intent(getActivity(), HuntFeedActivity.class);
@@ -60,8 +72,17 @@ public class YourHuntsFragment extends Fragment {
             }
         });
 
+        Button btnGameplay = (Button) view.findViewById(R.id.gameplay_button);
+        btnGameplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gameplayActivity = new Intent(getActivity(), GamePlayActivity.class);
+                getActivity().startActivity(gameplayActivity);
+            }
+        });
+
         // Set the adapter
-        if (view instanceof CoordinatorLayout) {
+        if (view instanceof LinearLayout) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.yourHuntsListRecyclerView);
             if (mColumnCount <= 1) {

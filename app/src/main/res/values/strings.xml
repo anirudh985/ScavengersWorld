@@ -99,6 +99,7 @@
     <string name="welcomeMessage">Hello </string>
     <string name="progressMessage">Progress: </string>
     <string name="join_hunt">Join Hunt</string>
+    <string name="gameplay">Gameplay</string>
 
 
     <!-- PROFILE ACTIVITY-->
@@ -137,6 +138,7 @@
     <string name="orderByHuntId">huntId</string>
     <string name="orderByProgress">progress</string>
     <string name="searchableHuntsTable">searchable-hunts</string>
+    <string name="userToProfile">user-profile</string>
 
     <!-- HUNTFEED ACTIVITY -->
     <string name="allFeeds">All</string>
