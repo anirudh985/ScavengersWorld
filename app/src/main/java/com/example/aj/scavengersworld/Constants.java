@@ -26,4 +26,10 @@ public final class Constants {
     // POPULARITY THRESHOLD //
     public static final float POPULARITY_THRESHOLD = 5000.00f;
 
+    // BADGES //
+    public static final int FIRST_TO_COMPLETE = 1;
+    public static final int TEN_HUNTS_COMPLETED = 2;
+    public static final int FIFTY_HUNTS_COMPLETED = 3;
+    // add others as well
+
 }
