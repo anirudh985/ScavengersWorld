@@ -104,6 +104,8 @@
             android:name=".Activities.HuntActivity"
             android:label="HuntActivity"
             android:theme="@style/AppTheme"/>
+        <activity android:name=".CluesRelated.CurrentClueActivity" />
+        <activity android:name=".CluesRelated.ClueFeedbackActivity"></activity>
     </application>
 
 </manifest>

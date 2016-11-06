@@ -426,8 +426,8 @@ public class AllHuntsFeedFragment extends Fragment {
         Log.d(LOG_TAG, "loadPreferences() called");
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         showPrivateHunts = sharedPrefs.getBoolean(getString(R.string.showPrivateHunts), false);
-        String maxRadiusString = sharedPrefs.getString(getString(R.string.maxRadius), "-1.0");
-        maxRadius = Double.parseDouble(maxRadiusString != "" ? maxRadiusString : "-1.0");
+        String maxRadiusString = sharedPrefs.getString(getString(R.string.maxRadius), "-1.0").trim();
+        maxRadius = Double.parseDouble(!maxRadiusString.equals("") ? maxRadiusString : "-1.0");
         startRadius = 0.0;
     }
 

@@ -22,14 +22,29 @@ public class Hunt implements Comparable<Hunt>, Parcelable {
     private Boolean mIsPrivate;
     private List<User> mListOfAdmins;
     private int mFirstClueId;
-    private String mCurrentClueId;
+    private int mCurrentClueId;
 
     private String mState;
     private int mScore;
     private double mProgress;
 
+    private List<Clue> clueList;
+
     public Hunt(){
 
+    }
+
+    public List<Clue> getClueList() {
+        return clueList;
+    }
+
+    public void setClueList(List<Clue> clueList) {
+        this.clueList = clueList;
+    }
+    public void addClueToClueList(Clue aclue){
+        if(this.clueList == null)
+            this.clueList = new ArrayList<>();
+        this.clueList.add(aclue);
     }
 
     public int getHuntId() {
@@ -96,11 +111,11 @@ public class Hunt implements Comparable<Hunt>, Parcelable {
         this.mFirstClueId = firstClueId;
     }
 
-    public String getCurrentClueId() {
+    public int getCurrentClueId() {
         return mCurrentClueId;
     }
 
-    public void setCurrentClueId(String currentClueId) {
+    public void setCurrentClueId(int currentClueId) {
         this.mCurrentClueId = currentClueId;
     }
 
@@ -156,12 +171,28 @@ public class Hunt implements Comparable<Hunt>, Parcelable {
             mListOfAdmins = null;
         }
         mFirstClueId = in.readInt();
-        mCurrentClueId = in.readString();
+        mCurrentClueId = in.readInt();
         mState = in.readString();
         mScore = in.readInt();
         mProgress = in.readDouble();
     }
-
+    public Clue getClueWithId(int clueId){
+        for(Clue clue : clueList){
+            if(clue.getClueId() == clueId)
+                return clue;
+        }
+        return null;
+    }
+    public  Clue getCurrentClue(){
+        return getClueWithId(mCurrentClueId);
+    }
+    public Clue getClueAtSequence(int sequenceNumber){
+        for(Clue clue : clueList){
+            if(clue.getSequenceNumberInHunt() == sequenceNumber)
+                return clue;
+        }
+        return null;
+    }
     @Override
     public int describeContents() {
         return 0;
@@ -186,7 +217,7 @@ public class Hunt implements Comparable<Hunt>, Parcelable {
             dest.writeList(mListOfAdmins);
         }
         dest.writeInt(mFirstClueId);
-        dest.writeString(mCurrentClueId);
+        dest.writeInt(mCurrentClueId);
         dest.writeString(mState);
         dest.writeInt(mScore);
         dest.writeDouble(mProgress);

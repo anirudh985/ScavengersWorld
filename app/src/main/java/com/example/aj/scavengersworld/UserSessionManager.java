@@ -186,7 +186,9 @@ public enum UserSessionManager {
     public List<Hunt> getAdminHunts(){
         return adminHuntsList;
     }
-
+    public Hunt getParticipatingHuntByName(String huntName){
+        return participatingHunts.get(huntName);
+    }
     public List<Hunt> getParticipatingHuntsList(){
         return participatingHuntsList;
     }
