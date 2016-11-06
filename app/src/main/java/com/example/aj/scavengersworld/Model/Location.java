@@ -7,14 +7,14 @@ import android.os.Parcelable;
  * Created by kalyan on 10/13/16.
  */
 
-public class Location {
+public class Location implements Parcelable {
     private double latitude;
     private double longitude;
     public Location()
     {
 
     }
-    public Location(float mLatitude, float mLongitude) {
+    public Location(double mLatitude, double mLongitude) {
         this.latitude = mLatitude;
         this.longitude = mLongitude;
     }
@@ -46,18 +46,7 @@ public class Location {
         return Double.compare(location.longitude, longitude) == 0;
 
     }
-/*
-    @Override
-<<<<<<< Updated upstream
-    public int hashCode() {
-        int result = (latitude != +0.0f ? Float.floatToIntBits(latitude) : 0);
-=======
-    public long hashCode() {
-        long result = (latitude != +0.0f ? Double.doubleToLongBits(latitude) : 0);
->>>>>>> Stashed changes
-        result = 31 * result + (longitude != +0.0f ? Float.floatToIntBits(longitude) : 0);
-        return result;
-    }*/
+
     public double distanceFromLocationInMeters(Location location) {
         double el1 = 0;
         double el2 = 0;
@@ -79,8 +68,8 @@ public class Location {
     }
 
     protected Location(Parcel in) {
-        latitude = in.readFloat();
-        longitude = in.readFloat();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
     }
 
     @Override
@@ -89,9 +78,9 @@ public class Location {
     }
 
     @Override
-    public void writeToParcel (Parcel dest,int flags){
-        dest.writeFloat(latitude);
-        dest.writeFloat(longitude);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
     }
 
     @SuppressWarnings("unused")
