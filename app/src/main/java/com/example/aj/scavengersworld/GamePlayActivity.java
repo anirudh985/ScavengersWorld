@@ -19,6 +19,7 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 import android.location.Location;
 
+import com.example.aj.scavengersworld.CluesRelated.CurrentClueActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -62,7 +63,7 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
         mapFragment.getMapAsync(this);
         mSolveClueButton = (Button)findViewById(R.id.button6);
         mSolveClueButton.setOnClickListener(this);
-        mShowCluesButton = (Button)findViewById(R.id.button7);
+        //mShowCluesButton = (Button)findViewById(R.id.button7);
         buildGoogleApiClient();
     }
 
@@ -256,13 +257,15 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
         switch (v.getId()){
             case R.id.button6:
                 Location currentLocation = GetCurrentLocation();
-                Intent intent=new Intent();
+                Intent intent=new Intent(GamePlayActivity.this,CurrentClueActivity.class);
                 double latitude = currentLocation.getLatitude();
                 double longitude = currentLocation.getLongitude();
                 intent.putExtra("LATITUDE",latitude);
                 intent.putExtra("LONGITUDE",longitude);
-                setResult(2,intent);
-                finish();
+                String mode = "CURRENTCLUES";
+                intent.putExtra("MODE",mode);
+                startActivity(intent);
+                //finish();
         }
     }
 }

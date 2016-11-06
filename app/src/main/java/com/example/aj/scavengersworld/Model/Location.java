@@ -7,32 +7,31 @@ import android.os.Parcelable;
  * Created by kalyan on 10/13/16.
  */
 
-public class Location implements Parcelable {
-    private float latitude;
-    private float longitude;
-
-    public Location() {
+public class Location {
+    private double latitude;
+    private double longitude;
+    public Location()
+    {
 
     }
-
-    public Location(float latitude, float longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+    public Location(float mLatitude, float mLongitude) {
+        this.latitude = mLatitude;
+        this.longitude = mLongitude;
     }
 
-    public float getLatitude() {
-        return latitude;
+    public double getLatitude() {
+        return this.latitude;
     }
 
-    public void setLatitude(float mLatitude) {
+    public void setLatitude(double mLatitude) {
         this.latitude = mLatitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float mLongitude) {
+    public void setLongitude(double mLongitude) {
         this.longitude = mLongitude;
     }
 
@@ -43,16 +42,40 @@ public class Location implements Parcelable {
 
         Location location = (Location) o;
 
-        if (Float.compare(location.latitude, latitude) != 0) return false;
-        return Float.compare(location.longitude, longitude) == 0;
+        if (Double.compare(location.latitude, latitude) != 0) return false;
+        return Double.compare(location.longitude, longitude) == 0;
 
     }
-
+/*
     @Override
+<<<<<<< Updated upstream
     public int hashCode() {
         int result = (latitude != +0.0f ? Float.floatToIntBits(latitude) : 0);
+=======
+    public long hashCode() {
+        long result = (latitude != +0.0f ? Double.doubleToLongBits(latitude) : 0);
+>>>>>>> Stashed changes
         result = 31 * result + (longitude != +0.0f ? Float.floatToIntBits(longitude) : 0);
         return result;
+    }*/
+    public double distanceFromLocationInMeters(Location location) {
+        double el1 = 0;
+        double el2 = 0;
+        final int R = 6371; // Radius of the earth
+
+        Double latDistance = Math.toRadians(location.latitude - this.latitude);
+        Double lonDistance = Math.toRadians(location.longitude - longitude);
+        Double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(this.latitude)) * Math.cos(Math.toRadians(location.latitude))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c * 1000; // convert to meters
+
+        double height = el1 - el2;
+
+        distance = Math.pow(distance, 2) + Math.pow(height, 2);
+
+        return Math.sqrt(distance);
     }
 
     protected Location(Parcel in) {

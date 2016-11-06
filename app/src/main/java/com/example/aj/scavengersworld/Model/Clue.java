@@ -5,99 +5,158 @@ package com.example.aj.scavengersworld.Model;
  */
 
 public class Clue {
-    private int mClueId;
-    private String mClueTitle;
-    private String mClueDescription;
-    private enum mClueType{
-        LOCATION ,
-        BEACON;
-    }
-    private int mPreviousClueId;
-    private int mNextClueId;
-    private String mBeaconId;
-    private Location mGPSLocation;
-    private String mLandmarkDescription;
-    private int mEventId;
-    private int mClueSequenceNumberInHunt;
+    private int clueId;
+    private String huntName;
+    private int previousClueId;
+    private int nextClueId;
+    private String clueTitle;
+    private String clueDescription;
+//    private enum mClueType{
+//        LOCATION ,
+//        BEACON;
+//    }
+
+    //private String mBeaconId;
+    private Location location;
+//    private String mLandmarkDescription;
+//    private int mEventId;
+    private int sequenceNumberInHunt;
+
 
 
     public int getClueId() {
-        return mClueId;
+        return clueId;
     }
 
-    public void setClueId(int mClueId) {
-        this.mClueId = mClueId;
+    public void setClueId(int clueId) {
+        this.clueId = clueId;
     }
 
     public String getClueTitle() {
-        return mClueTitle;
+        return clueTitle;
     }
 
-    public void setClueTitle(String mClueTitle) {
-        this.mClueTitle = mClueTitle;
+    public void setClueTitle(String clueTitle) {
+        this.clueTitle = clueTitle;
     }
 
     public String getClueDescription() {
-        return mClueDescription;
+        return clueDescription;
     }
 
-    public void setClueDescription(String mClueDescription) {
-        this.mClueDescription = mClueDescription;
+    public void setClueDescription(String clueDescription) {
+        this.clueDescription = clueDescription;
     }
 
     public int getPreviousClueId() {
-        return mPreviousClueId;
+        return previousClueId;
     }
 
-    public void setPreviousClueId(int mPreviousClueId) {
-        this.mPreviousClueId = mPreviousClueId;
+    public void setPreviousClueId(int previousClueId) {
+        this.previousClueId = previousClueId;
     }
 
     public int getNextClueId() {
-        return mNextClueId;
+        return nextClueId;
     }
 
-    public void setNextClueId(int mNextClueId) {
-        this.mNextClueId = mNextClueId;
+    public void setNextClueId(int nextClueId) {
+        this.nextClueId = nextClueId;
     }
 
-    public String getBeaconId() {
-        return mBeaconId;
+    public int getSequenceNumberInHunt() {
+        return sequenceNumberInHunt;
     }
 
-    public void setBeaconId(String mBeaconId) {
-        this.mBeaconId = mBeaconId;
+    public void setSequenceNumberInHunt(int sequenceNumberInHunt) {
+        this.sequenceNumberInHunt = sequenceNumberInHunt;
     }
 
-    public Location getGPSLocation() {
-        return mGPSLocation;
+    public String getHuntName() {
+        return huntName;
+    }
+
+    public void setHuntName(String huntName) {
+        this.huntName = huntName;
+    }
+
+//    public int getClueId() {
+//        return mClueId;
+//    }
+//
+//    public void setClueId(int mClueId) {
+//        this.mClueId = mClueId;
+//    }
+//
+//    public String getClueTitle() {
+//        return mClueTitle;
+//    }
+//
+//    public void setClueTitle(String mClueTitle) {
+//        this.mClueTitle = mClueTitle;
+//    }
+//
+//    public String getClueDescription() {
+//        return mClueDescription;
+//    }
+//
+//    public void setClueDescription(String mClueDescription) {
+//        this.mClueDescription = mClueDescription;
+//    }
+//
+//    public int getPreviousClueId() {
+//        return mPreviousClueId;
+//    }
+//
+//    public void setPreviousClueId(int mPreviousClueId) {
+//        this.mPreviousClueId = mPreviousClueId;
+//    }
+//
+//    public int getNextClueId() {
+//        return mNextClueId;
+//    }
+//
+//    public void setNextClueId(int mNextClueId) {
+//        this.mNextClueId = mNextClueId;
+//    }
+//
+//    public String getBeaconId() {
+//        return mBeaconId;
+//    }
+//
+//    public void setBeaconId(String mBeaconId) {
+//        this.mBeaconId = mBeaconId;
+//    }
+//
+    public Location getLocation() {
+        return this.location;
     }
 
     public void setGPSLocation(Location mGPSLocation) {
-        this.mGPSLocation = mGPSLocation;
+        this.location = mGPSLocation;
     }
-
-    public String getLandmarkDescription() {
-        return mLandmarkDescription;
-    }
-
-    public void setLandmarkDescription(String mLandmarkDescription) {
-        this.mLandmarkDescription = mLandmarkDescription;
-    }
-
-    public int getEventId() {
-        return mEventId;
-    }
-
-    public void setEventId(int mEventId) {
-        this.mEventId = mEventId;
-    }
-
-    public int getClueSequenceNumberInHunt() {
-        return mClueSequenceNumberInHunt;
-    }
-
-    public void setClueSequenceNumberInHunt(int mClueSequenceNumberInHunt) {
-        this.mClueSequenceNumberInHunt = mClueSequenceNumberInHunt;
-    }
+//
+//    public String getLandmarkDescription() {
+//        return mLandmarkDescription;
+//    }
+//
+//    public void setLandmarkDescription(String mLandmarkDescription) {
+//        this.mLandmarkDescription = mLandmarkDescription;
+//    }
+//
+//    public int getEventId() {
+//        return mEventId;
+//    }
+//
+//    public void setEventId(int mEventId) {
+//        this.mEventId = mEventId;
+//    }
+//
+//    public int getClueSequenceNumberInHunt() {
+//        return mClueSequenceNumberInHunt;
+//    }
+//
+//    public void setClueSequenceNumberInHunt(int mClueSequenceNumberInHunt) {
+//        this.mClueSequenceNumberInHunt = mClueSequenceNumberInHunt;
+//    }
 }

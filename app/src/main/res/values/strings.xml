@@ -135,10 +135,13 @@
 
     <!-- DATABASE REFERENCE POINTS -->
     <string name="userToHunts">user-hunts</string>
+    <string name="huntsToClues">hunts-clues</string>
     <string name="orderByHuntId">huntId</string>
     <string name="orderByProgress">progress</string>
     <string name="searchableHuntsTable">searchable-hunts</string>
     <string name="userToProfile">user-profile</string>
+    <string name="allHuntsTableRef">allhunts</string>
+    <string name="clueId">clueId</string>
 
     <!-- HUNTFEED ACTIVITY -->
     <string name="allFeeds">All</string>
@@ -151,5 +154,10 @@
     <string name="cityName">cityName</string>
     <string name="showPrivateHunts">showPrivateHunts</string>
     <string name="maxRadius">maxRadius</string>
+
+    <!-- CLUE FEEDBACK ACTIVITY-->
+    <string name="clue_feedback_success">Correct! You have succeeded in solving the clue.</string>
+    <string name="clue_feedback_failure">Sorry, you are not in the correct location of the clue.</string>
+    <string name="clue_feedback_gameplay">Return to Game Screen</string>
 
 </resources>
