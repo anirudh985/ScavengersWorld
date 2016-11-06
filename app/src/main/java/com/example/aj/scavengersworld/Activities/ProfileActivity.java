@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.aj.scavengersworld.R;
+import com.example.aj.scavengersworld.UserSessionManager;
 
 /**
  * Created by aj on 10/16/16.
@@ -12,6 +13,8 @@ import com.example.aj.scavengersworld.R;
 public class ProfileActivity extends BaseActivity {
 
     private final String LOG_TAG = getClass().getSimpleName();
+    private UserSessionManager session = UserSessionManager.INSTANCE;
+    //private List<Hunt> yourHunts = session.getParticipatingHuntsList() TODO utilize YourHuntsFragment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +33,7 @@ public class ProfileActivity extends BaseActivity {
     }
 
     public String getScreenName(){
-        return "Profile";
+        return session.getUserName();
     }
 
     @Override
