@@ -14,16 +14,15 @@ import com.example.aj.scavengersworld.DatabaseModels.UserToHunts;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.google.firebase.auth.FirebaseUser;
 
-import static com.example.aj.scavengersworld.Constants.ADMIN;
-import static com.example.aj.scavengersworld.Constants.INPROGRESS;
-import static com.example.aj.scavengersworld.Constants.COMPLETED;
-import static com.example.aj.scavengersworld.Constants.REQUESTED;
-import static com.example.aj.scavengersworld.Constants.INVITED;
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.example.aj.scavengersworld.Constants.ADMIN;
+import static com.example.aj.scavengersworld.Constants.COMPLETED;
+import static com.example.aj.scavengersworld.Constants.INPROGRESS;
+import static com.example.aj.scavengersworld.Constants.INVITED;
+import static com.example.aj.scavengersworld.Constants.REQUESTED;
 
 
 public enum UserSessionManager {
@@ -191,6 +190,17 @@ public enum UserSessionManager {
     }
     public List<Hunt> getParticipatingHuntsList(){
         return participatingHuntsList;
+    }
+
+    public String getHuntStatusByName(String huntName) {
+        if(participatingHunts.get(huntName) != null) {
+            return "INPROGRESS";
+        } else if(adminHunts.get(huntName) != null) {
+            return "ADMIN";
+        } //TODO add rest of cases once implemented (example: completed)
+        else {
+            return null;
+        }
     }
 }
 
