@@ -14,6 +14,9 @@ import com.example.aj.scavengersworld.R;
  */
 public class HuntActivity extends BaseActivity implements View.OnClickListener {
 
+	Intent intent = getIntent();
+	String huntName = intent.getStringExtra("NAME");
+
 	private final String LOG_TAG = getClass().getSimpleName();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +24,7 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 		Log.d(LOG_TAG, getString(R.string.log_onCreate));
 
 		TextView hunt = (TextView) findViewById(R.id.hunt_name);
-		hunt.setText("Hunt Name Here"); //TODO
+		hunt.setText(huntName);
 
 		TextView description = (TextView) findViewById(R.id.hunt_description);
 		description.setText("Hunt Description Here"); //TODO
