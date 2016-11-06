@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.aj.scavengersworld.DatabaseModels.UserProfile;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
 
@@ -14,7 +15,10 @@ public class ProfileActivity extends BaseActivity {
 
     private final String LOG_TAG = getClass().getSimpleName();
     private UserSessionManager session = UserSessionManager.INSTANCE;
-    //private List<Hunt> yourHunts = session.getParticipatingHuntsList() TODO utilize YourHuntsFragment
+    //private List<Hunt> yourHunts = session.getParticipatingHuntsList() TODO utilize YourHuntsFragment?
+
+    private UserProfile profile = session.getUserProfile();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +28,7 @@ public class ProfileActivity extends BaseActivity {
         username.setText(getScreenName());
 
         TextView score = (TextView) findViewById(R.id.profile_points);
-        score.setText("0/5000"); //TODO utilize User class to get score
+        score.setText(String.valueOf(profile.getPointsEarned()));
     }
 
     @Override
