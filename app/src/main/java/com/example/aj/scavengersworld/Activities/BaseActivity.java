@@ -95,7 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void openLoginScreen(){
         Intent login = new Intent(this, LoginActivity.class);
-        login.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(login);
     }
 

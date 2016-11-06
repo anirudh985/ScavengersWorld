@@ -210,20 +210,25 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
 
     private void validateAndLogin(String email, String password){
         Log.d(LOG_TAG, "validateAndLogin() called");
-        mFirebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+        if(email != null && !email.equals("") && password != null && !password.equals("")){
+            mFirebaseAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
 //                            mFirebaseUser = task.getResult().getUser();
 //                            setupSession();
 //                            openHomeScreen();
+                            }
+                            else{
+                                loginFailed(task);
+                            }
                         }
-                        else{
-                            loginFailed(task);
-                        }
-                    }
-                });
+                    });
+        }
+        else{
+            loginFailed("Please enter email and password");
+        }
     }
 
     @Override
@@ -296,6 +301,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
 //            mTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
 //            openHomeScreen(createUser(account));
         } else {
+            loginFailed("Failed to login with Google Account");
             // Signed out, show unauthenticated UI.
 //            updateUI(false);
         }
@@ -457,6 +463,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     private void loginFailed(Task<AuthResult> task){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(task.getException().getMessage())
+                .setTitle(R.string.login_error_title)
+                .setPositiveButton(android.R.string.ok, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void loginFailed(String errMsg){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(errMsg)
                 .setTitle(R.string.login_error_title)
                 .setPositiveButton(android.R.string.ok, null);
         AlertDialog dialog = builder.create();

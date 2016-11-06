@@ -135,7 +135,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
 
     @Override
     protected String getScreenName() {
-        return getString(R.string.welcomeMessage) + UserSessionManager.INSTANCE.getUserName();
+        return getString(R.string.welcomeMessage) + " " + session.getUserName();
     }
 
     @Override
