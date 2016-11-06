@@ -3,7 +3,7 @@ package com.example.aj.scavengersworld.DatabaseModels;
 /**
  * Created by aj on 11/1/16.
  */
-public class UserToHunts {
+public class UserToHunts implements Comparable<UserToHunts>{
     private String huntName;
     private int score;
     private String state;
@@ -45,4 +45,9 @@ public class UserToHunts {
     public double getProgress() {return this.progress; }
 
     public void setProgress(double progress) { this.progress = progress; }
+
+    @Override
+    public int compareTo(UserToHunts userToHunts) {
+        return Double.compare(progress, userToHunts.getProgress());
+    }
 }

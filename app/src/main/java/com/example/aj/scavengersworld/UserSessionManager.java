@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.example.aj.scavengersworld.Activities.Login.LoginActivity;
+import com.example.aj.scavengersworld.DatabaseModels.UserProfile;
 import com.example.aj.scavengersworld.DatabaseModels.UserToHunts;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.google.firebase.auth.FirebaseUser;
@@ -66,6 +67,8 @@ public enum UserSessionManager {
     private List<Hunt> adminHuntsList = new ArrayList<>();
     private List<Hunt> participatingHuntsList = new ArrayList<>();
     private List<Hunt> completedHuntsList = new ArrayList<>();
+
+    private UserProfile userProfile;
 
     public void checkLogin(){
         if(!this.isLoggedIn() && mContext != null){
@@ -170,6 +173,14 @@ public enum UserSessionManager {
         Hunt hunt = new Hunt();
         updateHuntObject(hunt, userToHunts);
         return hunt;
+    }
+
+    public void updateUserProfile(@NonNull UserProfile userProfile){
+        this.userProfile = userProfile;
+    }
+
+    public UserProfile getUserProfile(){
+        return userProfile;
     }
 
     public List<Hunt> getAdminHunts(){

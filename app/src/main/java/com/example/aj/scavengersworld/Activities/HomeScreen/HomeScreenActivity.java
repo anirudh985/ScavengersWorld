@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.aj.scavengersworld.Activities.BaseActivity;
 import com.example.aj.scavengersworld.Activities.HuntActivity;
+import com.example.aj.scavengersworld.DatabaseModels.UserProfile;
 import com.example.aj.scavengersworld.DatabaseModels.UserToHunts;
 import com.example.aj.scavengersworld.HuntCreateModify;
 import com.example.aj.scavengersworld.Model.Hunt;
@@ -27,7 +28,6 @@ import java.util.List;
 
 import static com.example.aj.scavengersworld.Constants.CREATED_HUNTS;
 import static com.example.aj.scavengersworld.Constants.YOUR_HUNTS;
-import static com.example.aj.scavengersworld.Constants.MODIFY_HUNT;
 
 
 public class HomeScreenActivity extends BaseActivity implements YourHuntsFragment.OnListFragmentInteractionListener, CreatedHuntsFragment.OnListFragmentInteractionListener{
@@ -42,7 +42,8 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
 
     // FIREBASE STUFF //
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference mDatabaseRef;
+    private DatabaseReference mDatabaseRefUserHunts;
+    private DatabaseReference mDatabaseRefUserProfile;
 
 
 
@@ -69,14 +70,35 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
         }
     };
 
+    ValueEventListener userProfileListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            UserProfile userProfile = null;
+            for(DataSnapshot userProfileSnapshot : dataSnapshot.getChildren()){
+                userProfile = userProfileSnapshot.getValue(UserProfile.class);
+            }
+            if(userProfile != null){
+                session.updateUserProfile(userProfile);
+            }
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate called()");
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId());
+        mDatabaseRefUserHunts = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId());
+        mDatabaseRefUserProfile = mDatabase.getReference(getString(R.string.userToProfile) + "/" + session.getUniqueUserId());
         if(!(savedInstanceState != null && savedInstanceState.getBoolean("isDataPresent"))){
             getUserHuntsAndSaveInSession();
+            getUserProfileAndSaveInSession();
         }
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.home_tab_layout);
@@ -171,7 +193,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
 
     private void getUserHuntsAndSaveInSession(){
         Log.d(LOG_TAG, "getUserHuntsAndSaveInSession() called");
-        mDatabaseRef.orderByChild(getString(R.string.orderByProgress))
+        mDatabaseRefUserHunts.orderByChild(getString(R.string.orderByProgress))
                     .addListenerForSingleValueEvent(userToHuntsListener);
     }
 
@@ -188,7 +210,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
                 ((CreatedHuntsFragment)activeFragment).updateUI();
             }
         }
-        mDatabaseRef.removeEventListener(userToHuntsListener);
+        mDatabaseRefUserHunts.removeEventListener(userToHuntsListener);
     }
 
     @Override
@@ -196,5 +218,10 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
         super.onSaveInstanceState(outState);
         Log.d(LOG_TAG, "onSaveInstanceState()");
         outState.putBoolean("isDataPresent", true);
+    }
+
+    private void getUserProfileAndSaveInSession(){
+        Log.d(LOG_TAG, "getUserProfileAndSaveInSession() called");
+        mDatabaseRefUserProfile.addListenerForSingleValueEvent(userProfileListener);
     }
 }

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.design.widget.CoordinatorLayout android:id="@+id/createdHuntListFragmentLayout"
+<LinearLayout
+    android:id="@+id/createdHuntListFragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -17,32 +19,57 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.example.aj.scavengersworld.Activities.HomeScreen.YourHuntsFragment"
-        tools:listitem="@layout/fragment_yourhunts" />
+        tools:listitem="@layout/fragment_yourhunts"
+        android:layout_weight="20" />
 
-    <FrameLayout
-        android:layout_width="wrap_content"
+    <!--<FrameLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|right">-->
+
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/hunt_join_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="bottom|end"-->
+            <!--android:layout_margin="@dimen/fab_margin"-->
+            <!--app:fabSize="normal"/>-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:text="@string/join_hunt"-->
+            <!--android:elevation="16dp"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+    <!--</FrameLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right">
+        android:orientation="horizontal"
+        android:layout_weight="1">
 
-        <android.support.design.widget.FloatingActionButton
+        <Button
+            android:id="@+id/gameplay_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.Button"
+            android:text="@string/gameplay"
+            android:layout_weight="1" />
+
+        <Button
             android:id="@+id/hunt_join_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            app:fabSize="normal"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            style="@style/AppTheme.Button"
             android:text="@string/join_hunt"
-            android:elevation="16dp"
-            android:textColor="@android:color/white"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </FrameLayout>
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
 
 
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
