@@ -30,21 +30,23 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 		TextView huntNameView = (TextView) findViewById(R.id.hunt_name);
 		huntNameView.setText(huntName);
 
+		Hunt hunt = null;
+
 		String userHuntStatus = session.getHuntStatusByName(huntName);
 		if(userHuntStatus != null) {
 			if(userHuntStatus.equals("INPROGRESS")) {
-				Hunt hunt = session.getParticipatingHuntByName(huntName);
+				hunt = session.getParticipatingHuntByName(huntName);
 			} else if(userHuntStatus.equals("ADMIN")) {
-				Hunt hunt = session.getAdminHuntByName(huntName);
+				hunt = session.getAdminHuntByName(huntName);
 			} else if(userHuntStatus.equals("INPROGRESS")) {
-				Hunt hunt = session.getCompletedHuntByName(huntName);
+				hunt = session.getCompletedHuntByName(huntName);
 			}
 		} else {
 			//TODO get hunt from db
 		}
 
 		TextView description = (TextView) findViewById(R.id.hunt_description);
-		//description.setText(hunt.); //TODO get description from Hunt object
+		description.setText(hunt.getDescription());
 
 		//Button join = (Button) findViewById(R.id.hunt_join_button);
 		//join.setOnClickListener(this); TODO set listener based on button type
