@@ -15,9 +15,17 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:text="@string/hunt_name"
         android:ems="10"
-        android:id="@+id/editText4" />
+        android:textSize = "25sp"
+        android:id="@+id/editHuntName" />
+    
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".25"
+        android:text="@string/hunt_description"
+        android:id="@+id/editHuntDescription"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -27,7 +35,6 @@
         <TextView
             android:text="@string/start_time"
             android:layout_height="match_parent"
-            android:id="@+id/textView4"
             android:layout_width="150dp" />
 
         <EditText
@@ -35,7 +42,7 @@
             android:layout_height="wrap_content"
             android:inputType="time"
             android:ems="10"
-            android:id="@+id/editText5"
+            android:id="@+id/start_time"
             android:layout_weight="1" />
     </LinearLayout>
 
@@ -47,15 +54,14 @@
         <TextView
             android:text="@string/end_time"
             android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:id="@+id/textView6" />
+            android:layout_height="match_parent" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="time"
             android:ems="10"
-            android:id="@+id/editText6"
+            android:id="@+id/end_time"
             android:layout_weight="1" />
     </LinearLayout>
 
@@ -74,7 +80,7 @@
             android:text="ToggleButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/toggleButton"
+            android:id="@+id/public_private_toggle"
             android:layout_weight="1" />
 
     </LinearLayout>
@@ -83,7 +89,9 @@
         android:text="@string/clues"
         android:layout_width="match_parent"
         android:id="@+id/textView"
-        android:layout_height="50dp" />
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -91,17 +99,18 @@
         android:layout_height="40dp">
 
         <TextView
-            android:text="Clue1"
+            android:text="Clue List Here"
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:id="@+id/textView9" />
 
         <Button
-            android:text="Button"
+            android:text="@string/edit_clue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/clueEditButton"
             android:layout_weight="1" />
+
     </LinearLayout>
 
 </LinearLayout>

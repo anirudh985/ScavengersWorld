@@ -1,11 +1,13 @@
 package com.example.aj.scavengersworld;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.aj.scavengersworld.Activities.BaseActivity;
 
@@ -20,13 +22,29 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
             if(extrasBundle != null && extrasBundle.get("Name") != null){
                 mHuntName = extrasBundle.getString("Name");
             }
-            else{
+            else {
                 mHuntName = getString(R.string.newHuntName);
             }
             Button clueEditButton = (Button)findViewById(R.id.clueEditButton);
             clueEditButton.setOnClickListener(this);
         }
-        //setContentView(R.layout.activity_hunt_create_modify);
+        TextView huntName = (TextView) findViewById(R.id.hunt_name);
+        huntName.setText(mHuntName);
+
+        EditText editText = (EditText) findViewById(R.id.editHuntName);
+        editText.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {}
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+
+            }
+        });
     }
 
     @Override
