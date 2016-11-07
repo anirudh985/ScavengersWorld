@@ -19,11 +19,11 @@ public class LeaderboardActivity extends BaseActivity {
 
 	@Override
 	public int getLayoutResource(){
-		return R.layout.activity_notifications;
+		return R.layout.activity_leaderboard;
 	}
 
 	public String getScreenName(){
-		return "Profile";
+		return "Leader Board";
 	}
 
 	@Override
