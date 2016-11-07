@@ -91,14 +91,14 @@ public class CurrentClueActivity extends BaseActivity {
     private void UpdateClassVariablesFromIntentInfo(Intent createdIntent){
         Bundle extrasBundle = createdIntent.getExtras();
         if(extrasBundle != null ){
-            if(extrasBundle.getString("MODE") == "CURRENTCLUES")
+            if(extrasBundle.getString("MODE").equals("CURRENTCLUES"))
             {
                 cluesDisplayMode = CluesDisplayMode.CURRENTCLUES;
-                float latitude = extrasBundle.getFloat("latitude");
-                float longitude = extrasBundle.getFloat("longitude");
+                double latitude = extrasBundle.getDouble("LATITUDE");
+                double longitude = extrasBundle.getDouble("LONGITUDE");
                 currentLocation = new Location(latitude,longitude);
             }
-            else if(extrasBundle.getString("MODE") == "HUNTCLUES") {
+            else if(extrasBundle.getString("MODE").equals("HUNTCLUES")) {
                 cluesDisplayMode = CluesDisplayMode.HUNTCLUES;
                 String huntName  = extrasBundle.getString("hunt");
                 currentHunt = session.getParticipatingHuntByName(huntName);

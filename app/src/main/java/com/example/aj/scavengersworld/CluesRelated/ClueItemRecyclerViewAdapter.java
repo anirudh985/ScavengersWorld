@@ -1,5 +1,8 @@
 package com.example.aj.scavengersworld.CluesRelated;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.Model.Location;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 
 import java.util.List;
 
@@ -45,15 +49,24 @@ public class ClueItemRecyclerViewAdapter extends RecyclerView.Adapter<ClueItemRe
     public class ClueClickListener implements View.OnClickListener{
         private Clue clue;
         private Location currentLocation;
+        private Context currentContext;
         ClueClickListener(Clue clue, Location currentLocation){
             this.clue = clue;
+            this.currentLocation = currentLocation;
         }
         @Override
         public void onClick(View v) {
+            Intent newIntent = new Intent(v.getContext(),ClueFeedbackActivity.class);
             if(clue.getLocation().distanceFromLocationInMeters(currentLocation) < 10.0)
             {
-
+                newIntent.putExtra("RESULT",true);
             }
+            else
+            {
+                newIntent.putExtra("RESULT",false);
+            }
+            newIntent.putExtra("HUNTNAME",clue.getHuntName());
+            v.getContext().startActivity(newIntent);
         }
     }
 
@@ -68,6 +81,7 @@ public class ClueItemRecyclerViewAdapter extends RecyclerView.Adapter<ClueItemRe
                     if (count-1 == position){
                         Clue currentClue =  hunt.getCurrentClue();
                         SetUIElementsFromClue(holder,currentClue);
+
                         holder.mView.setOnClickListener(new ClueClickListener(currentClue,currentLocation));
                     }
                 }
