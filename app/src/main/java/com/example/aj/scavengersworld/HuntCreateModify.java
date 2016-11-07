@@ -45,7 +45,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		editName.setText(mHuntName);
         editName.addTextChangedListener(new TextWatcher() {
 
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {hunt.setHuntName(s.toString());}
 
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
@@ -53,7 +53,6 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-
             }
         });
 
@@ -61,7 +60,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		editDescription.setText(mHuntDescription);
 		editDescription.addTextChangedListener(new TextWatcher() {
 
-			public void afterTextChanged(Editable s) {}
+			public void afterTextChanged(Editable s) {hunt.setDescription(s.toString());}
 
 			public void beforeTextChanged(CharSequence s, int start,
 										  int count, int after) {
@@ -69,9 +68,18 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 			public void onTextChanged(CharSequence s, int start,
 									  int before, int count) {
-
 			}
 		});
+
+		//set up "clues" recycler
+		//RecyclerView mCluesRecyclerView = (RecyclerView) findViewById(R.id.clues_recycler);
+		//mCluesRecyclerView.setHasFixedSize(true);
+
+		//LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+		//mCluesRecyclerView.setLayoutManager(mLayoutManager);
+
+		//RecyclerView.Adapter mAdapter = new RecyclerView.Adapter();
+		//mCluesRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
