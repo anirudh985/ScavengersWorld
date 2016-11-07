@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.aj.scavengersworld.HuntCreateModify;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
@@ -38,7 +39,7 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 				hunt = session.getParticipatingHuntByName(huntName);
 			} else if(userHuntStatus.equals("ADMIN")) {
 				hunt = session.getAdminHuntByName(huntName);
-			} else if(userHuntStatus.equals("INPROGRESS")) {
+			} else if(userHuntStatus.equals("COMPLETED")) {
 				hunt = session.getCompletedHuntByName(huntName);
 			}
 		} else {
@@ -48,8 +49,30 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 		TextView description = (TextView) findViewById(R.id.hunt_description);
 		description.setText(hunt.getDescription());
 
-		//Button join = (Button) findViewById(R.id.hunt_join_button);
-		//join.setOnClickListener(this); TODO set listener based on button type
+		Button join = (Button) findViewById(R.id.hunt_join_button);
+		if(userHuntStatus != null) {
+			if(userHuntStatus.equals("INPROGRESS") || userHuntStatus.equals("COMPLETED")) {
+				join.setText(R.string.view_clues);
+				join.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						//TODO intent for hunt's clue page
+					}
+				});
+			} else if(userHuntStatus.equals("ADMIN")) {
+				join.setText(R.string.update_hunt);
+				join.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						Intent updateHunt = new Intent(view.getContext(), HuntCreateModify.class);
+						updateHunt.putExtra("Name", huntName);
+						startActivity(updateHunt);
+					}
+				});
+			}
+		} else {
+			join.setText(R.string.hunt_join);
+		}
 
 		Button leaders = (Button) findViewById(R.id.hunt_leaders_button);
 		leaders.setOnClickListener(this);
@@ -103,6 +126,9 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()){
+			case R.id.hunt_join_button:
+				//TODO change user status to "INPROGRESS"
+				break;
 			case R.id.hunt_leaders_button:
 				Intent leaderboard = new Intent(HuntActivity.this,LeaderboardActivity.class);
 				startActivity(leaderboard);

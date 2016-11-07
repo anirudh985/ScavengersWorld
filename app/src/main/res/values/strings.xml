@@ -116,6 +116,8 @@
 
     <!-- HUNT ACTIVITY -->
     <string name="hunt_join">Join Hunt</string>
+    <string name="view_clues">View Hunt Clues</string>
+    <string name="update_hunt">Update Hunt</string>
     <string name="hunt_leaders">View Leader Board</string>
 
     <!-- Hunt create modify activity -->
