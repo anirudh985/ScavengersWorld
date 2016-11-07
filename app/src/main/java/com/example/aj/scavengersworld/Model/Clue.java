@@ -18,7 +18,7 @@ public class Clue {
 
     //private String mBeaconId;
     private Location location;
-//    private String mLandmarkDescription;
+    private String landmarkDescription;
 //    private int mEventId;
     private int sequenceNumberInHunt;
 
@@ -136,13 +136,13 @@ public class Clue {
         this.location = mGPSLocation;
     }
 //
-//    public String getLandmarkDescription() {
-//        return mLandmarkDescription;
-//    }
-//
-//    public void setLandmarkDescription(String mLandmarkDescription) {
-//        this.mLandmarkDescription = mLandmarkDescription;
-//    }
+    public String getLandmarkDescription() {
+        return landmarkDescription;
+    }
+
+    public void setLandmarkDescription(String mLandmarkDescription) {
+        this.landmarkDescription = mLandmarkDescription;
+    }
 //
 //    public int getEventId() {
 //        return mEventId;

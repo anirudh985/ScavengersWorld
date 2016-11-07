@@ -20,6 +20,8 @@ import android.widget.Toast;
 import android.location.Location;
 
 import com.example.aj.scavengersworld.CluesRelated.CurrentClueActivity;
+import com.example.aj.scavengersworld.Model.Clue;
+import com.example.aj.scavengersworld.Model.Hunt;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -33,9 +35,15 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.aj.scavengersworld.PermissionUtils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class GamePlayActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,View.OnClickListener {
 
@@ -52,7 +60,12 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
     private Button mShowCluesButton;
     private Button mSolveClueButton;
     private UiSettings mUiSettings;
-
+    private UserSessionManager session = UserSessionManager.INSTANCE;
+    //private List<Hunt> yourHuntsList = session.getParticipatingHuntsList();
+    private final String LOG_TAG = getClass().getSimpleName();
+    private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference mDatabaseRef;
+    private int numberOfEventListeners = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +78,7 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
         mSolveClueButton.setOnClickListener(this);
         //mShowCluesButton = (Button)findViewById(R.id.button7);
         buildGoogleApiClient();
+        getCurrentCluesAndSaveInSession();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -206,7 +220,7 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
             //Location	myLocation	=	mMap.getMyLocation();
             LatLng myLatLng	=	new	LatLng(mCurrentLocation.getLatitude(),	mCurrentLocation.getLongitude());
             CameraPosition myPosition	=	new	CameraPosition.Builder()
-                    .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
+                    .target(myLatLng).zoom(4).bearing(0).tilt(0).build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(myPosition));
 
             //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
@@ -251,7 +265,29 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
 
         super.onStop();
     }
+    private void AddMarkersForLastModifiedClues(){
 
+    }
+    public void AddMarkerAtLocation(LatLng latLng, String markerTitle){
+        // Creating a marker
+        MarkerOptions markerOptions = new MarkerOptions();
+
+        // Setting the position for the marker
+        markerOptions.position(latLng);
+
+        // Setting the title for the marker.
+        // This will be displayed on taping the marker
+        markerOptions.title(markerTitle);
+
+        // Clears the previously touched position
+       // mMap.clear();
+
+        // Animating to the touched position
+        //mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+        // Placing a marker on the touched position
+        mMap.addMarker(markerOptions);
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -268,4 +304,45 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
                 //finish();
         }
     }
+    private void getCurrentCluesAndSaveInSession(){
+        List<Hunt> participatingHuntsList = session.getParticipatingHuntsList();
+        for(Hunt curHunt : participatingHuntsList){
+            numberOfEventListeners+=1;
+            mDatabaseRef = mDatabase.getReference(getString(R.string.huntsToClues) + "/" +curHunt.getHuntName());
+            mDatabaseRef.addListenerForSingleValueEvent(huntsToCluesListener);
+        }
+    }
+    ValueEventListener huntsToCluesListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            for(DataSnapshot userToHuntsSnapshot : dataSnapshot.getChildren()){
+                Hunt currentHunt = session.getParticipatingHuntByName(dataSnapshot.getKey());
+                Clue newClue = userToHuntsSnapshot.getValue(Clue.class);
+                newClue.setHuntName(currentHunt.getHuntName());
+                currentHunt.addClueToClueList(newClue);
+                int a  = 1;
+            }
+            numberOfEventListeners-=1;
+            if(numberOfEventListeners == 0)
+                updateUI();
+        }
+        private void updateUI(){
+            for(Hunt hunt: session.getParticipatingHuntsList()){
+                if(hunt.getClueList() == null) continue;
+                if(hunt.getClueList().size() == 0) continue;
+                int currentClueSequence = hunt.getCurrentClue().getSequenceNumberInHunt();
+                if(currentClueSequence == 1) continue;
+                Clue previousClue = hunt.getClueAtSequence(currentClueSequence -1 );
+                if(previousClue == null) continue;
+                LatLng previousClueLocation	=	new	LatLng(previousClue.getLocation().getLatitude(),previousClue.getLocation().getLongitude());
+                AddMarkerAtLocation(previousClueLocation, previousClue.getLandmarkDescription());
+            }
+        }
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            // Getting Post failed, log a message
+            Log.w(LOG_TAG, "loadPost:onCancelled", databaseError.toException());
+            // ...
+        }
+    };
 }

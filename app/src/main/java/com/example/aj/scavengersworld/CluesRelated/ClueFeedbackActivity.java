@@ -92,13 +92,13 @@ public class ClueFeedbackActivity extends BaseActivity {
             if (extrasBundle.getBoolean("RESULT")) {
                 clueResult = true;
                 Clue currentClue = currentHunt.getCurrentClue();
-                updateUIElements(getString(R.string.clue_feedback_success),currentClue.getClueDescription(),currentClue.getClueTitle());
+                updateUIElements(getString(R.string.clue_feedback_success),currentClue.getClueDescription(),currentClue.getHuntName() + currentClue.getClueTitle());
                 updateClueSuccess();
             }
             else{
                 clueResult = false;
                 Clue currentClue = currentHunt.getCurrentClue();
-                updateUIElements(getString(R.string.clue_feedback_failure),currentClue.getClueDescription(),currentClue.getClueTitle());
+                updateUIElements(getString(R.string.clue_feedback_failure),currentClue.getClueDescription(),currentClue.getHuntName() + currentClue.getClueTitle());
             }
         }
     }

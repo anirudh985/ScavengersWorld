@@ -4,28 +4,31 @@
     android:id="@+id/activity_clue_info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     tools:context="com.example.aj.scavengersworld.ClueInfoActivity"
     android:weightSum="1">
-
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <TextView
-        android:text="TextView"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:text=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:layout_weight="0.08" />
+        android:id="@+id/add_modify_title"
+        android:textSize="35sp"
+        android:layout_weight="1" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:hint="Name"
+        android:text="Clue Name"
         android:ems="10"
-        android:id="@+id/editText2"
+        android:id="@+id/edit_clue_name"
         android:layout_weight="0.08" />
 
     <EditText
@@ -34,9 +37,9 @@
         android:inputType="textPersonName"
         android:text="Description"
         android:ems="10"
-        android:id="@+id/editText"
+        android:id="@+id/edit_clue_description"
         android:layout_weight="0.08"
-        android:hint="Clue Name" />
+        android:hint="Clue Description" />
 
     <EditText
         android:layout_width="match_parent"
@@ -44,7 +47,8 @@
         android:inputType="textPersonName"
         android:text="Landmark info"
         android:ems="10"
-        android:id="@+id/editText3"
+        android:hint="@string/addClue_landmark"
+        android:id="@+id/edit_clue_landmark"
         android:layout_weight="0.08" />
     <LinearLayout
         android:orientation="horizontal"
@@ -56,10 +60,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView5"
+            android:textSize="20sp"
             android:layout_weight="1" />
 
         <TextView
-            android:text="TextView"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:id="@+id/latitudeLabel"
@@ -75,21 +80,30 @@
             android:text="@string/longitude"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
+            android:textSize="20sp"
             android:id="@+id/textView7"
             android:layout_weight="1" />
 
         <TextView
-            android:text="TextView"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:id="@+id/longitudeLabel"
             android:layout_weight="1" />
     </LinearLayout>
+
     <Button
         android:text="@string/edit_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editLocationButton" />
+
+    <Button
+        android:text="@string/back_to_hunt_screen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/back_to_hunts_button"
+        android:layout_weight="0.08" />
 
     <TabHost
         android:layout_width="match_parent"

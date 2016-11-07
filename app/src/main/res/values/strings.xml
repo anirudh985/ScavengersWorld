@@ -165,4 +165,13 @@
     <string name="clue_feedback_failure">Sorry, you are not in the correct location of the clue.</string>
     <string name="clue_feedback_gameplay">Return to Game Screen</string>
 
+    <!-- ADD/MODIFY CLUE ACTIVITY-->
+    <string name="addClue_name">Clue Name</string>
+    <string name="addClue_description">Clue Description</string>
+    <string name="addClue_landmark">Landmark Description</string>
+    <string name="add_clue">Add Clue</string>
+    <string name="modify_clue">Modify Clue</string>
+    <string name="modify_location">Modify Location</string>
+    <string name="back_to_hunt_screen">Back to Hunt Screen</string>
+
 </resources>

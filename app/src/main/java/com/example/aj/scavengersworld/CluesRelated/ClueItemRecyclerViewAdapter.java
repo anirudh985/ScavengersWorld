@@ -102,7 +102,7 @@ public class ClueItemRecyclerViewAdapter extends RecyclerView.Adapter<ClueItemRe
                 .buildRound(letter, mGenerator.getRandomColor());
         //holder.mImageLetter.setImageDrawable(drawable);
         holder.mHuntNameView.setText(clue.getHuntName());
-        holder.mClueDescriptionView.setText(clue.getClueTitle());
+        holder.mClueDescriptionView.setText(clue.getClueDescription());
     }
 
     @Override
