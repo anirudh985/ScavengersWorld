@@ -13,21 +13,21 @@ import java.util.List;
  */
 
 public class Hunt implements Comparable<Hunt>, Parcelable {
-    private int mHuntId;
-    private String mHuntName;
-    private String mDescription;
-    private String mCreatedByUserId;
-    private Date mStartTime;
-    private Date mEndTime;
+    private int huntId;
+    private String huntName;
+    private String description;
+    private String createdByUserId;
+    private Date startTime;
+    private Date endTime;
     //private Boolean miIsTeam;
-    private Boolean mIsPrivate;
-    private List<User> mListOfAdmins;
-    private int mFirstClueId;
-    private int mCurrentClueId;
+    private Boolean isPrivate;
+    private List<User> listOfAdmins;
+    private int firstClueId;
+    private int currentClueId;
 
-    private String mState;
-    private int mScore;
-    private double mProgress;
+    private String state;
+    private int score;
+    private double progress;
 
     private List<Clue> clueList;
 
@@ -49,137 +49,137 @@ public class Hunt implements Comparable<Hunt>, Parcelable {
     }
 
     public int getHuntId() {
-        return mHuntId;
+        return huntId;
     }
 
     public void setHuntId(int mHuntId) {
-        this.mHuntId = mHuntId;
+        this.huntId = mHuntId;
     }
 
     public String getHuntName() {
-        return mHuntName;
+        return huntName;
     }
 
     public void setHuntName(String mHuntName) {
-        this.mHuntName = mHuntName;
+        this.huntName = mHuntName;
     }
 
-	public String getDescription() {return mDescription;}
+	public String getDescription() {return description;}
 
-	public void setDescription(String description) {this.mDescription = description;}
+	public void setDescription(String description) {this.description = description;}
 
     public String getCreatedByUserId() {
-        return mCreatedByUserId;
+        return createdByUserId;
     }
 
     public void setCreatedByUserId(String createdByUserId) {
-        this.mCreatedByUserId = createdByUserId;
+        this.createdByUserId = createdByUserId;
     }
 
     public Date getStartTime() {
-        return mStartTime;
+        return startTime;
     }
 
     public void setStartTime(Date startTime) {
-        this.mStartTime = startTime;
+        this.startTime = startTime;
     }
 
     public Date getEndTime() {
-        return mEndTime;
+        return endTime;
     }
 
     public void setEndTime(Date endTime) {
-        this.mEndTime = endTime;
+        this.endTime = endTime;
     }
 
     public Boolean getPrivate() {
-        return mIsPrivate;
+        return isPrivate;
     }
 
     public void setPrivate(Boolean aPrivate) {
-        mIsPrivate = aPrivate;
+        isPrivate = aPrivate;
     }
 
     public List<User> getListOfAdmins() {
-        return mListOfAdmins;
+        return listOfAdmins;
     }
 
     public void setListOfAdmins(List<User> listOfAdmins) {
-        this.mListOfAdmins = listOfAdmins;
+        this.listOfAdmins = listOfAdmins;
     }
 
     public int getFirstClueId() {
-        return mFirstClueId;
+        return firstClueId;
     }
 
     public void setFirstClueId(int firstClueId) {
-        this.mFirstClueId = firstClueId;
+        this.firstClueId = firstClueId;
     }
 
     public int getCurrentClueId() {
-        return mCurrentClueId;
+        return currentClueId;
     }
 
     public void setCurrentClueId(int currentClueId) {
-        this.mCurrentClueId = currentClueId;
+        this.currentClueId = currentClueId;
     }
 
 
     public String getState() {
-        return mState;
+        return state;
     }
 
     public void setState(String state) {
-        this.mState = state;
+        this.state = state;
     }
 
     public int getScore() {
-        return mScore;
+        return score;
     }
 
     public void setScore(int score) {
-        this.mScore = score;
+        this.score = score;
     }
 
     public double getProgress() {
-        return mProgress;
+        return progress;
     }
 
     public void setProgress(double mProgress) {
-        this.mProgress = mProgress;
+        this.progress = mProgress;
     }
 
     @Override
     public String toString(){
-        return String.valueOf(mHuntId) + mHuntName + mScore;
+        return String.valueOf(huntId) + huntName + score;
     }
 
     @Override
     public int compareTo(Hunt hunt) {
-        return mHuntName.compareTo(hunt.getHuntName());
+        return huntName.compareTo(hunt.getHuntName());
     }
 
     protected Hunt(Parcel in) {
-        mHuntId = in.readInt();
-        mHuntName = in.readString();
-        mCreatedByUserId = in.readString();
+        huntId = in.readInt();
+        huntName = in.readString();
+        createdByUserId = in.readString();
         long tmpMStartTime = in.readLong();
-        mStartTime = tmpMStartTime != -1 ? new Date(tmpMStartTime) : null;
+        startTime = tmpMStartTime != -1 ? new Date(tmpMStartTime) : null;
         long tmpMEndTime = in.readLong();
-        mEndTime = tmpMEndTime != -1 ? new Date(tmpMEndTime) : null;
+        endTime = tmpMEndTime != -1 ? new Date(tmpMEndTime) : null;
         byte mIsPrivateVal = in.readByte();
-        mIsPrivate = mIsPrivateVal == 0x02 ? null : mIsPrivateVal != 0x00;
+        isPrivate = mIsPrivateVal == 0x02 ? null : mIsPrivateVal != 0x00;
         if (in.readByte() == 0x01) {
-            mListOfAdmins = new ArrayList<User>();
-            in.readList(mListOfAdmins, User.class.getClassLoader());
+            listOfAdmins = new ArrayList<User>();
+            in.readList(listOfAdmins, User.class.getClassLoader());
         } else {
-            mListOfAdmins = null;
+            listOfAdmins = null;
         }
-        mFirstClueId = in.readInt();
-        mCurrentClueId = in.readInt();
-        mState = in.readString();
-        mScore = in.readInt();
-        mProgress = in.readDouble();
+        firstClueId = in.readInt();
+        currentClueId = in.readInt();
+        state = in.readString();
+        score = in.readInt();
+        progress = in.readDouble();
     }
     public Clue getClueWithId(int clueId){
         for(Clue clue : clueList){
@@ -189,7 +189,7 @@ public class Hunt implements Comparable<Hunt>, Parcelable {
         return null;
     }
     public  Clue getCurrentClue(){
-        return getClueWithId(mCurrentClueId);
+        return getClueWithId(currentClueId);
     }
     public Clue getClueAtSequence(int sequenceNumber){
         for(Clue clue : clueList){
@@ -205,27 +205,27 @@ public class Hunt implements Comparable<Hunt>, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mHuntId);
-        dest.writeString(mHuntName);
-        dest.writeString(mCreatedByUserId);
-        dest.writeLong(mStartTime != null ? mStartTime.getTime() : -1L);
-        dest.writeLong(mEndTime != null ? mEndTime.getTime() : -1L);
-        if (mIsPrivate == null) {
+        dest.writeInt(huntId);
+        dest.writeString(huntName);
+        dest.writeString(createdByUserId);
+        dest.writeLong(startTime != null ? startTime.getTime() : -1L);
+        dest.writeLong(endTime != null ? endTime.getTime() : -1L);
+        if (isPrivate == null) {
             dest.writeByte((byte) (0x02));
         } else {
-            dest.writeByte((byte) (mIsPrivate ? 0x01 : 0x00));
+            dest.writeByte((byte) (isPrivate ? 0x01 : 0x00));
         }
-        if (mListOfAdmins == null) {
+        if (listOfAdmins == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeList(mListOfAdmins);
+            dest.writeList(listOfAdmins);
         }
-        dest.writeInt(mFirstClueId);
-        dest.writeInt(mCurrentClueId);
-        dest.writeString(mState);
-        dest.writeInt(mScore);
-        dest.writeDouble(mProgress);
+        dest.writeInt(firstClueId);
+        dest.writeInt(currentClueId);
+        dest.writeString(state);
+        dest.writeInt(score);
+        dest.writeDouble(progress);
     }
 
     @SuppressWarnings("unused")
