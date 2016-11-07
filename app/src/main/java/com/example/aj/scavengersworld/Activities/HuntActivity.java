@@ -11,8 +11,6 @@ import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
 
-import java.util.List;
-
 /**
  * Created by Jennifer on 10/17/2016.
  */
@@ -22,10 +20,6 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 	private String huntName = intent.getStringExtra("NAME");
 
 	private UserSessionManager session = UserSessionManager.INSTANCE;
-
-	private List<Hunt> adminHuntsList = session.getAdminHunts();
-	private List<Hunt> participatingHuntsList = session.getParticipatingHuntsList();
-	private List<Hunt> completedHuntsList = session.getCompletedHuntsList();
 
 	private final String LOG_TAG = getClass().getSimpleName();
 	@Override
