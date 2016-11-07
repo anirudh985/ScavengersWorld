@@ -65,7 +65,7 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 	}
 
 	public String getScreenName(){
-		return "Profile";
+		return "Hunt";
 	}
 
 	@Override
