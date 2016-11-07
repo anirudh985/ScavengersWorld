@@ -79,7 +79,9 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
             if(userProfile != null){
                 session.updateUserProfile(userProfile);
             }
-
+            else{
+                createNewUserProfile();
+            }
         }
 
         @Override
@@ -224,5 +226,12 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
     private void getUserProfileAndSaveInSession(){
         Log.d(LOG_TAG, "getUserProfileAndSaveInSession() called");
         mDatabaseRefUserProfile.addListenerForSingleValueEvent(userProfileListener);
+    }
+
+    private void createNewUserProfile(){
+        UserProfile newUserProfile = new UserProfile();
+        newUserProfile.setPointsEarned(0);
+        newUserProfile.setBadgesEarned(new ArrayList<Integer>());
+        mDatabaseRefUserProfile.push().setValue(newUserProfile);
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -169,7 +170,16 @@ public class YourHuntsFragment extends Fragment {
         if(recyclerView != null){
             MyYourHuntsRecyclerViewAdapter yourHuntsRecyclerViewAdapter = (MyYourHuntsRecyclerViewAdapter) recyclerView.getAdapter();
             yourHuntsRecyclerViewAdapter.notifyDataSetChanged();
+            if(yourHuntsList.size() == 0){
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("You seem to have joined no hunts. Click Join Hunts to explore new Hunts and start playing")
+                        .setTitle(getString(R.string.welcomeMessage) + " " + session.getUserName())
+                        .setPositiveButton(android.R.string.ok, null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         }
+
     }
 
 }

@@ -116,14 +116,6 @@ public enum UserSessionManager {
         }
     }
 
-    public void clearSession(){
-        this.mFirebaseUser = null;
-        this.mContext = null;
-        this.mUniqueUserId = null;
-        this.mUserName = null;
-        this.mUserEmail = null;
-    }
-
     public void updateHunts(@NonNull List<UserToHunts> listOfUserToHunts){
         for(UserToHunts userToHunts : listOfUserToHunts) {
             if (userToHunts.getState().equals(ADMIN)) {
@@ -224,6 +216,23 @@ public enum UserSessionManager {
         else {
             return null;
         }
+    }
+
+    public void clearSession(){
+        this.mFirebaseUser = null;
+        this.mUserEmail = null;
+        this.mUserName = null;
+        this.mUniqueUserId = null;
+        this.mContext = null;
+        this.userProfile = null;
+
+        this.adminHunts = new HashMap<>();
+        this.participatingHunts = new HashMap<>();
+        this.completedHunts = new HashMap<>();
+
+        this.adminHuntsList = new ArrayList<>();
+        this.participatingHuntsList = new ArrayList<>();
+        this.completedHuntsList = new ArrayList<>();
     }
 }
 
