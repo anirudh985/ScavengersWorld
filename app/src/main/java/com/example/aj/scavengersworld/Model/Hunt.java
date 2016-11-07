@@ -15,6 +15,7 @@ import java.util.List;
 public class Hunt implements Comparable<Hunt>, Parcelable {
     private int mHuntId;
     private String mHuntName;
+    private String mDescription;
     private String mCreatedByUserId;
     private Date mStartTime;
     private Date mEndTime;
@@ -62,6 +63,10 @@ public class Hunt implements Comparable<Hunt>, Parcelable {
     public void setHuntName(String mHuntName) {
         this.mHuntName = mHuntName;
     }
+
+	public String getDescription() {return mDescription;}
+
+	public void setDescription(String description) {this.mDescription = description;}
 
     public String getCreatedByUserId() {
         return mCreatedByUserId;
