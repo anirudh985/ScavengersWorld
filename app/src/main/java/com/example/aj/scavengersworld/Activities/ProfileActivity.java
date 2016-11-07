@@ -32,8 +32,8 @@ public class ProfileActivity extends BaseActivity {
 	private RecyclerView.Adapter mCompletedAdapter;
 	private RecyclerView.LayoutManager mJoinedLayoutManager;
 	private RecyclerView.LayoutManager mCompletedLayoutManager;
-	private YourHuntsFragment.OnListFragmentInteractionListener mJoinedListener;
-	private YourHuntsFragment.OnListFragmentInteractionListener mCompletedListener;
+	private YourHuntsFragment.OnListFragmentInteractionListener mJoinedListener; //TODO send user to Hunt screen on click
+	private YourHuntsFragment.OnListFragmentInteractionListener mCompletedListener; //TODO
 
     private UserProfile profile = session.getUserProfile();
 
