@@ -13,15 +13,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/profile_username"
-        android:textSize="40sp"
+        android:textSize="35sp"
         android:padding="10dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/profile_header"
-        android:textSize="20sp"
-        android:padding="10dp"
+        android:textSize="15sp"
+        android:padding="5dp"
         android:gravity="center"/>
 
     <LinearLayout
@@ -60,26 +60,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/profile_completed"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:padding="5dp"
         android:gravity="center"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/profile_temp"/>
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/completed_hunts_recycler"
+        android:name="com.example.aj.scavengersworld.Activities.HomeScreen.YourHuntsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context="com.example.aj.scavengersworld.Activities.HomeScreen.YourHuntsFragment"
+        tools:listitem="@layout/fragment_yourhunts" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/profile_joined"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:padding="5dp"
         android:gravity="center"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/profile_temp"/>
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/joined_hunts_recycler"
+        android:name="com.example.aj.scavengersworld.Activities.HomeScreen.YourHuntsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context="com.example.aj.scavengersworld.Activities.HomeScreen.YourHuntsFragment"
+        tools:listitem="@layout/fragment_yourhunts" />
 
 </LinearLayout>
