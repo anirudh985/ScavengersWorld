@@ -1,66 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/popularHuntsLayout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_margin="10dp"
     android:background="?android:attr/activatedBackgroundIndicator">
 
-    <ImageView
-        android:id="@+id/popularHuntsImageLetter"
-        android:layout_height="match_parent"
-        android:layout_width="55dp"
-        android:layout_marginLeft="5dp"/>
-
-    <!--<LinearLayout-->
-        <!--android:id="@+id/popularHuntsLayout1"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:background="?android:attr/activatedBackgroundIndicator">-->
-
-
-        <!--<TextView-->
-            <!--android:id="@+id/popularHuntsName"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge"/>-->
-
-        <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_width="fill_parent"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:orientation="horizontal">&ndash;&gt;-->
-
-            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
-                <!--&lt;!&ndash;android:id="@+id/popularHuntsCreatedUser"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_marginLeft="5dp" />&ndash;&gt;-->
-        <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
-
-    <!--</LinearLayout>-->
-
-    <TextView
-        android:id="@+id/popularHuntsName"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.CardView
+        android:id="@+id/popularHuntCardView"
+        android:layout_gravity="center"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
+        android:layout_margin="2dp"
+        card_view:cardCornerRadius="2dp"
+        card_view:contentPadding="5dp">
 
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/popularityRatingBar"
-        android:stepSize="0.25"
-        android:numStars="5"
-        android:isIndicator="true"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        style="@style/popularityRatingBar"
-        android:layout_weight="1" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:background="?android:attr/activatedBackgroundIndicator">
+
+            <ImageView
+                android:id="@+id/popularHuntsImageLetter"
+                android:layout_height="match_parent"
+                android:layout_width="55dp"
+                android:layout_marginLeft="5dp"/>
+
+            <!--<LinearLayout-->
+                <!--android:id="@+id/popularHuntsLayout1"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:background="?android:attr/activatedBackgroundIndicator">-->
+
+
+                <!--<TextView-->
+                    <!--android:id="@+id/popularHuntsName"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textAppearance="?android:attr/textAppearanceLarge"/>-->
+
+                <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="fill_parent"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:orientation="horizontal">&ndash;&gt;-->
+
+                    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:id="@+id/popularHuntsCreatedUser"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_marginLeft="5dp" />&ndash;&gt;-->
+                <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+
+            <!--</LinearLayout>-->
+
+            <TextView
+                android:id="@+id/popularHuntsName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="12"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:id="@+id/popularityRatingBar"
+                    android:stepSize="0.1"
+                    android:numStars="5"
+                    android:isIndicator="true"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    style="@style/popularityRatingBar" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

@@ -14,15 +14,16 @@ import com.example.aj.scavengersworld.DatabaseModels.UserToHunts;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.google.firebase.auth.FirebaseUser;
 
+import static com.example.aj.scavengersworld.Constants.ADMIN;
+import static com.example.aj.scavengersworld.Constants.INPROGRESS;
+import static com.example.aj.scavengersworld.Constants.COMPLETED;
+import static com.example.aj.scavengersworld.Constants.REQUESTED;
+import static com.example.aj.scavengersworld.Constants.INVITED;
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static com.example.aj.scavengersworld.Constants.ADMIN;
-import static com.example.aj.scavengersworld.Constants.COMPLETED;
-import static com.example.aj.scavengersworld.Constants.INPROGRESS;
-import static com.example.aj.scavengersworld.Constants.INVITED;
-import static com.example.aj.scavengersworld.Constants.REQUESTED;
 
 
 public enum UserSessionManager {
@@ -155,7 +156,17 @@ public enum UserSessionManager {
             } else if (userToHunts.getState().equals(INVITED)) {
 
             } else if (userToHunts.getState().equals(COMPLETED)) {
-
+                // update Created Hunts
+                if (completedHunts.containsKey(userToHunts.getHuntName())) {
+                    Hunt hunt = completedHunts.get(userToHunts.getHuntName());
+                    updateHuntObject(hunt, userToHunts);
+                } else {
+                    Hunt hunt = createHuntObject(userToHunts);
+                    completedHunts.put(userToHunts.getHuntName(), hunt);
+                    //TODO: need to add to completedHunts and sort OR some other mechanism if we want to
+                    //TODO  display the hunts in sorted order
+                    completedHuntsList.add(hunt);
+                }
             }
         }
     }
@@ -192,15 +203,8 @@ public enum UserSessionManager {
         return participatingHuntsList;
     }
 
-    public String getHuntStatusByName(String huntName) {
-        if(participatingHunts.get(huntName) != null) {
-            return "INPROGRESS";
-        } else if(adminHunts.get(huntName) != null) {
-            return "ADMIN";
-        } //TODO add rest of cases once implemented (example: completed)
-        else {
-            return null;
-        }
+    public List<Hunt> getCompletedHuntsList(){
+        return completedHuntsList;
     }
 }
 
