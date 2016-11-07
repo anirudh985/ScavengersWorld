@@ -12,18 +12,33 @@ import android.widget.EditText;
 
 import com.example.aj.scavengersworld.Activities.BaseActivity;
 import com.example.aj.scavengersworld.CluesRelated.ClueItemRecyclerViewAdapter;
+import com.example.aj.scavengersworld.DatabaseModels.HuntsToClues;
+import com.example.aj.scavengersworld.Model.Clue;
 import com.example.aj.scavengersworld.Model.Hunt;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 public class HuntCreateModify extends BaseActivity implements View.OnClickListener {
     private String mHuntName;
     private String mHuntDescription;
     private Hunt hunt;
+	private List<Clue> mClueList = null;
+
+	private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+	private DatabaseReference mDatabaseRefHuntClues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent createdIntent = getIntent();
         Bundle extrasBundle = createdIntent.getExtras();
+
+		mDatabaseRefHuntClues = mDatabase.getReference("hunts-clues");
 
         UserSessionManager session = UserSessionManager.INSTANCE;
         if(savedInstanceState == null) {
@@ -72,6 +87,30 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			}
 		});
 
+		mDatabaseRefHuntClues.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				HuntsToClues huntClues = null;
+				for(DataSnapshot huntCluesSnapshot : dataSnapshot.getChildren()){
+					huntClues = huntCluesSnapshot.getValue(HuntsToClues.class);
+					if(huntClues != null) {
+						if (huntClues.getHuntName().equals(mHuntName)) {
+							break;
+						}
+					}
+				}
+				if(huntClues != null) {
+					mClueList = huntClues.getClueList();
+				}
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+
+			}
+		});
+
+
 		//set up "clues" recycler
 		RecyclerView mCluesRecyclerView = (RecyclerView) findViewById(R.id.clues_recycler);
 		mCluesRecyclerView.setHasFixedSize(true);
@@ -82,7 +121,9 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		RecyclerView.Adapter mAdapter = new ClueItemRecyclerViewAdapter(null, hunt, null);
 		mCluesRecyclerView.setAdapter(mAdapter);
 
-		//TODO set listener for clicking on specific item
+		//TODO ability to click on a specific clue to open edit screen
+		//ClueItemRecyclerViewAdapter.ClueClickListener clueClickListener;
+		//mCluesRecyclerView.setOnClickListener(clueClickListener);
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_clue_fab);
 		fab.setOnClickListener(this);
@@ -101,10 +142,6 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) { //TODO change to onGragmentInteraction or whatvver
         switch (v.getId()){
-            /*case R.id.clueEditButton:
-                Intent modifyClue = new Intent(this,ClueInfoActivity.class);
-                startActivity(modifyClue);
-                break;*/
 			case R.id.add_clue_fab:
 				Intent addClue = new Intent(this,ClueInfoActivity.class);
 				startActivity(addClue);
