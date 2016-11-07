@@ -198,6 +198,12 @@ public enum UserSessionManager {
     public Hunt getParticipatingHuntByName(String huntName){
         return participatingHunts.get(huntName);
     }
+	public Hunt getAdminHuntByName(String huntName){
+		return adminHunts.get(huntName);
+	}
+	public Hunt getCompletedHuntByName(String huntName){
+		return completedHunts.get(huntName);
+	}
     public List<Hunt> getParticipatingHuntsList(){
         return participatingHuntsList;
     }

@@ -7,15 +7,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
+import com.example.aj.scavengersworld.UserSessionManager;
+
+import java.util.List;
 
 /**
  * Created by Jennifer on 10/17/2016.
  */
 public class HuntActivity extends BaseActivity implements View.OnClickListener {
 
-	Intent intent = getIntent();
-	String huntName = intent.getStringExtra("NAME");
+	private Intent intent = getIntent();
+	private String huntName = intent.getStringExtra("NAME");
+
+	private UserSessionManager session = UserSessionManager.INSTANCE;
+
+	private List<Hunt> adminHuntsList = session.getAdminHunts();
+	private List<Hunt> participatingHuntsList = session.getParticipatingHuntsList();
+	private List<Hunt> completedHuntsList = session.getCompletedHuntsList();
 
 	private final String LOG_TAG = getClass().getSimpleName();
 	@Override
@@ -23,14 +33,27 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 		super.onCreate(savedInstanceState);
 		Log.d(LOG_TAG, getString(R.string.log_onCreate));
 
-		TextView hunt = (TextView) findViewById(R.id.hunt_name);
-		hunt.setText(huntName);
+		TextView huntNameView = (TextView) findViewById(R.id.hunt_name);
+		huntNameView.setText(huntName);
+
+		String userHuntStatus = session.getHuntStatusByName(huntName);
+		if(userHuntStatus != null) {
+			if(userHuntStatus.equals("INPROGRESS")) {
+				Hunt hunt = session.getParticipatingHuntByName(huntName);
+			} else if(userHuntStatus.equals("ADMIN")) {
+				Hunt hunt = session.getAdminHuntByName(huntName);
+			} else if(userHuntStatus.equals("INPROGRESS")) {
+				Hunt hunt = session.getCompletedHuntByName(huntName);
+			}
+		} else {
+			//TODO get hunt from db
+		}
 
 		TextView description = (TextView) findViewById(R.id.hunt_description);
-		description.setText("Hunt Description Here"); //TODO
+		//description.setText(hunt.); //TODO get description from Hunt object
 
 		//Button join = (Button) findViewById(R.id.hunt_join_button);
-		//join.setOnClickListener(this); TODO
+		//join.setOnClickListener(this); TODO set listener based on button type
 
 		Button leaders = (Button) findViewById(R.id.hunt_leaders_button);
 		leaders.setOnClickListener(this);
