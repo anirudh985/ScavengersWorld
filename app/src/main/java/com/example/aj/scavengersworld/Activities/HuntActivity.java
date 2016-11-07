@@ -7,10 +7,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.aj.scavengersworld.DatabaseModels.SearchableHunt;
 import com.example.aj.scavengersworld.HuntCreateModify;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by Jennifer on 10/17/2016.
@@ -19,6 +25,11 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 
 	private Intent intent;
 	private String huntName;
+
+	private Hunt hunt;
+
+	private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+	private DatabaseReference mDatabaseRefSearchableHunts = mDatabase.getReference("searchable-hunts");
 
 	private UserSessionManager session = UserSessionManager.INSTANCE;
 
@@ -34,8 +45,6 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 		TextView huntNameView = (TextView) findViewById(R.id.hunt_name);
 		huntNameView.setText(huntName);
 
-		Hunt hunt = null;
-
 		String userHuntStatus = session.getHuntStatusByName(huntName);
 		if(userHuntStatus != null) {
 			if(userHuntStatus.equals("INPROGRESS")) {
@@ -46,7 +55,7 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 				hunt = session.getCompletedHuntByName(huntName);
 			}
 		} else {
-			//TODO get hunt from db
+			//TODO retrieve hunt from database
 		}
 
 		TextView description = (TextView) findViewById(R.id.hunt_description);
@@ -70,6 +79,7 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 						Intent updateHunt = new Intent(view.getContext(), HuntCreateModify.class);
 						updateHunt.putExtra("Name", huntName);
 						startActivity(updateHunt);
+
 					}
 				});
 			}
@@ -140,4 +150,25 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 				break;
 		}
 	}
+
+	ValueEventListener searchableHuntsListener = new ValueEventListener() {
+		@Override
+		public void onDataChange(DataSnapshot dataSnapshot) {
+			for(DataSnapshot searchableHuntsSnapshot : dataSnapshot.getChildren()){
+				SearchableHunt searchableHunt = searchableHuntsSnapshot.getValue(SearchableHunt.class);
+				if(searchableHunt.getHuntName().equals(huntName)){
+					hunt.setHuntName(searchableHunt.getHuntName());
+					//TODO need to get description and the like from database
+					break;
+				}
+			}
+		}
+
+		@Override
+		public void onCancelled(DatabaseError databaseError) {
+			// Getting Post failed, log a message
+			Log.w(LOG_TAG, "loadPost:onCancelled", databaseError.toException());
+			// ...
+		}
+	};
 }
