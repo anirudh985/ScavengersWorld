@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.aj.scavengersworld.R;
+import com.google.firebase.database.DatabaseReference;
 
 /**
  * Created by Jennifer on 10/17/2016.
  */
 public class LeaderboardActivity extends BaseActivity {
+
+	private DatabaseReference mDatabaseRef;
 
 	private final String LOG_TAG = getClass().getSimpleName();
 	@Override
