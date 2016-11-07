@@ -12,7 +12,6 @@ import com.example.aj.scavengersworld.Activities.BaseActivity;
 import com.example.aj.scavengersworld.Activities.HuntActivity;
 import com.example.aj.scavengersworld.DatabaseModels.UserProfile;
 import com.example.aj.scavengersworld.DatabaseModels.UserToHunts;
-import com.example.aj.scavengersworld.HuntCreateModify;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
@@ -152,7 +151,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
     @Override
     public void onListCreatedHuntsFragmentInteraction(Hunt hunt){
         Log.d(LOG_TAG, "Created Hunt    " + hunt.toString());
-        Intent modifyHunt = new Intent(this, HuntCreateModify.class);
+        Intent modifyHunt = new Intent(this, HuntActivity.class);
         modifyHunt.putExtra("NAME", hunt.getHuntName());
         startActivity(modifyHunt);
     }

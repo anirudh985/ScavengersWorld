@@ -7,12 +7,31 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.aj.scavengersworld.DatabaseModels.SearchableHunt;
+import com.example.aj.scavengersworld.HuntCreateModify;
+import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
+import com.example.aj.scavengersworld.UserSessionManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by Jennifer on 10/17/2016.
  */
 public class HuntActivity extends BaseActivity implements View.OnClickListener {
+
+	private Intent intent;
+	private String huntName;
+
+	private Hunt hunt;
+
+	private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+	private DatabaseReference mDatabaseRefSearchableHunts = mDatabase.getReference("searchable-hunts");
+
+	private UserSessionManager session = UserSessionManager.INSTANCE;
 
 	private final String LOG_TAG = getClass().getSimpleName();
 	@Override
@@ -20,14 +39,53 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 		super.onCreate(savedInstanceState);
 		Log.d(LOG_TAG, getString(R.string.log_onCreate));
 
-		TextView hunt = (TextView) findViewById(R.id.hunt_name);
-		hunt.setText("Hunt Name Here"); //TODO
+		intent = getIntent();
+		huntName = intent.getStringExtra("NAME");
+
+		TextView huntNameView = (TextView) findViewById(R.id.hunt_name);
+		huntNameView.setText(huntName);
+
+		String userHuntStatus = session.getHuntStatusByName(huntName);
+		if(userHuntStatus != null) {
+			if(userHuntStatus.equals("INPROGRESS")) {
+				hunt = session.getParticipatingHuntByName(huntName);
+			} else if(userHuntStatus.equals("ADMIN")) {
+				hunt = session.getAdminHuntByName(huntName);
+			} else if(userHuntStatus.equals("COMPLETED")) {
+				hunt = session.getCompletedHuntByName(huntName);
+			}
+		} else {
+			//TODO retrieve hunt from database
+		}
 
 		TextView description = (TextView) findViewById(R.id.hunt_description);
-		description.setText("Hunt Description Here"); //TODO
+		description.setText(hunt.getDescription());
 
-		//Button join = (Button) findViewById(R.id.hunt_join_button);
-		//join.setOnClickListener(this); TODO
+		Button join = (Button) findViewById(R.id.hunt_join_button);
+		if(userHuntStatus != null) {
+			if(userHuntStatus.equals("INPROGRESS") || userHuntStatus.equals("COMPLETED")) {
+				join.setText(R.string.view_clues);
+				join.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						//TODO intent for hunt's clue page
+					}
+				});
+			} else if(userHuntStatus.equals("ADMIN")) {
+				join.setText(R.string.update_hunt);
+				join.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						Intent updateHunt = new Intent(view.getContext(), HuntCreateModify.class);
+						updateHunt.putExtra("Name", huntName);
+						startActivity(updateHunt);
+
+					}
+				});
+			}
+		} else {
+			join.setText(R.string.hunt_join);
+		}
 
 		Button leaders = (Button) findViewById(R.id.hunt_leaders_button);
 		leaders.setOnClickListener(this);
@@ -39,7 +97,7 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 	}
 
 	public String getScreenName(){
-		return "Profile";
+		return huntName;
 	}
 
 	@Override
@@ -81,6 +139,9 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()){
+			case R.id.hunt_join_button:
+				//TODO change user status to "INPROGRESS"
+				break;
 			case R.id.hunt_leaders_button:
 				Intent leaderboard = new Intent(HuntActivity.this,LeaderboardActivity.class);
 				startActivity(leaderboard);
@@ -89,4 +150,25 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 				break;
 		}
 	}
+
+	ValueEventListener searchableHuntsListener = new ValueEventListener() {
+		@Override
+		public void onDataChange(DataSnapshot dataSnapshot) {
+			for(DataSnapshot searchableHuntsSnapshot : dataSnapshot.getChildren()){
+				SearchableHunt searchableHunt = searchableHuntsSnapshot.getValue(SearchableHunt.class);
+				if(searchableHunt.getHuntName().equals(huntName)){
+					hunt.setHuntName(searchableHunt.getHuntName());
+					//TODO need to get description and the like from database
+					break;
+				}
+			}
+		}
+
+		@Override
+		public void onCancelled(DatabaseError databaseError) {
+			// Getting Post failed, log a message
+			Log.w(LOG_TAG, "loadPost:onCancelled", databaseError.toException());
+			// ...
+		}
+	};
 }
