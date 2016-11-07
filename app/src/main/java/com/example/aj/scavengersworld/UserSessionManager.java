@@ -205,5 +205,19 @@ public enum UserSessionManager {
     public List<Hunt> getCompletedHuntsList(){
         return completedHuntsList;
     }
+
+    public String getHuntStatusByName(String huntName) {
+        if (participatingHunts.get(huntName) != null) {
+            return "INPROGRESS";
+        } else if (adminHunts.get(huntName) != null) {
+            return "ADMIN";
+        } else if(completedHunts.get(huntName) != null) {
+            return "COMPLETED";
+            //TODO add any other cases
+        }
+        else {
+            return null;
+        }
+    }
 }
 
