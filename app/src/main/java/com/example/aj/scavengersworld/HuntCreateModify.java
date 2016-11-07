@@ -7,18 +7,23 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.aj.scavengersworld.Activities.BaseActivity;
+import com.example.aj.scavengersworld.Model.Hunt;
 
 public class HuntCreateModify extends BaseActivity implements View.OnClickListener {
     private String mHuntName;
+    private String mHuntDescription;
+    private Hunt hunt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent createdIntent = getIntent();
+        Bundle extrasBundle = createdIntent.getExtras();
+
+        UserSessionManager session = UserSessionManager.INSTANCE;
         if(savedInstanceState == null) {
-            Intent createdIntent = getIntent();
-            Bundle extrasBundle = createdIntent.getExtras();
             if(extrasBundle != null && extrasBundle.get("Name") != null){
                 mHuntName = extrasBundle.getString("Name");
             }
@@ -28,11 +33,17 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
             Button clueEditButton = (Button)findViewById(R.id.clueEditButton);
             clueEditButton.setOnClickListener(this);
         }
-        TextView huntName = (TextView) findViewById(R.id.hunt_name);
-        huntName.setText(mHuntName);
 
-        EditText editText = (EditText) findViewById(R.id.editHuntName);
-        editText.addTextChangedListener(new TextWatcher() {
+        hunt = session.getAdminHuntByName(mHuntName);
+        if(hunt != null) {
+            mHuntDescription = hunt.getDescription();
+        } else {
+            mHuntDescription = getString(R.string.hunt_description);
+        }
+
+        EditText editName = (EditText) findViewById(R.id.editHuntName);
+		editName.setText(mHuntName);
+        editName.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {}
 
@@ -45,6 +56,22 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
             }
         });
+
+		EditText editDescription = (EditText) findViewById(R.id.editHuntDescription);
+		editDescription.setText(mHuntDescription);
+		editDescription.addTextChangedListener(new TextWatcher() {
+
+			public void afterTextChanged(Editable s) {}
+
+			public void beforeTextChanged(CharSequence s, int start,
+										  int count, int after) {
+			}
+
+			public void onTextChanged(CharSequence s, int start,
+									  int before, int count) {
+
+			}
+		});
     }
 
     @Override
