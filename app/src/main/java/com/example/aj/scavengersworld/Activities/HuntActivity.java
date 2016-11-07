@@ -17,8 +17,8 @@ import com.example.aj.scavengersworld.UserSessionManager;
  */
 public class HuntActivity extends BaseActivity implements View.OnClickListener {
 
-	private Intent intent = getIntent();
-	private String huntName = intent.getStringExtra("NAME");
+	private Intent intent;
+	private String huntName;
 
 	private UserSessionManager session = UserSessionManager.INSTANCE;
 
@@ -27,6 +27,9 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(LOG_TAG, getString(R.string.log_onCreate));
+
+		intent = getIntent();
+		huntName = intent.getStringExtra("NAME");
 
 		TextView huntNameView = (TextView) findViewById(R.id.hunt_name);
 		huntNameView.setText(huntName);

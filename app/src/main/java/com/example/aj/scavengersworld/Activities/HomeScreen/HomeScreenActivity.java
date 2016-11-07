@@ -153,7 +153,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
     public void onListCreatedHuntsFragmentInteraction(Hunt hunt){
         Log.d(LOG_TAG, "Created Hunt    " + hunt.toString());
         Intent modifyHunt = new Intent(this, HuntCreateModify.class);
-        modifyHunt.putExtra("NAME", hunt.getHuntName());
+        modifyHunt.putExtra("NAME", hunt.getHuntName()); //TODO is this case sensitive? HuntCreateModify expects "Name"
         startActivity(modifyHunt);
     }
 
