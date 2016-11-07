@@ -1,5 +1,6 @@
 package com.example.aj.scavengersworld.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Created by aj on 10/16/16.
  */
-public class ProfileActivity extends BaseActivity {
+public class ProfileActivity extends BaseActivity implements YourHuntsFragment.OnListFragmentInteractionListener {
 
     private final String LOG_TAG = getClass().getSimpleName();
     private UserSessionManager session = UserSessionManager.INSTANCE;
@@ -32,7 +33,7 @@ public class ProfileActivity extends BaseActivity {
 	private RecyclerView.Adapter mCompletedAdapter;
 	private RecyclerView.LayoutManager mJoinedLayoutManager;
 	private RecyclerView.LayoutManager mCompletedLayoutManager;
-	private YourHuntsFragment.OnListFragmentInteractionListener mJoinedListener; //TODO send user to Hunt screen on click
+	private YourHuntsFragment.OnListFragmentInteractionListener mJoinedListener; //TODO
 	private YourHuntsFragment.OnListFragmentInteractionListener mCompletedListener; //TODO
 
     private UserProfile profile = session.getUserProfile();
@@ -68,6 +69,14 @@ public class ProfileActivity extends BaseActivity {
 		mCompletedAdapter = new MyYourHuntsRecyclerViewAdapter(completedHunts, mCompletedListener);
 		mCompletedRecyclerView.setAdapter(mCompletedAdapter);
     }
+
+	@Override
+	public void onListYourHuntsFragmentInteraction(Hunt hunt) {
+		Log.d(LOG_TAG, "Your Hunt   "+hunt.toString());
+		Intent openHuntActivity = new Intent(this, HuntActivity.class);
+		openHuntActivity.putExtra("NAME", hunt.getHuntName());
+		startActivity(openHuntActivity);
+	}
 
     @Override
     public int getLayoutResource(){
