@@ -126,6 +126,8 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
 
             }
         });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
     }
 
     @Override

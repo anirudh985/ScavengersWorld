@@ -156,7 +156,17 @@ public enum UserSessionManager {
             } else if (userToHunts.getState().equals(INVITED)) {
 
             } else if (userToHunts.getState().equals(COMPLETED)) {
-
+                // update Created Hunts
+                if (completedHunts.containsKey(userToHunts.getHuntName())) {
+                    Hunt hunt = completedHunts.get(userToHunts.getHuntName());
+                    updateHuntObject(hunt, userToHunts);
+                } else {
+                    Hunt hunt = createHuntObject(userToHunts);
+                    completedHunts.put(userToHunts.getHuntName(), hunt);
+                    //TODO: need to add to completedHunts and sort OR some other mechanism if we want to
+                    //TODO  display the hunts in sorted order
+                    completedHuntsList.add(hunt);
+                }
             }
         }
     }
@@ -191,6 +201,10 @@ public enum UserSessionManager {
     }
     public List<Hunt> getParticipatingHuntsList(){
         return participatingHuntsList;
+    }
+
+    public List<Hunt> getCompletedHuntsList(){
+        return completedHuntsList;
     }
 }
 
