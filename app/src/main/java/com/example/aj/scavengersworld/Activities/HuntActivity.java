@@ -59,7 +59,7 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 	}
 
 	public String getScreenName(){
-		return "Hunt";
+		return huntName;
 	}
 
 	@Override
