@@ -24,11 +24,16 @@ public class ProfileActivity extends BaseActivity {
     private UserSessionManager session = UserSessionManager.INSTANCE;
 
     private List<Hunt> yourHunts = session.getParticipatingHuntsList();
+	private List<Hunt> completedHunts = session.getCompletedHuntsList();
 
-	private RecyclerView mRecyclerView;
-	private RecyclerView.Adapter mAdapter;
-	private RecyclerView.LayoutManager mLayoutManager;
-	private YourHuntsFragment.OnListFragmentInteractionListener mListener;
+	private RecyclerView mJoinedRecyclerView;
+	private RecyclerView.Adapter mJoinedAdapter;
+	private RecyclerView mCompletedRecyclerView;
+	private RecyclerView.Adapter mCompletedAdapter;
+	private RecyclerView.LayoutManager mJoinedLayoutManager;
+	private RecyclerView.LayoutManager mCompletedLayoutManager;
+	private YourHuntsFragment.OnListFragmentInteractionListener mJoinedListener;
+	private YourHuntsFragment.OnListFragmentInteractionListener mCompletedListener;
 
     private UserProfile profile = session.getUserProfile();
 
@@ -43,13 +48,25 @@ public class ProfileActivity extends BaseActivity {
         TextView score = (TextView) findViewById(R.id.profile_points);
         score.setText(String.valueOf(profile.getPointsEarned()));
 
-		mRecyclerView = (RecyclerView) findViewById(R.id.joined_hunts_recycler);
-		mRecyclerView.setHasFixedSize(true);
+		//set up "hunts joined" recycler
+		mJoinedRecyclerView = (RecyclerView) findViewById(R.id.joined_hunts_recycler);
+		mJoinedRecyclerView.setHasFixedSize(true);
 
-		mLayoutManager = new LinearLayoutManager(this);
-		mRecyclerView.setLayoutManager(mLayoutManager);
+		mJoinedLayoutManager = new LinearLayoutManager(this);
+		mJoinedRecyclerView.setLayoutManager(mJoinedLayoutManager);
 
-		mAdapter = new MyYourHuntsRecyclerViewAdapter(yourHunts, mListener);
+		mJoinedAdapter = new MyYourHuntsRecyclerViewAdapter(yourHunts, mJoinedListener);
+		mJoinedRecyclerView.setAdapter(mJoinedAdapter);
+
+		//set up "hunts completed" recycler
+		mCompletedRecyclerView = (RecyclerView) findViewById(R.id.completed_hunts_recycler);
+		mCompletedRecyclerView.setHasFixedSize(true);
+
+		mCompletedLayoutManager = new LinearLayoutManager(this);
+		mCompletedRecyclerView.setLayoutManager(mCompletedLayoutManager);
+
+		mCompletedAdapter = new MyYourHuntsRecyclerViewAdapter(completedHunts, mCompletedListener);
+		mCompletedRecyclerView.setAdapter(mCompletedAdapter);
     }
 
     @Override
