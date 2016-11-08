@@ -11,8 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.aj.scavengersworld.Activities.BaseActivity;
-import com.example.aj.scavengersworld.CluesRelated.ClueItemRecyclerViewAdapter;
-import com.example.aj.scavengersworld.DatabaseModels.HuntsToClues;
+import com.example.aj.scavengersworld.CluesRelated.UpdateClueRecyclerViewAdapter;
 import com.example.aj.scavengersworld.Model.Clue;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.google.firebase.database.DataSnapshot;
@@ -21,13 +20,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.List;
-
 public class HuntCreateModify extends BaseActivity implements View.OnClickListener {
     private String mHuntName;
     private String mHuntDescription;
     private Hunt hunt;
-	private List<Clue> mClueList = null;
+
+	private UserSessionManager session;
 
 	private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 	private DatabaseReference mDatabaseRefHuntClues;
@@ -40,7 +38,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 		mDatabaseRefHuntClues = mDatabase.getReference("hunts-clues");
 
-        UserSessionManager session = UserSessionManager.INSTANCE;
+        session = UserSessionManager.INSTANCE;
         if(savedInstanceState == null) {
             if(extrasBundle != null && extrasBundle.get("Name") != null){
                 mHuntName = extrasBundle.getString("Name");
@@ -49,6 +47,10 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
                 mHuntName = getString(R.string.newHuntName);
             }
         }
+		if(!mHuntName.equals("New Hunt")) {
+			DatabaseReference mDataBaseRef = mDatabase.getReference(getString(R.string.huntsToClues) + "/" + mHuntName);
+			mDataBaseRef.addListenerForSingleValueEvent(huntsToCluesListener);
+		}
 
         hunt = session.getAdminHuntByName(mHuntName);
         if(hunt != null) {
@@ -87,29 +89,6 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			}
 		});
 
-		mDatabaseRefHuntClues.addListenerForSingleValueEvent(new ValueEventListener() {
-			@Override
-			public void onDataChange(DataSnapshot dataSnapshot) {
-				HuntsToClues huntClues = null;
-				for(DataSnapshot huntCluesSnapshot : dataSnapshot.getChildren()){
-					huntClues = huntCluesSnapshot.getValue(HuntsToClues.class);
-					if(huntClues != null) {
-						if (huntClues.getHuntName().equals(mHuntName)) {
-							break;
-						}
-					}
-				}
-				if(huntClues != null) {
-					mClueList = huntClues.getClueList();
-				}
-			}
-
-			@Override
-			public void onCancelled(DatabaseError databaseError) {
-
-			}
-		});
-
 
 		//set up "clues" recycler
 		RecyclerView mCluesRecyclerView = (RecyclerView) findViewById(R.id.clues_recycler);
@@ -118,7 +97,8 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
 		mCluesRecyclerView.setLayoutManager(mLayoutManager);
 
-		RecyclerView.Adapter mAdapter = new ClueItemRecyclerViewAdapter(null, hunt, null);
+		//TODO ensure that appropriate stuff has been called first -- don't forget to handle creation case
+		RecyclerView.Adapter mAdapter = new UpdateClueRecyclerViewAdapter(hunt.getClueList());
 		mCluesRecyclerView.setAdapter(mAdapter);
 
 		//TODO ability to click on a specific clue to open edit screen
@@ -148,4 +128,22 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				break;
         }
     }
+
+	ValueEventListener huntsToCluesListener = new ValueEventListener() {
+		@Override
+		public void onDataChange(DataSnapshot dataSnapshot) {
+			for(DataSnapshot userToHuntsSnapshot : dataSnapshot.getChildren()){
+				Hunt currentHunt = session.getAdminHuntByName(dataSnapshot.getKey());
+				Clue newClue = userToHuntsSnapshot.getValue(Clue.class);
+				newClue.setHuntName(currentHunt.getHuntName());
+				currentHunt.addClueToClueList(newClue);
+			}
+		}
+
+		@Override
+		public void onCancelled(DatabaseError databaseError) {
+			// Getting Post failed, log a message
+
+		}
+	};
 }
