@@ -53,7 +53,7 @@ public class ClueFeedbackActivity extends BaseActivity {
     private void updateClueSuccess(){
         Clue currentClue = currentHunt.getCurrentClue();
         Clue nextClue = currentHunt.getClueAtSequence(currentClue.getSequenceNumberInHunt());
-        currentHunt.setCurrentClueId(nextClue.getClueId());
+        currentHunt.setCurrentClueSequence(nextClue.getSequenceNumberInHunt());
         mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+R.string.clueId);
         mDatabaseRef.setValue(nextClue.getClueId());
     }

@@ -143,11 +143,13 @@
     <string name="userToHunts">user-hunts</string>
     <string name="huntsToClues">hunts-clues</string>
     <string name="orderByHuntId">huntId</string>
+    <string name="orderByHuntName">huntName</string>
     <string name="orderByProgress">progress</string>
     <string name="searchableHuntsTable">searchable-hunts</string>
     <string name="userToProfile">user-profile</string>
     <string name="allHuntsTableRef">allhunts</string>
     <string name="clueId">clueId</string>
+    <string name="huntsTable">hunts</string>
 
     <!-- HUNTFEED ACTIVITY -->
     <string name="allFeeds">All</string>

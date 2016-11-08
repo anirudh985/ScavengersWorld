@@ -2,12 +2,16 @@ package com.example.aj.scavengersworld.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.aj.scavengersworld.CluesRelated.CurrentClueActivity;
 import com.example.aj.scavengersworld.DatabaseModels.SearchableHunt;
+import com.example.aj.scavengersworld.DatabaseModels.UserToHunts;
+import com.example.aj.scavengersworld.GamePlayActivity;
 import com.example.aj.scavengersworld.HuntCreateModify;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
@@ -21,34 +25,61 @@ import com.google.firebase.database.ValueEventListener;
 import static com.example.aj.scavengersworld.Constants.ADMIN;
 import static com.example.aj.scavengersworld.Constants.COMPLETED;
 import static com.example.aj.scavengersworld.Constants.INPROGRESS;
+import static com.example.aj.scavengersworld.Constants.SEQUENCE_OF_FIRST_CLUE;
+
 
 /**
  * Created by Jennifer on 10/17/2016.
  */
-public class HuntActivity extends BaseActivity implements View.OnClickListener {
+public class HuntActivity extends BaseActivity{
 
 	private Intent intent;
 	private String huntName;
 
 	private Hunt hunt;
+	private UserToHunts userToHunts;
 
 	private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-	private DatabaseReference mDatabaseRefSearchableHunts = mDatabase.getReference("searchable-hunts");
+	private DatabaseReference mDatabaseRefHunts;
 
 	private UserSessionManager session = UserSessionManager.INSTANCE;
 
 	private final String LOG_TAG = getClass().getSimpleName();
+
+	private TextView description;
+
+	private ValueEventListener huntListener = new ValueEventListener() {
+		@Override
+		public void onDataChange(DataSnapshot dataSnapshot) {
+			for(DataSnapshot huntSnapshot : dataSnapshot.getChildren()){
+				Hunt currentHunt = huntSnapshot.getValue(Hunt.class);
+				updateHuntInSession(currentHunt);
+				updateUI();
+			}
+		}
+
+		@Override
+		public void onCancelled(DatabaseError databaseError) {
+
+		}
+	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		intent = getIntent();
+		huntName = intent.getStringExtra("NAME");
+
 		super.onCreate(savedInstanceState);
 		Log.d(LOG_TAG, getString(R.string.log_onCreate));
 
-		intent = getIntent();
-		huntName = intent.getStringExtra("NAME");
+		mDatabaseRefHunts = mDatabase.getReference(getString(R.string.huntsTable));
+
+
 
 		TextView huntNameView = (TextView) findViewById(R.id.hunt_name);
 		huntNameView.setText(huntName);
 
+		getHuntObjectFromDatabaseAndUpdateInSession(huntName);
 		String userHuntStatus = session.getHuntStatusByName(huntName);
 		if(userHuntStatus != null) {
 			if(userHuntStatus.equals(INPROGRESS)) {
@@ -59,11 +90,11 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 				hunt = session.getCompletedHuntByName(huntName);
 			}
 		} else {
-			//TODO retrieve hunt from database
+			hunt = new Hunt();
 		}
 
-		TextView description = (TextView) findViewById(R.id.hunt_description);
-		description.setText(hunt.getDescription());
+		description = (TextView) findViewById(R.id.hunt_description);
+//		description.setText(hunt.getDescription());
 
 		Button join = (Button) findViewById(R.id.hunt_join_button);
 		if(userHuntStatus != null) {
@@ -72,7 +103,10 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 				join.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						//TODO intent for hunt's clue page
+						Intent clueIntent = new Intent(view.getContext(), CurrentClueActivity.class);
+						clueIntent.putExtra("MODE", "HUNTCLUES");
+						clueIntent.putExtra("HUNTNAME", huntName);
+						startActivity(clueIntent);
 					}
 				});
 			} else if(userHuntStatus.equals(ADMIN)) {
@@ -89,10 +123,19 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 			}
 		} else {
 			join.setText(R.string.hunt_join);
+			join.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					// TODO: add hunt to yourHuntsList and update in database and open gameplay screen
+					addHuntToSession();
+					updateHuntStatusToJoinInDB();
+					startGamePlayScreen();
+				}
+			});
 		}
 
-		Button leaders = (Button) findViewById(R.id.hunt_leaders_button);
-		leaders.setOnClickListener(this);
+//		Button leaders = (Button) findViewById(R.id.hunt_leaders_button);
+//		leaders.setOnClickListener(this);
 	}
 
 	@Override
@@ -140,21 +183,6 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 		Log.d(LOG_TAG, getString(R.string.log_onRestart));
 	}
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()){
-			case R.id.hunt_join_button:
-				//TODO change user status to "INPROGRESS"
-				break;
-			case R.id.hunt_leaders_button:
-				Intent leaderboard = new Intent(HuntActivity.this,LeaderboardActivity.class);
-				startActivity(leaderboard);
-				break;
-			default:
-				break;
-		}
-	}
-
 	ValueEventListener searchableHuntsListener = new ValueEventListener() {
 		@Override
 		public void onDataChange(DataSnapshot dataSnapshot) {
@@ -175,4 +203,61 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 			// ...
 		}
 	};
+
+	private void getHuntObjectFromDatabaseAndUpdateInSession(String huntName){
+		if(huntName != null){
+			mDatabaseRefHunts.orderByChild(getString(R.string.orderByHuntName))
+					         .equalTo(huntName)
+					         .addListenerForSingleValueEvent(huntListener);
+		}
+		else{
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("Please select a hunt to update")
+					.setTitle("Error")
+					.setPositiveButton(android.R.string.ok, null);
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
+	}
+
+	private void updateUI(){
+		if(description != null){
+			description.setText(hunt.getDescription());
+		}
+	}
+
+	private void updateHuntInSession(Hunt currentHunt){
+		if(hunt != null && currentHunt != null){
+			hunt.setCreatedByUserId(currentHunt.getCreatedByUserId());
+			hunt.setDescription(currentHunt.getDescription());
+			hunt.setEndTime(currentHunt.getEndTime());
+			hunt.setStartTime(currentHunt.getStartTime());
+			hunt.setPrivateHunt(currentHunt.isPrivateHunt());
+		}
+	}
+
+	private void addHuntToSession(){
+		hunt.setCurrentClueSequence(SEQUENCE_OF_FIRST_CLUE);
+		hunt.setState(INPROGRESS);
+		hunt.setScore(0);
+		hunt.setProgress(0);
+		session.addHunt(INPROGRESS, hunt);
+	}
+
+	private void updateHuntStatusToJoinInDB(){
+		userToHunts = new UserToHunts();
+		userToHunts.setCurrentClueSequence(SEQUENCE_OF_FIRST_CLUE);
+		userToHunts.setState(INPROGRESS);
+		userToHunts.setScore(0);
+		userToHunts.setProgress(0);
+
+		DatabaseReference dbRef = mDatabase.getReference(getString(R.string.userToHunts));
+		dbRef.child(session.getUniqueUserId()).child(huntName).setValue(userToHunts);
+	}
+
+	private void startGamePlayScreen(){
+		Intent gamePlayScreenIntent = new Intent(this, GamePlayActivity.class);
+		startActivity(gamePlayScreenIntent);
+		finish();
+	}
 }

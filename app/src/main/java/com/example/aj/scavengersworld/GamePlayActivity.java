@@ -78,7 +78,6 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
         mSolveClueButton.setOnClickListener(this);
         //mShowCluesButton = (Button)findViewById(R.id.button7);
         buildGoogleApiClient();
-        getCurrentCluesAndSaveInSession();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -114,6 +113,8 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
         mUiSettings.setZoomGesturesEnabled(true);
         mUiSettings.setTiltGesturesEnabled(true);
         mUiSettings.setRotateGesturesEnabled(true);
+        updateUI();
+
     }
 
     protected void onResume() {
@@ -304,45 +305,17 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
                 //finish();
         }
     }
-    private void getCurrentCluesAndSaveInSession(){
-        List<Hunt> participatingHuntsList = session.getParticipatingHuntsList();
-        for(Hunt curHunt : participatingHuntsList){
-            numberOfEventListeners+=1;
-            mDatabaseRef = mDatabase.getReference(getString(R.string.huntsToClues) + "/" +curHunt.getHuntName());
-            mDatabaseRef.addListenerForSingleValueEvent(huntsToCluesListener);
+
+    private void updateUI(){
+        for(Hunt hunt: session.getParticipatingHuntsList()){
+            if(hunt.getClueList() == null) continue;
+            if(hunt.getClueList().size() == 0) continue;
+            int currentClueSequence = hunt.getCurrentClue().getSequenceNumberInHunt();
+            if(currentClueSequence == 1) continue;
+            Clue previousClue = hunt.getClueAtSequence(currentClueSequence -1 );
+            if(previousClue == null) continue;
+            LatLng previousClueLocation	=	new	LatLng(previousClue.getLocation().getLatitude(),previousClue.getLocation().getLongitude());
+            AddMarkerAtLocation(previousClueLocation, previousClue.getLandmarkDescription());
         }
     }
-    ValueEventListener huntsToCluesListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            for(DataSnapshot userToHuntsSnapshot : dataSnapshot.getChildren()){
-                Hunt currentHunt = session.getParticipatingHuntByName(dataSnapshot.getKey());
-                Clue newClue = userToHuntsSnapshot.getValue(Clue.class);
-                newClue.setHuntName(currentHunt.getHuntName());
-                currentHunt.addClueToClueList(newClue);
-                int a  = 1;
-            }
-            numberOfEventListeners-=1;
-            if(numberOfEventListeners == 0)
-                updateUI();
-        }
-        private void updateUI(){
-            for(Hunt hunt: session.getParticipatingHuntsList()){
-                if(hunt.getClueList() == null) continue;
-                if(hunt.getClueList().size() == 0) continue;
-                int currentClueSequence = hunt.getCurrentClue().getSequenceNumberInHunt();
-                if(currentClueSequence == 1) continue;
-                Clue previousClue = hunt.getClueAtSequence(currentClueSequence -1 );
-                if(previousClue == null) continue;
-                LatLng previousClueLocation	=	new	LatLng(previousClue.getLocation().getLatitude(),previousClue.getLocation().getLongitude());
-                AddMarkerAtLocation(previousClueLocation, previousClue.getLandmarkDescription());
-            }
-        }
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-            // Getting Post failed, log a message
-            Log.w(LOG_TAG, "loadPost:onCancelled", databaseError.toException());
-            // ...
-        }
-    };
 }

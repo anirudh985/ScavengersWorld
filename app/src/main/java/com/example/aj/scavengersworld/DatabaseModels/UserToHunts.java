@@ -7,7 +7,7 @@ public class UserToHunts implements Comparable<UserToHunts>{
     private String huntName;
     private int score;
     private String state;
-    private int clueId;
+    private int currentClueSequence;
     private double progress;
 
     public String getHuntName() {
@@ -34,12 +34,12 @@ public class UserToHunts implements Comparable<UserToHunts>{
         this.state = state;
     }
 
-    public int getClueId() {
-        return clueId;
+    public int getCurrentClueSequence() {
+        return currentClueSequence;
     }
 
-    public void setClueId(int clueId) {
-        this.clueId = clueId;
+    public void setCurrentClueSequence(int currentClueSequence) {
+        this.currentClueSequence = currentClueSequence;
     }
 
     public double getProgress() {return this.progress; }

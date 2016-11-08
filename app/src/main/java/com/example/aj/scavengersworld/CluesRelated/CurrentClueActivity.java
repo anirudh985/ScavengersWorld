@@ -100,7 +100,7 @@ public class CurrentClueActivity extends BaseActivity {
             }
             else if(extrasBundle.getString("MODE").equals("HUNTCLUES")) {
                 cluesDisplayMode = CluesDisplayMode.HUNTCLUES;
-                String huntName  = extrasBundle.getString("hunt");
+                String huntName  = extrasBundle.getString("HUNTNAME");
                 currentHunt = session.getParticipatingHuntByName(huntName);
             }
         }

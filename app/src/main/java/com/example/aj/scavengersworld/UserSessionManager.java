@@ -62,10 +62,12 @@ public enum UserSessionManager {
     private HashMap<String, Hunt> adminHunts = new HashMap<>();
     private HashMap<String, Hunt> participatingHunts = new HashMap<>();
     private HashMap<String, Hunt> completedHunts = new HashMap<>();
+    private HashMap<String, Hunt> allHunts = new HashMap<>();
 
     private List<Hunt> adminHuntsList = new ArrayList<>();
     private List<Hunt> participatingHuntsList = new ArrayList<>();
     private List<Hunt> completedHuntsList = new ArrayList<>();
+    private List<Hunt> allHuntsList = new ArrayList<>();
 
     private UserProfile userProfile;
 
@@ -164,7 +166,7 @@ public enum UserSessionManager {
 
     private void updateHuntObject(@NonNull Hunt hunt, @NonNull UserToHunts userToHunts){
         hunt.setHuntName(userToHunts.getHuntName());
-        hunt.setCurrentClueId(userToHunts.getClueId());
+        hunt.setCurrentClueSequence(userToHunts.getCurrentClueSequence());
         hunt.setState(userToHunts.getState());
         hunt.setScore(userToHunts.getScore());
         hunt.setProgress(userToHunts.getProgress());
@@ -233,6 +235,39 @@ public enum UserSessionManager {
         this.adminHuntsList = new ArrayList<>();
         this.participatingHuntsList = new ArrayList<>();
         this.completedHuntsList = new ArrayList<>();
+    }
+
+    public void addHunt(String typeOfHunt, Hunt hunt){
+        if(hunt != null){
+            if(typeOfHunt.equals(INPROGRESS)){
+                participatingHunts.put(hunt.getHuntName(), hunt);
+                participatingHuntsList.add(hunt);
+            }
+            else if(typeOfHunt.equals(ADMIN)){
+                adminHunts.put(hunt.getHuntName(), hunt);
+                adminHuntsList.add(hunt);
+            }
+            else if(typeOfHunt.equals(COMPLETED)){
+                completedHunts.put(hunt.getHuntName(), hunt);
+                completedHuntsList.add(hunt);
+            }
+        }
+    }
+
+    public List<Hunt> getAllHuntsList(){
+        allHuntsList.clear();
+        allHuntsList.addAll(participatingHuntsList);
+//        allHuntsList.addAll(adminHuntsList);
+        allHuntsList.addAll(completedHuntsList);
+        return allHuntsList;
+    }
+
+    public HashMap<String, Hunt> getAllHunts(){
+        allHunts.clear();
+        allHunts.putAll(participatingHunts);
+//        allHunts.putAll(adminHunts);
+        allHunts.putAll(completedHunts);
+        return allHunts;
     }
 }
 

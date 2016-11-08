@@ -32,4 +32,7 @@ public final class Constants {
     public static final int FIFTY_HUNTS_COMPLETED = 3;
     // add others as well
 
+    // CLUES //
+    public static final int SEQUENCE_OF_FIRST_CLUE = 1;
+
 }

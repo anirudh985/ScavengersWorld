@@ -3,6 +3,8 @@ package com.example.aj.scavengersworld.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,18 +14,19 @@ import java.util.List;
  * Modified by anirudh on 11/01/16.
  */
 
-public class Hunt implements Comparable<Hunt>, Parcelable {
+@IgnoreExtraProperties
+public class Hunt implements Comparable<Hunt> {
     private int huntId;
     private String huntName;
     private String description;
     private String createdByUserId;
-    private Date startTime;
-    private Date endTime;
+    private long startTime;
+    private long endTime;
     //private Boolean miIsTeam;
-    private Boolean isPrivate;
+    private boolean privateHunt;
     private List<User> listOfAdmins;
     private int firstClueId;
-    private int currentClueId;
+    private int currentClueSequence;
 
     private String state;
     private int score;
@@ -76,28 +79,28 @@ public class Hunt implements Comparable<Hunt>, Parcelable {
         this.createdByUserId = createdByUserId;
     }
 
-    public Date getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
 
-    public Boolean getPrivate() {
-        return isPrivate;
+    public boolean isPrivateHunt() {
+        return privateHunt;
     }
 
-    public void setPrivate(Boolean aPrivate) {
-        isPrivate = aPrivate;
+    public void setPrivateHunt(boolean aPrivate) {
+        privateHunt = aPrivate;
     }
 
     public List<User> getListOfAdmins() {
@@ -116,12 +119,12 @@ public class Hunt implements Comparable<Hunt>, Parcelable {
         this.firstClueId = firstClueId;
     }
 
-    public int getCurrentClueId() {
-        return currentClueId;
+    public int getCurrentClueSequence() {
+        return currentClueSequence;
     }
 
-    public void setCurrentClueId(int currentClueId) {
-        this.currentClueId = currentClueId;
+    public void setCurrentClueSequence(int currentClueId) {
+        this.currentClueSequence = currentClueId;
     }
 
 
@@ -159,28 +162,6 @@ public class Hunt implements Comparable<Hunt>, Parcelable {
         return huntName.compareTo(hunt.getHuntName());
     }
 
-    protected Hunt(Parcel in) {
-        huntId = in.readInt();
-        huntName = in.readString();
-        createdByUserId = in.readString();
-        long tmpMStartTime = in.readLong();
-        startTime = tmpMStartTime != -1 ? new Date(tmpMStartTime) : null;
-        long tmpMEndTime = in.readLong();
-        endTime = tmpMEndTime != -1 ? new Date(tmpMEndTime) : null;
-        byte mIsPrivateVal = in.readByte();
-        isPrivate = mIsPrivateVal == 0x02 ? null : mIsPrivateVal != 0x00;
-        if (in.readByte() == 0x01) {
-            listOfAdmins = new ArrayList<User>();
-            in.readList(listOfAdmins, User.class.getClassLoader());
-        } else {
-            listOfAdmins = null;
-        }
-        firstClueId = in.readInt();
-        currentClueId = in.readInt();
-        state = in.readString();
-        score = in.readInt();
-        progress = in.readDouble();
-    }
     public Clue getClueWithId(int clueId){
         for(Clue clue : clueList){
             if(clue.getClueId() == clueId)
@@ -188,9 +169,11 @@ public class Hunt implements Comparable<Hunt>, Parcelable {
         }
         return null;
     }
+
     public  Clue getCurrentClue(){
-        return getClueWithId(currentClueId);
+        return getClueAtSequence(currentClueSequence);
     }
+
     public Clue getClueAtSequence(int sequenceNumber){
         for(Clue clue : clueList){
             if(clue.getSequenceNumberInHunt() == sequenceNumber)
@@ -198,46 +181,20 @@ public class Hunt implements Comparable<Hunt>, Parcelable {
         }
         return null;
     }
-    @Override
-    public int describeContents() {
-        return 0;
+
+    public Date getStartDate(){
+        return new Date(this.startTime);
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(huntId);
-        dest.writeString(huntName);
-        dest.writeString(createdByUserId);
-        dest.writeLong(startTime != null ? startTime.getTime() : -1L);
-        dest.writeLong(endTime != null ? endTime.getTime() : -1L);
-        if (isPrivate == null) {
-            dest.writeByte((byte) (0x02));
-        } else {
-            dest.writeByte((byte) (isPrivate ? 0x01 : 0x00));
-        }
-        if (listOfAdmins == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeList(listOfAdmins);
-        }
-        dest.writeInt(firstClueId);
-        dest.writeInt(currentClueId);
-        dest.writeString(state);
-        dest.writeInt(score);
-        dest.writeDouble(progress);
+    public Date getEndDate(){
+        return new Date(this.endTime);
     }
 
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Hunt> CREATOR = new Parcelable.Creator<Hunt>() {
-        @Override
-        public Hunt createFromParcel(Parcel in) {
-            return new Hunt(in);
-        }
+    public void setStartDate(Date startDate){
+        this.startTime = startDate.getTime();
+    }
 
-        @Override
-        public Hunt[] newArray(int size) {
-            return new Hunt[size];
-        }
-    };
+    public void setEndDate(Date endDate){
+        this.endTime = endDate.getTime();
+    }
 }

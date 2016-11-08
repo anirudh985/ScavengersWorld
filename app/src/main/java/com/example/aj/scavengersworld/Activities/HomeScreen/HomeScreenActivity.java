@@ -12,6 +12,7 @@ import com.example.aj.scavengersworld.Activities.BaseActivity;
 import com.example.aj.scavengersworld.Activities.HuntActivity;
 import com.example.aj.scavengersworld.DatabaseModels.UserProfile;
 import com.example.aj.scavengersworld.DatabaseModels.UserToHunts;
+import com.example.aj.scavengersworld.Model.Clue;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
@@ -23,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.example.aj.scavengersworld.Constants.CREATED_HUNTS;
@@ -43,6 +45,9 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference mDatabaseRefUserHunts;
     private DatabaseReference mDatabaseRefUserProfile;
+    private DatabaseReference mDatabaseRefHuntClues;
+
+    private int numberOfClueEventListeners = 0;
 
 
 
@@ -59,6 +64,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
                 session.updateHunts(listOfUserToHunts);
             }
             updateUI();
+            getCurrentCluesAndSaveInSession();
         }
 
         @Override
@@ -234,4 +240,36 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
         newUserProfile.setBadgesEarned(new ArrayList<Integer>());
         mDatabaseRefUserProfile.push().setValue(newUserProfile);
     }
+
+    private void getCurrentCluesAndSaveInSession(){
+        List<Hunt> allHuntsList = session.getAllHuntsList();
+        for(Hunt curHunt : allHuntsList){
+            numberOfClueEventListeners+=1;
+            mDatabaseRefHuntClues = mDatabase.getReference(getString(R.string.huntsToClues) + "/" +curHunt.getHuntName());
+            mDatabaseRefHuntClues.addListenerForSingleValueEvent(huntsToCluesListener);
+        }
+    }
+    ValueEventListener huntsToCluesListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            HashMap<String, Hunt> allHunts = session.getAllHunts();
+            for(DataSnapshot userToHuntsSnapshot : dataSnapshot.getChildren()){
+                Hunt currentHunt = allHunts.get(dataSnapshot.getKey());
+                Clue newClue = userToHuntsSnapshot.getValue(Clue.class);
+                newClue.setHuntName(currentHunt.getHuntName());
+                currentHunt.addClueToClueList(newClue);
+                int a  = 1;
+            }
+            numberOfClueEventListeners-=1;
+            if(numberOfClueEventListeners == 0)
+                updateUI();
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            // Getting Post failed, log a message
+            Log.w(LOG_TAG, "loadPost:onCancelled", databaseError.toException());
+            // ...
+        }
+    };
 }
