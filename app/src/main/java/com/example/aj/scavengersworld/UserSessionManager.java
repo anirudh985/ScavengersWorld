@@ -208,7 +208,7 @@ public enum UserSessionManager {
         if (participatingHunts.get(huntName) != null) {
             return INPROGRESS;
         } else if (adminHunts.get(huntName) != null) {
-            return ADMIN
+            return ADMIN;
         } else if(completedHunts.get(huntName) != null) {
             return COMPLETED;
             //TODO add any other cases
