@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ToggleButton;
 
 import com.example.aj.scavengersworld.Activities.BaseActivity;
 import com.example.aj.scavengersworld.CluesRelated.UpdateClueRecyclerViewAdapter;
@@ -106,6 +107,9 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			}
 		});
 
+		ToggleButton toggle = (ToggleButton) findViewById(R.id.public_private_toggle);
+		toggle.setOnClickListener(this);
+
 		//get all clues for this hunt
 		DatabaseReference mDataBaseRef = mDatabase.getReference(getString(R.string.huntsToClues) + "/" + mHuntName);
 		mDataBaseRef.addListenerForSingleValueEvent(huntsToCluesListener);
@@ -145,6 +149,13 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				addClue.putExtra("HUNTNAME", hunt.getHuntName());
 				startActivity(addClue);
 				break;
+			case R.id.public_private_toggle:
+				ToggleButton toggle = (ToggleButton) findViewById(R.id.public_private_toggle);
+				boolean isPublic = toggle.isChecked(); //TODO ensure this isn't reversed
+				if(isPublic == hunt.isPrivateHunt()) {
+					changed = true;
+					hunt.setPrivateHunt(isPublic);
+				}
 			case R.id.save_button:
 				if(changed) {
 					//TODO update db
