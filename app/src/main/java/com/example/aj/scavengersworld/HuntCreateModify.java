@@ -49,7 +49,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
         } else {
 			//TODO
 		}
-		if(!mHuntName.equals("New Hunt")) {
+		if(!(mHuntName == null) && !mHuntName.equals("New Hunt")) {
 			hunt = session.getAdminHuntByName(mHuntName);
 			if(hunt != null) {
 				mHuntDescription = hunt.getDescription();
@@ -100,7 +100,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		mCluesRecyclerView.setLayoutManager(mLayoutManager);
 
 		//TODO don't forget to handle creation case
-		RecyclerView.Adapter mAdapter = new UpdateClueRecyclerViewAdapter(hunt.getClueList());
+		RecyclerView.Adapter mAdapter = new UpdateClueRecyclerViewAdapter(hunt.getHuntName());
 		mCluesRecyclerView.setAdapter(mAdapter);
 
 		//TODO ability to click on a specific clue to open edit screen
@@ -139,6 +139,11 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				Clue newClue = userToHuntsSnapshot.getValue(Clue.class);
 				newClue.setHuntName(currentHunt.getHuntName());
 				currentHunt.addClueToClueList(newClue);
+			}
+			RecyclerView mCluesRecyclerView = (RecyclerView) findViewById(R.id.clues_recycler);
+			if(mCluesRecyclerView != null) {
+				UpdateClueRecyclerViewAdapter clueRecyclerViewAdapter = (UpdateClueRecyclerViewAdapter) mCluesRecyclerView.getAdapter();
+				clueRecyclerViewAdapter.notifyDataSetChanged();
 			}
 		}
 

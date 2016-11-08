@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.aj.scavengersworld.Model.Clue;
+import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
+import com.example.aj.scavengersworld.UserSessionManager;
 
 import java.util.List;
 
@@ -16,7 +18,10 @@ import java.util.List;
  */
 
 public class UpdateClueRecyclerViewAdapter extends RecyclerView.Adapter<UpdateClueRecyclerViewAdapter.ViewHolder> {
+	private String mhuntName;
+	private Hunt mHunt;
 	private List<Clue> huntClues;
+	private UserSessionManager session = UserSessionManager.INSTANCE;
 
 	public class ViewHolder extends RecyclerView.ViewHolder {
 		public final View mView;
@@ -39,8 +44,10 @@ public class UpdateClueRecyclerViewAdapter extends RecyclerView.Adapter<UpdateCl
 	}
 
 
-	public UpdateClueRecyclerViewAdapter(List<Clue> dataset) {
-		huntClues = dataset;
+	public UpdateClueRecyclerViewAdapter(String huntName) {
+		mhuntName = huntName;
+		mHunt = session.getAdminHuntByName(mhuntName);
+		huntClues = mHunt.getClueList();
 	}
 
 	// Create new views (invoked by the layout manager)
@@ -63,6 +70,7 @@ public class UpdateClueRecyclerViewAdapter extends RecyclerView.Adapter<UpdateCl
 	// Return the size of your dataset (invoked by the layout manager)
 	@Override
 	public int getItemCount() {
+		huntClues = mHunt.getClueList();
 		if(huntClues == null) {
 			return 0;
 		}
