@@ -67,7 +67,7 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 
 		Button join = (Button) findViewById(R.id.hunt_join_button);
 		if(userHuntStatus != null) {
-			if(userHuntStatus.equals("INPROGRESS") || userHuntStatus.equals("COMPLETED")) {
+			if(userHuntStatus.equals(INPROGRESS) || userHuntStatus.equals(COMPLETED)) {
 				join.setText(R.string.view_clues);
 				join.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -75,7 +75,7 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 						//TODO intent for hunt's clue page
 					}
 				});
-			} else if(userHuntStatus.equals("ADMIN")) {
+			} else if(userHuntStatus.equals(ADMIN)) {
 				join.setText(R.string.update_hunt);
 				join.setOnClickListener(new View.OnClickListener() {
 					@Override

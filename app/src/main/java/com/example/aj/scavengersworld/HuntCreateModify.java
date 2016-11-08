@@ -46,17 +46,18 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
             else {
                 mHuntName = getString(R.string.newHuntName);
             }
-        } else {
-			//TODO
-		}
-		if(!(mHuntName == null) && !mHuntName.equals("New Hunt")) {
-			hunt = session.getAdminHuntByName(mHuntName);
-			if(hunt != null) {
-				mHuntDescription = hunt.getDescription();
+
+			if(!(mHuntName == null) && !mHuntName.equals("New Hunt")) {
+				hunt = session.getAdminHuntByName(mHuntName);
+				if(hunt != null) {
+					mHuntDescription = hunt.getDescription();
+				}
+			} else {
+				mHuntDescription = getString(R.string.hunt_description);
+				hunt = new Hunt();
+				//session.addHunt(ADMIN, hunt); TODO
 			}
-		} else {
-			mHuntDescription = getString(R.string.hunt_description);
-		}
+        }
 
         EditText editName = (EditText) findViewById(R.id.editHuntName);
 		editName.setText(mHuntName);
