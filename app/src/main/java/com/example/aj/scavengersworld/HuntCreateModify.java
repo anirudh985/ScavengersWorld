@@ -38,6 +38,8 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 	private UserSessionManager session;
 
+	private RecyclerView mCluesRecyclerView;
+
 	private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 	private DatabaseReference mDatabaseRefHuntClues;
 	private DatabaseReference mDatabaseRefHuntsData;
@@ -118,7 +120,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		mDataBaseRef.addListenerForSingleValueEvent(huntsToCluesListener);
 
 		//set up "clues" recycler
-		RecyclerView mCluesRecyclerView = (RecyclerView) findViewById(R.id.clues_recycler);
+		mCluesRecyclerView = (RecyclerView) findViewById(R.id.clues_recycler);
 		mCluesRecyclerView.setHasFixedSize(true);
 
 		LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -215,6 +217,8 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			changed = true;
 
 		}
+		UpdateClueRecyclerViewAdapter clueRecyclerViewAdapter = (UpdateClueRecyclerViewAdapter) mCluesRecyclerView.getAdapter();
+		clueRecyclerViewAdapter.notifyDataSetChanged();
 	}
 	private void UpdateHuntDataInDatabase(Hunt currentHunt){
 		HuntsData huntsData = new HuntsData();
