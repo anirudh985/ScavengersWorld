@@ -151,6 +151,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		switch (v.getId()) {
 			case R.id.add_clue_fab:
 				Intent addClue = new Intent(this, ClueInfoActivity.class);
+				addClue.putExtra("HUNTNAME", hunt.getHuntName());
 				startActivity(addClue);
 				break;
 			case R.id.public_private_toggle:
@@ -174,6 +175,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		int itemPosition = mCluesRecyclerView.getChildLayoutPosition(v);
 		Clue clue = hunt.getClueList().get(itemPosition);
 		Intent editClue = new Intent(this, ClueInfoActivity.class);
+		editClue.putExtra("HUNTNAME", hunt.getHuntName());
 		editClue.putExtra("CLUE", clue);
 		mPosition = position;
 		startActivityForResult(editClue, 3);
