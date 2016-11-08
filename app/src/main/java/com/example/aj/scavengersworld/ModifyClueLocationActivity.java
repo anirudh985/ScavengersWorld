@@ -222,7 +222,7 @@ public class ModifyClueLocationActivity extends FragmentActivity implements OnMa
             double longitude = mCurrentSelectedLocation.longitude;
             intent.putExtra("LATITUDE",latitude);
             intent.putExtra("LONGITUDE",longitude);
-            setResult(2,intent);
+            setResult(RESULT_OK,intent);
             finish();//finishing activity
         }
     }
