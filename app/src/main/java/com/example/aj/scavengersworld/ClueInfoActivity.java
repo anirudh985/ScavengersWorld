@@ -161,8 +161,8 @@ public class ClueInfoActivity extends BaseActivity implements View.OnClickListen
         super.onSaveInstanceState(savedbundle);
         Log.d(LOG_TAG, "onSaveInstanceState()");
         Intent backToHuntsIntent = new Intent(ClueInfoActivity.this, HuntCreateModify.class);
-        Double mCurrentLatitude = Double.parseDouble(mLatitudeLabel.getText().toString().equals(mDefaultLocationText)? mLatitudeLabel.getText().toString() :"0.0");
-        Double mCurrentLongitude = Double.parseDouble(mLongitudelabel.getText().toString().equals(mDefaultLocationText)? mLocationEditButton.getText().toString() :"0.0");
+        Double mCurrentLatitude = Double.parseDouble(mLatitudeLabel.getText().toString().equals(mDefaultLocationText)? "0.0":mLatitudeLabel.getText().toString());
+        Double mCurrentLongitude = Double.parseDouble(mLongitudelabel.getText().toString().equals(mDefaultLocationText)? "0.0":mLongitudelabel.getText().toString());
         currentClue.setLocation(new Location(mCurrentLatitude, mCurrentLongitude));
         currentClue.setClueDescription(mClueDesctiptionEditText.getText().toString());
         currentClue.setClueTitle(mClueNameEditText.getText().toString());
