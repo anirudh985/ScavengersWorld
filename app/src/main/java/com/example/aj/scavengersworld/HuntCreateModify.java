@@ -101,13 +101,8 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
 		mCluesRecyclerView.setLayoutManager(mLayoutManager);
 
-		//TODO don't forget to handle creation case
-		RecyclerView.Adapter mAdapter = new UpdateClueRecyclerViewAdapter(hunt.getHuntName());
+		RecyclerView.Adapter mAdapter = new UpdateClueRecyclerViewAdapter(hunt.getHuntName(), this);
 		mCluesRecyclerView.setAdapter(mAdapter);
-
-		//TODO ability to click on a specific clue to open edit screen
-		//ClueItemRecyclerViewAdapter.ClueClickListener clueClickListener;
-		//mCluesRecyclerView.setOnClickListener(clueClickListener);
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_clue_fab);
 		fab.setOnClickListener(this);
@@ -127,23 +122,27 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    public void onClick(View v) { //TODO change to onFragmentItemInteraction or whatvver
+    public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.add_clue_fab:
 				Intent addClue = new Intent(this, ClueInfoActivity.class);
+				addClue.putExtra("HUNTNAME", hunt.getHuntName());
 				startActivity(addClue);
 				break;
 			case R.id.save_button:
 				//TODO write updates to db
 				break;
-			default:
-				RecyclerView mCluesRecyclerView = (RecyclerView) findViewById(R.id.clues_recycler);
-				int itemPosition = mCluesRecyclerView.getChildLayoutPosition(v);
-				Clue clue = hunt.getClueList().get(itemPosition);
-				Intent editClue = new Intent(this, ClueInfoActivity.class);
-				editClue.putExtra("HUNTNAME", clue.getHuntName());
-				editClue.putExtra("CLUEID", clue.getClueId());
 		}
+	}
+
+	public void onClick(View v, int position) {
+		RecyclerView mCluesRecyclerView = (RecyclerView) findViewById(R.id.clues_recycler);
+		int itemPosition = mCluesRecyclerView.getChildLayoutPosition(v);
+		Clue clue = hunt.getClueList().get(itemPosition);
+		Intent editClue = new Intent(this, ClueInfoActivity.class);
+		editClue.putExtra("HUNTNAME", clue.getHuntName());
+		editClue.putExtra("CLUEID", clue.getClueId());
+		startActivity(editClue);
 	}
 
 	ValueEventListener huntsToCluesListener = new ValueEventListener() {
