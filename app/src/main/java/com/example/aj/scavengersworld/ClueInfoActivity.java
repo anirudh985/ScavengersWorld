@@ -64,8 +64,7 @@ public class ClueInfoActivity extends BaseActivity implements View.OnClickListen
            // RESULT_CODE = createdIntent.get
             savedbundle = createdIntent.getExtras();
             String huntName = savedbundle.getString("HUNTNAME");
-            //String huntName = "Hunt3";
-            Hunt currentHunt = session.getParticipatingHuntByName(huntName);
+            Hunt currentHunt = session.getAdminHuntByName(huntName);
             if(savedbundle == null || savedbundle.get("CLUE") == null) {
                 currentClue = new Clue();
                 currentClue.setHuntName(huntName);
