@@ -150,6 +150,7 @@
     <string name="allHuntsTableRef">allhunts</string>
     <string name="clueId">clueId</string>
     <string name="progress">progress</string>
+    <string name="hunts">hunts</string>
     <string name="huntsTable">hunts</string>
 
     <!-- HUNTFEED ACTIVITY -->

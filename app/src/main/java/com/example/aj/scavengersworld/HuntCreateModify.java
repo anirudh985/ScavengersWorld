@@ -14,6 +14,7 @@ import android.widget.ToggleButton;
 
 import com.example.aj.scavengersworld.Activities.BaseActivity;
 import com.example.aj.scavengersworld.CluesRelated.UpdateClueRecyclerViewAdapter;
+import com.example.aj.scavengersworld.DatabaseModels.HuntsData;
 import com.example.aj.scavengersworld.Model.Clue;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +40,8 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 	private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 	private DatabaseReference mDatabaseRefHuntClues;
+	private DatabaseReference mDatabaseRefHuntsData;
+	private DatabaseReference mDatabaseRefClues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +161,8 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				}
 			case R.id.save_button:
 				if(changed) {
-					//TODO update db
+                    UpdateHuntDataInDatabase(hunt);
+                    UpdateClueListInDatabase(hunt);
 				}
 				break;
 		}
@@ -209,6 +213,24 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			huntList.add(mPosition, clue);
 			hunt.setClueList(huntList);
 			changed = true;
+
 		}
 	}
+	private void UpdateHuntDataInDatabase(Hunt currentHunt){
+		HuntsData huntsData = new HuntsData();
+		huntsData.setHuntName(currentHunt.getHuntName());
+		huntsData.setCreatedByUserId(currentHunt.getCreatedByUserId());
+		huntsData.setDescription(currentHunt.getDescription());
+		huntsData.setEndTime(currentHunt.getEndTime());
+		huntsData.setStartTime(currentHunt.getStartTime());
+		huntsData.setPrivate(currentHunt.isPrivateHunt());
+		mDatabaseRefHuntsData = mDatabase.getReference(getString(R.string.hunts) + "/" + currentHunt.getHuntName());
+		mDatabaseRefHuntsData.setValue(huntsData);
+	}
+
+	private void UpdateClueListInDatabase(Hunt currentHunt){
+		mDatabaseRefClues = mDatabase.getReference(getString(R.string.huntsToClues) + "/" + currentHunt.getHuntName());
+		mDatabaseRefClues.setValue(currentHunt.getClueList());
+	}
+
 }
