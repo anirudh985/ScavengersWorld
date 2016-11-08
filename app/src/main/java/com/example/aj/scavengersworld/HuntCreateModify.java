@@ -21,10 +21,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 public class HuntCreateModify extends BaseActivity implements View.OnClickListener {
     private String mHuntName;
     private String mHuntDescription;
     private Hunt hunt;
+
+	private int mposition;
 
 	private UserSessionManager session;
 
@@ -140,9 +144,9 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		int itemPosition = mCluesRecyclerView.getChildLayoutPosition(v);
 		Clue clue = hunt.getClueList().get(itemPosition);
 		Intent editClue = new Intent(this, ClueInfoActivity.class);
-		editClue.putExtra("HUNTNAME", clue.getHuntName());
-		editClue.putExtra("CLUEID", clue.getClueId());
-		startActivity(editClue);
+		editClue.putExtra("CLUE", clue);
+		mposition = position;
+		startActivityForResult(editClue, 3);
 	}
 
 	ValueEventListener huntsToCluesListener = new ValueEventListener() {
@@ -167,4 +171,18 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 		}
 	};
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		// check if the request code is same as what is passed. Here, it is 3
+		if(requestCode==3)
+		{
+			Clue clue = data.getParcelableExtra("CLUE");
+			List<Clue> huntList = hunt.getClueList();
+			huntList.remove(mposition);
+			huntList.add(mposition, clue);
+			hunt.setClueList(huntList);
+		}
+	}
 }
