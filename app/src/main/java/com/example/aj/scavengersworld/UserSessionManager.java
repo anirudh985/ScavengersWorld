@@ -214,11 +214,11 @@ public enum UserSessionManager {
 
     public String getHuntStatusByName(String huntName) {
         if (participatingHunts.get(huntName) != null) {
-            return "INPROGRESS";
+            return INPROGRESS;
         } else if (adminHunts.get(huntName) != null) {
-            return "ADMIN";
+            return ADMIN
         } else if(completedHunts.get(huntName) != null) {
-            return "COMPLETED";
+            return COMPLETED;
             //TODO add any other cases
         }
         else {
