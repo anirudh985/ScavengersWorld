@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.aj.scavengersworld.HuntCreateModify;
 import com.example.aj.scavengersworld.Model.Clue;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
@@ -22,6 +23,8 @@ public class UpdateClueRecyclerViewAdapter extends RecyclerView.Adapter<UpdateCl
 	private Hunt mHunt;
 	private List<Clue> huntClues;
 	private UserSessionManager session = UserSessionManager.INSTANCE;
+
+	private HuntCreateModify huntUpdateActivity;
 
 	public class ViewHolder extends RecyclerView.ViewHolder {
 		public final View mView;
@@ -44,10 +47,11 @@ public class UpdateClueRecyclerViewAdapter extends RecyclerView.Adapter<UpdateCl
 	}
 
 
-	public UpdateClueRecyclerViewAdapter(String huntName) {
+	public UpdateClueRecyclerViewAdapter(String huntName, HuntCreateModify updateActivity) {
 		mhuntName = huntName;
 		mHunt = session.getAdminHuntByName(mhuntName);
 		huntClues = mHunt.getClueList();
+		huntUpdateActivity = updateActivity;
 	}
 
 	// Create new views (invoked by the layout manager)
@@ -65,6 +69,13 @@ public class UpdateClueRecyclerViewAdapter extends RecyclerView.Adapter<UpdateCl
 		holder.mClueNameView.setText(huntClues.get(position).getClueTitle());
 		holder.mClueDescriptionView.setText(huntClues.get(position).getClueDescription());
 		holder.mHuntNameView.setText(huntClues.get(position).getHuntName());
+		final int pos = position;
+		holder.mView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				huntUpdateActivity.onClick(v, pos);
+			}
+		});
 	}
 
 	// Return the size of your dataset (invoked by the layout manager)
