@@ -18,6 +18,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.example.aj.scavengersworld.Constants.ADMIN;
+import static com.example.aj.scavengersworld.Constants.COMPLETED;
+import static com.example.aj.scavengersworld.Constants.INPROGRESS;
+
 /**
  * Created by Jennifer on 10/17/2016.
  */
@@ -47,11 +51,11 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 
 		String userHuntStatus = session.getHuntStatusByName(huntName);
 		if(userHuntStatus != null) {
-			if(userHuntStatus.equals("INPROGRESS")) {
+			if(userHuntStatus.equals(INPROGRESS)) {
 				hunt = session.getParticipatingHuntByName(huntName);
-			} else if(userHuntStatus.equals("ADMIN")) {
+			} else if(userHuntStatus.equals(ADMIN)) {
 				hunt = session.getAdminHuntByName(huntName);
-			} else if(userHuntStatus.equals("COMPLETED")) {
+			} else if(userHuntStatus.equals(COMPLETED)) {
 				hunt = session.getCompletedHuntByName(huntName);
 			}
 		} else {
