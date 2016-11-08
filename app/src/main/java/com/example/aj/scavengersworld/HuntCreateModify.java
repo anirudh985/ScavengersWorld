@@ -28,7 +28,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
     private String mHuntDescription;
     private Hunt hunt;
 
-	private int mposition;
+	private int mPosition;
 
 	private UserSessionManager session;
 
@@ -145,7 +145,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		Clue clue = hunt.getClueList().get(itemPosition);
 		Intent editClue = new Intent(this, ClueInfoActivity.class);
 		editClue.putExtra("CLUE", clue);
-		mposition = position;
+		mPosition = position;
 		startActivityForResult(editClue, 3);
 	}
 
@@ -180,8 +180,8 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		{
 			Clue clue = data.getParcelableExtra("CLUE");
 			List<Clue> huntList = hunt.getClueList();
-			huntList.remove(mposition);
-			huntList.add(mposition, clue);
+			huntList.remove(mPosition);
+			huntList.add(mPosition, clue);
 			hunt.setClueList(huntList);
 		}
 	}
