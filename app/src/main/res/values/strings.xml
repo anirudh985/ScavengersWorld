@@ -78,7 +78,7 @@
     <string name="googleLogin">Log in with Google</string>
 
 
-    <string name="loginUsername">Username</string>
+    <string name="loginUsername">Email</string>
     <string name="loginPassword">Password</string>
     <string name="login">Login</string>
     <string name="passwordMismatch">Password Mismatch</string>

@@ -149,9 +149,4 @@ public class CreatedHuntsFragment extends Fragment {
 //        mDatabaseRef.child(newHunt.getHuntName()).setValue(newHunt);
 //    }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        updateUI();
-    }
 }

@@ -269,5 +269,6 @@ public enum UserSessionManager {
         allHunts.putAll(completedHunts);
         return allHunts;
     }
+
 }
 
