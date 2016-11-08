@@ -46,18 +46,17 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
             else {
                 mHuntName = getString(R.string.newHuntName);
             }
-        }
-		if(!mHuntName.equals("New Hunt")) {
-			DatabaseReference mDataBaseRef = mDatabase.getReference(getString(R.string.huntsToClues) + "/" + mHuntName);
-			mDataBaseRef.addListenerForSingleValueEvent(huntsToCluesListener);
-		}
-
-        hunt = session.getAdminHuntByName(mHuntName);
-        if(hunt != null) {
-            mHuntDescription = hunt.getDescription();
         } else {
-            mHuntDescription = getString(R.string.hunt_description);
-        }
+			//TODO
+		}
+		if(!mHuntName.equals("New Hunt")) {
+			hunt = session.getAdminHuntByName(mHuntName);
+			if(hunt != null) {
+				mHuntDescription = hunt.getDescription();
+			}
+		} else {
+			mHuntDescription = getString(R.string.hunt_description);
+		}
 
         EditText editName = (EditText) findViewById(R.id.editHuntName);
 		editName.setText(mHuntName);
@@ -89,6 +88,9 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			}
 		});
 
+		//get all clues for this hunt
+		DatabaseReference mDataBaseRef = mDatabase.getReference(getString(R.string.huntsToClues) + "/" + mHuntName);
+		mDataBaseRef.addListenerForSingleValueEvent(huntsToCluesListener);
 
 		//set up "clues" recycler
 		RecyclerView mCluesRecyclerView = (RecyclerView) findViewById(R.id.clues_recycler);
@@ -97,7 +99,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
 		mCluesRecyclerView.setLayoutManager(mLayoutManager);
 
-		//TODO ensure that appropriate stuff has been called first -- don't forget to handle creation case
+		//TODO don't forget to handle creation case
 		RecyclerView.Adapter mAdapter = new UpdateClueRecyclerViewAdapter(hunt.getClueList());
 		mCluesRecyclerView.setAdapter(mAdapter);
 
