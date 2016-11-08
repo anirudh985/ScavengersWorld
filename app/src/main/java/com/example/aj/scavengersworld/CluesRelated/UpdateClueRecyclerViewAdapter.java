@@ -49,7 +49,7 @@ public class UpdateClueRecyclerViewAdapter extends RecyclerView.Adapter<UpdateCl
 															int viewType) {
 		View view = LayoutInflater.from(parent.getContext())
 				.inflate(R.layout.fragment_clue_item, parent, false);
-		return new UpdateClueRecyclerViewAdapter.ViewHolder((TextView) view);
+		return new UpdateClueRecyclerViewAdapter.ViewHolder(view);
 	}
 
 	// Replace the contents of a view (invoked by the layout manager)
