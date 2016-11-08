@@ -23,6 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+import static com.example.aj.scavengersworld.Constants.ADMIN;
+
 public class HuntCreateModify extends BaseActivity implements View.OnClickListener {
     private String mHuntName;
     private String mHuntDescription;
@@ -60,24 +62,28 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			} else {
 				mHuntDescription = getString(R.string.hunt_description);
 				hunt = new Hunt();
-				//session.addHunt(ADMIN, hunt); TODO
 			}
         }
 
         EditText editName = (EditText) findViewById(R.id.editHuntName);
 		editName.setText(mHuntName);
-        editName.addTextChangedListener(new TextWatcher() {
+		if(mHuntName.equals("New Hunt")) {
+			editName.addTextChangedListener(new TextWatcher() {
 
-            public void afterTextChanged(Editable s) {hunt.setHuntName(s.toString());}
+				public void afterTextChanged(Editable s) {
+					hunt.setHuntName(s.toString());
+					session.addHunt(ADMIN, hunt);
+				}
 
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
+				public void beforeTextChanged(CharSequence s, int start,
+											  int count, int after) {
+				}
 
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-            }
-        });
+				public void onTextChanged(CharSequence s, int start,
+										  int before, int count) {
+				}
+			});
+		}
 
 		EditText editDescription = (EditText) findViewById(R.id.editHuntDescription);
 		editDescription.setText(mHuntDescription);
