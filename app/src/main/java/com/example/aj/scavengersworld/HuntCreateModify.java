@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.aj.scavengersworld.Activities.BaseActivity;
@@ -110,6 +111,9 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_clue_fab);
 		fab.setOnClickListener(this);
+
+		Button save_button = (Button) findViewById(R.id.save_button);
+		save_button.setOnClickListener(this);
     }
 
     @Override
@@ -123,14 +127,24 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    public void onClick(View v) { //TODO change to onGragmentInteraction or whatvver
-        switch (v.getId()){
+    public void onClick(View v) { //TODO change to onFragmentItemInteraction or whatvver
+		switch (v.getId()) {
 			case R.id.add_clue_fab:
-				Intent addClue = new Intent(this,ClueInfoActivity.class);
+				Intent addClue = new Intent(this, ClueInfoActivity.class);
 				startActivity(addClue);
 				break;
-        }
-    }
+			case R.id.save_button:
+				//TODO write updates to db
+				break;
+			default:
+				RecyclerView mCluesRecyclerView = (RecyclerView) findViewById(R.id.clues_recycler);
+				int itemPosition = mCluesRecyclerView.getChildLayoutPosition(v);
+				Clue clue = hunt.getClueList().get(itemPosition);
+				Intent editClue = new Intent(this, ClueInfoActivity.class);
+				editClue.putExtra("HUNTNAME", clue.getHuntName());
+				editClue.putExtra("CLUEID", clue.getClueId());
+		}
+	}
 
 	ValueEventListener huntsToCluesListener = new ValueEventListener() {
 		@Override
