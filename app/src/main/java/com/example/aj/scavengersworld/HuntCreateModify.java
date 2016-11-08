@@ -32,6 +32,8 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 	private int mPosition;
 
+	private boolean changed = false;
+
 	private UserSessionManager session;
 
 	private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
@@ -72,6 +74,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 				public void afterTextChanged(Editable s) {
 					hunt.setHuntName(s.toString());
+					changed = true;
 					session.addHunt(ADMIN, hunt);
 				}
 
@@ -89,7 +92,10 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		editDescription.setText(mHuntDescription);
 		editDescription.addTextChangedListener(new TextWatcher() {
 
-			public void afterTextChanged(Editable s) {hunt.setDescription(s.toString());}
+			public void afterTextChanged(Editable s) {
+				hunt.setDescription(s.toString());
+				changed = true;
+			}
 
 			public void beforeTextChanged(CharSequence s, int start,
 										  int count, int after) {
@@ -140,7 +146,9 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				startActivity(addClue);
 				break;
 			case R.id.save_button:
-				//TODO write updates to db
+				if(changed) {
+					//TODO update db
+				}
 				break;
 		}
 	}
@@ -189,6 +197,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			huntList.remove(mPosition);
 			huntList.add(mPosition, clue);
 			hunt.setClueList(huntList);
+			changed = true;
 		}
 	}
 }
