@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -87,10 +88,12 @@ public class CreatedHuntsFragment extends Fragment {
 
     public void updateUI(){
         Log.d(LOG_TAG, "updateUI Called");
-        RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.createdHuntListRecyclerView);
-        if(recyclerView != null){
-            MyCreatedHuntsRecyclerViewAdapter createdHuntsRecyclerViewAdapter = (MyCreatedHuntsRecyclerViewAdapter) recyclerView.getAdapter();
-            createdHuntsRecyclerViewAdapter.notifyDataSetChanged();
+        if(getActivity() != null) {
+            RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.createdHuntListRecyclerView);
+            if (recyclerView != null) {
+                MyCreatedHuntsRecyclerViewAdapter createdHuntsRecyclerViewAdapter = (MyCreatedHuntsRecyclerViewAdapter) recyclerView.getAdapter();
+                createdHuntsRecyclerViewAdapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -145,4 +148,10 @@ public class CreatedHuntsFragment extends Fragment {
 //        mDatabaseRef = mDatabase.getReference("user-hunts/" + session.getUniqueUserId());
 //        mDatabaseRef.child(newHunt.getHuntName()).setValue(newHunt);
 //    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        updateUI();
+    }
 }

@@ -130,6 +130,7 @@ public class HuntActivity extends BaseActivity{
 					addHuntToSession();
 					updateHuntStatusToJoinInDB();
 					startGamePlayScreen();
+
 				}
 			});
 		}
@@ -237,6 +238,7 @@ public class HuntActivity extends BaseActivity{
 	}
 
 	private void addHuntToSession(){
+		hunt.setHuntName(huntName);
 		hunt.setCurrentClueSequence(SEQUENCE_OF_FIRST_CLUE);
 		hunt.setState(INPROGRESS);
 		hunt.setScore(0);
@@ -246,6 +248,7 @@ public class HuntActivity extends BaseActivity{
 
 	private void updateHuntStatusToJoinInDB(){
 		userToHunts = new UserToHunts();
+		userToHunts.setHuntName(huntName);
 		userToHunts.setCurrentClueSequence(SEQUENCE_OF_FIRST_CLUE);
 		userToHunts.setState(INPROGRESS);
 		userToHunts.setScore(0);

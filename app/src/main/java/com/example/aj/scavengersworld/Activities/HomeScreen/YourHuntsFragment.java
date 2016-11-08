@@ -3,6 +3,7 @@ package com.example.aj.scavengersworld.Activities.HomeScreen;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -166,20 +167,27 @@ public class YourHuntsFragment extends Fragment {
 
     public void updateUI(){
         Log.d(LOG_TAG, "updateUI Called");
-        RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.yourHuntsListRecyclerView);
-        if(recyclerView != null){
-            MyYourHuntsRecyclerViewAdapter yourHuntsRecyclerViewAdapter = (MyYourHuntsRecyclerViewAdapter) recyclerView.getAdapter();
-            yourHuntsRecyclerViewAdapter.notifyDataSetChanged();
-            if(yourHuntsList.size() == 0){
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("You seem to have joined no hunts. Click Join Hunts to explore new Hunts and start playing")
-                        .setTitle(getString(R.string.welcomeMessage) + " " + session.getUserName())
-                        .setPositiveButton(android.R.string.ok, null);
-                AlertDialog dialog = builder.create();
-                dialog.show();
+        if(getActivity() != null) {
+            RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.yourHuntsListRecyclerView);
+            if (recyclerView != null) {
+                MyYourHuntsRecyclerViewAdapter yourHuntsRecyclerViewAdapter = (MyYourHuntsRecyclerViewAdapter) recyclerView.getAdapter();
+                yourHuntsRecyclerViewAdapter.notifyDataSetChanged();
+                if (yourHuntsList.size() == 0) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("You seem to have joined no hunts. Click Join Hunts to explore new Hunts and start playing")
+                            .setTitle(getString(R.string.welcomeMessage) + " " + session.getUserName())
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
             }
         }
 
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        updateUI();
+    }
 }

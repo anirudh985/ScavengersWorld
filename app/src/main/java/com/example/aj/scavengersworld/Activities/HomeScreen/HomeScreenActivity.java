@@ -174,6 +174,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
     protected void onResume() {
         super.onResume();
         Log.d(LOG_TAG, "******* onResume() **********");
+        updateUI();
     }
 
     @Override
@@ -272,4 +273,6 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
             // ...
         }
     };
+
+
 }
