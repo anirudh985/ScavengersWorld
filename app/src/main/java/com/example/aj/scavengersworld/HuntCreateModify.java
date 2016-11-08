@@ -126,6 +126,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		switch (v.getId()) {
 			case R.id.add_clue_fab:
 				Intent addClue = new Intent(this, ClueInfoActivity.class);
+				addClue.putExtra("HUNTNAME", hunt.getHuntName());
 				startActivity(addClue);
 				break;
 			case R.id.save_button:
