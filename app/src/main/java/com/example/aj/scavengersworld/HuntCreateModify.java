@@ -15,6 +15,7 @@ import android.widget.ToggleButton;
 import com.example.aj.scavengersworld.Activities.BaseActivity;
 import com.example.aj.scavengersworld.CluesRelated.UpdateClueRecyclerViewAdapter;
 import com.example.aj.scavengersworld.DatabaseModels.HuntsData;
+import com.example.aj.scavengersworld.DatabaseModels.UserToHunts;
 import com.example.aj.scavengersworld.Model.Clue;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +48,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	private DatabaseReference mDatabaseRefHuntClues;
 	private DatabaseReference mDatabaseRefHuntsData;
 	private DatabaseReference mDatabaseRefClues;
+	private DatabaseReference mDatabaseRefUserHunts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +169,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 					}
                     UpdateHuntDataInDatabase(hunt);
                     UpdateClueListInDatabase(hunt);
+					UpdateUserHuntsTableInDatabase(hunt);
 				}
 				finish();
 				break;
@@ -260,6 +263,16 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	private void UpdateClueListInDatabase(Hunt currentHunt){
 		mDatabaseRefClues = mDatabase.getReference(getString(R.string.huntsToClues) + "/" + currentHunt.getHuntName());
 		mDatabaseRefClues.setValue(currentHunt.getClueList());
+	}
+	private void UpdateUserHuntsTableInDatabase(Hunt current){
+		mDatabaseRefUserHunts = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+ "/" + current.getHuntName());
+		UserToHunts userToHunts = new UserToHunts();
+		userToHunts.setHuntName(current.getHuntName());
+		userToHunts.setCurrentClueSequence(-1);
+		userToHunts.setProgress(0);
+		userToHunts.setScore(0);
+		userToHunts.setState(ADMIN);
+		mDatabaseRefUserHunts.setValue(userToHunts);
 	}
 
 }

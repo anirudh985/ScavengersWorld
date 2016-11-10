@@ -56,8 +56,8 @@ public class ClueFeedbackActivity extends BaseActivity {
         currentHunt.setCurrentClueSequence(nextClue.getSequenceNumberInHunt());
         int totalCluesInCurrentHunt = currentHunt.getClueList().size();
         Double progress = (double) currentClue.getSequenceNumberInHunt() * 100 / totalCluesInCurrentHunt;
-        mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+R.string.clueId);
-        mDatabaseRef.setValue(nextClue.getClueId());
+        mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+R.string.currentClueSequence);
+        mDatabaseRef.setValue(nextClue.getSequenceNumberInHunt());
         mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+R.string.progress);
         mDatabaseRef.setValue(progress.intValue());
     }
