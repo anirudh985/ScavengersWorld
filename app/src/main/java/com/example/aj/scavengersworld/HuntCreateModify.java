@@ -203,8 +203,10 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			for(DataSnapshot userToHuntsSnapshot : dataSnapshot.getChildren()){
 				Hunt currentHunt = session.getAdminHuntByName(dataSnapshot.getKey());
 				Clue newClue = userToHuntsSnapshot.getValue(Clue.class);
-				newClue.setHuntName(currentHunt.getHuntName());
-				currentHunt.addClueToClueList(newClue);
+				if(newClue != null) {
+					newClue.setHuntName(currentHunt.getHuntName());
+					currentHunt.addClueToClueList(newClue);
+				}
 			}
 			RecyclerView mCluesRecyclerView = (RecyclerView) findViewById(R.id.clues_recycler);
 			if(mCluesRecyclerView != null) {
