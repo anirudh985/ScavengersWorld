@@ -27,7 +27,7 @@ import java.util.List;
 
 import static com.example.aj.scavengersworld.Constants.ADMIN;
 
-public class HuntCreateModify extends BaseActivity implements View.OnClickListener {
+public class HuntCreateModify extends BaseActivity implements View.OnClickListener, android.text.TextWatcher {
     private String mHuntName;
     private String mHuntDescription;
     private Hunt hunt;
@@ -35,10 +35,13 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	private int mPosition;
 
 	private boolean changed = false;
+	private boolean newHunt = false;
 
 	private UserSessionManager session;
 
 	private RecyclerView mCluesRecyclerView;
+
+	private EditText editName;
 
 	private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 	private DatabaseReference mDatabaseRefHuntClues;
@@ -60,9 +63,10 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
             }
             else {
                 mHuntName = getString(R.string.newHuntName);
+				newHunt = true;
             }
 
-			if(!(mHuntName == null) && !mHuntName.equals("New Hunt")) {
+			if(!newHunt) {
 				hunt = session.getAdminHuntByName(mHuntName);
 				if(hunt != null) {
 					mHuntDescription = hunt.getDescription();
@@ -73,25 +77,10 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			}
         }
 
-        EditText editName = (EditText) findViewById(R.id.editHuntName);
+        editName = (EditText) findViewById(R.id.editHuntName);
 		editName.setText(mHuntName);
-		if(mHuntName.equals("New Hunt")) {
-			editName.addTextChangedListener(new TextWatcher() {
-
-				public void afterTextChanged(Editable s) {
-					hunt.setHuntName(s.toString());
-					changed = true;
-					session.addHunt(ADMIN, hunt);
-				}
-
-				public void beforeTextChanged(CharSequence s, int start,
-											  int count, int after) {
-				}
-
-				public void onTextChanged(CharSequence s, int start,
-										  int before, int count) {
-				}
-			});
+		if(newHunt) {
+			editName.addTextChangedListener(this);
 		}
 
 		EditText editDescription = (EditText) findViewById(R.id.editHuntDescription);
@@ -126,7 +115,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
 		mCluesRecyclerView.setLayoutManager(mLayoutManager);
 
-		RecyclerView.Adapter mAdapter = new UpdateClueRecyclerViewAdapter(hunt.getHuntName(), this);
+		RecyclerView.Adapter mAdapter = new UpdateClueRecyclerViewAdapter(hunt, this);
 		mCluesRecyclerView.setAdapter(mAdapter);
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_clue_fab);
@@ -163,6 +152,11 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				}
 			case R.id.save_button:
 				if(changed) {
+					if(newHunt) {
+						newHunt = false;
+						session.addHunt(ADMIN, hunt);
+						editName.removeTextChangedListener(this);
+					}
                     UpdateHuntDataInDatabase(hunt);
                     UpdateClueListInDatabase(hunt);
 				}
@@ -179,6 +173,22 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		editClue.putExtra("CLUE", clue);
 		mPosition = position;
 		startActivityForResult(editClue, 3);
+	}
+
+	@Override
+	public void afterTextChanged(Editable s) {
+		hunt.setHuntName(s.toString());
+		changed = true;
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start,
+								  int count, int after) {
+	}
+
+	@Override
+	public void onTextChanged(CharSequence s, int start,
+							  int before, int count) {
 	}
 
 	ValueEventListener huntsToCluesListener = new ValueEventListener() {
