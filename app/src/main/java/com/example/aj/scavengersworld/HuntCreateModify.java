@@ -74,6 +74,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			} else {
 				mHuntDescription = getString(R.string.hunt_description);
 				hunt = new Hunt();
+				hunt.setHuntName(mHuntName);
 			}
         }
 
@@ -144,7 +145,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				}
 				Intent addClue = new Intent(this, ClueInfoActivity.class);
 				addClue.putExtra("HUNTNAME", hunt.getHuntName());
-				startActivity(addClue);
+				startActivityForResult(addClue,2);
 				break;
 			case R.id.public_private_toggle:
 				ToggleButton toggle = (ToggleButton) findViewById(R.id.public_private_toggle);
@@ -223,15 +224,18 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	{
 		super.onActivityResult(requestCode, resultCode, data);
 		// check if the request code is same as what is passed. Here, it is 3
-		if(requestCode==3)
+		if(requestCode==2 || requestCode==3)
 		{
 			Clue clue = data.getParcelableExtra("CLUE");
-			List<Clue> huntList = hunt.getClueList();
-			huntList.remove(mPosition);
-			huntList.add(mPosition, clue);
-			hunt.setClueList(huntList);
+			if(requestCode == 3) {
+				List<Clue> huntList = hunt.getClueList();
+				huntList.remove(mPosition);
+				huntList.add(mPosition, clue);
+				hunt.setClueList(huntList);
+			} else {
+				hunt.addClueToClueList(clue);
+			}
 			changed = true;
-
 		}
 		UpdateClueRecyclerViewAdapter clueRecyclerViewAdapter = (UpdateClueRecyclerViewAdapter) mCluesRecyclerView.getAdapter();
 		clueRecyclerViewAdapter.notifyDataSetChanged();
