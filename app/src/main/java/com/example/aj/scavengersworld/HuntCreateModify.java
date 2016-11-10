@@ -139,6 +139,9 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.add_clue_fab:
+				if(newHunt && session.getAdminHuntByName(mHuntName) == null) {
+					session.addHunt(ADMIN, hunt);
+				}
 				Intent addClue = new Intent(this, ClueInfoActivity.class);
 				addClue.putExtra("HUNTNAME", hunt.getHuntName());
 				startActivity(addClue);
@@ -154,7 +157,9 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				if(changed) {
 					if(newHunt) {
 						newHunt = false;
-						session.addHunt(ADMIN, hunt);
+						if(session.getAdminHuntByName(mHuntName) == null) {
+							session.addHunt(ADMIN, hunt);
+						}
 						editName.removeTextChangedListener(this);
 					}
                     UpdateHuntDataInDatabase(hunt);
