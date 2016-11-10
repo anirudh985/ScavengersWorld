@@ -47,9 +47,9 @@ public class UpdateClueRecyclerViewAdapter extends RecyclerView.Adapter<UpdateCl
 	}
 
 
-	public UpdateClueRecyclerViewAdapter(String huntName, HuntCreateModify updateActivity) {
-		mhuntName = huntName;
-		mHunt = session.getAdminHuntByName(mhuntName);
+	public UpdateClueRecyclerViewAdapter(Hunt hunt, HuntCreateModify updateActivity) {
+		mHunt = hunt;
+		mhuntName = mHunt.getHuntName();
 		huntClues = mHunt.getClueList();
 		huntUpdateActivity = updateActivity;
 	}
