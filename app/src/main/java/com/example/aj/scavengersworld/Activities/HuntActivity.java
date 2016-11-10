@@ -20,6 +20,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import static com.example.aj.scavengersworld.Constants.ADMIN;
@@ -129,6 +131,7 @@ public class HuntActivity extends BaseActivity{
 					// TODO: add hunt to yourHuntsList and update in database and open gameplay screen
 					addHuntToSession();
 					updateHuntStatusToJoinInDB();
+					incrementNumberOfPlayersInHunt();
 					startGamePlayScreen();
 
 				}
@@ -262,5 +265,50 @@ public class HuntActivity extends BaseActivity{
 		Intent gamePlayScreenIntent = new Intent(this, GamePlayActivity.class);
 		startActivity(gamePlayScreenIntent);
 		finish();
+	}
+
+	private void incrementNumberOfPlayersInHunt(){
+		mDatabase.getReference(getString(R.string.searchableHuntsTable))
+									.orderByChild(getString(R.string.orderByHuntName))
+									.equalTo(huntName).addListenerForSingleValueEvent(
+				new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				for(DataSnapshot searchableHuntSnapshot : dataSnapshot.getChildren()){
+					String key = searchableHuntSnapshot.getKey();
+					if(key != null){
+						DatabaseReference dbRef = mDatabase.getReference(getString(R.string.searchableHuntsTable) +
+																		 getString(R.string.pathSeparator) +
+																		 key +
+																		 getString(R.string.pathSeparator) +
+																		 getString(R.string.orderByNumPlayers));
+						dbRef.runTransaction(new Transaction.Handler() {
+							@Override
+							public Transaction.Result doTransaction(MutableData mutableData) {
+								long numberOfPlayers = 0;
+								if(mutableData.getValue() != null){
+									numberOfPlayers = (long) mutableData.getValue();
+									numberOfPlayers++;
+								}
+								mutableData.setValue(numberOfPlayers);
+								return Transaction.success(mutableData);
+							}
+
+							@Override
+							public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+								if(databaseError != null) {
+									Log.d(LOG_TAG, "postTransaction Error: Error in updating database \n" + databaseError);
+								}
+							}
+						});
+					}
+				}
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+
+			}
+		});
 	}
 }

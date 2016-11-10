@@ -25,7 +25,6 @@ import java.security.NoSuchAlgorithmException;
 public class LoginActivity extends AppCompatActivity {
 
     private final String LOG_TAG = getClass().getSimpleName();
-    private final String CONTEXT = "FragmentContext";
 
     @Override
     protected void onCreate(Bundle savedInstaceState){

@@ -152,6 +152,9 @@
     <string name="progress">progress</string>
     <string name="hunts">hunts</string>
     <string name="huntsTable">hunts</string>
+    <string name="orderByNumPlayers">numberOfPlayers</string>
+
+    <string name="pathSeparator">/</string>
 
     <!-- HUNTFEED ACTIVITY -->
     <string name="allFeeds">All</string>
