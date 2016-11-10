@@ -2,26 +2,20 @@ package com.example.aj.scavengersworld.CluesRelated;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.example.aj.scavengersworld.Activities.HomeScreen.MyCreatedHuntsRecyclerViewAdapter;
 import com.example.aj.scavengersworld.Model.Clue;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.Model.Location;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
-import com.google.android.gms.ads.identifier.AdvertisingIdClient;
-
-import java.util.List;
 
 /**
  * Created by kalyan on 11/3/16.
@@ -109,7 +103,9 @@ public class ClueItemRecyclerViewAdapter extends RecyclerView.Adapter<ClueItemRe
     public int getItemCount() {
         int count = 0;
         if(cluesDisplayMode == CurrentClueActivity.CluesDisplayMode.HUNTCLUES){
-            count  = currentHunt.getCurrentClue().getSequenceNumberInHunt();
+            if(currentHunt.getCurrentClue() != null) {
+                count = currentHunt.getCurrentClue().getSequenceNumberInHunt();
+            }
         }
         else {
             for (Hunt hunt : session.getParticipatingHuntsList()) {
