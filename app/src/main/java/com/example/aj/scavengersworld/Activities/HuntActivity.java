@@ -118,7 +118,7 @@ public class HuntActivity extends BaseActivity{
 					public void onClick(View view) {
 						Intent updateHunt = new Intent(view.getContext(), HuntCreateModify.class);
 						updateHunt.putExtra("Name", huntName);
-						startActivity(updateHunt);
+						startActivityForResult(updateHunt,2);
 
 					}
 				});
@@ -140,6 +140,12 @@ public class HuntActivity extends BaseActivity{
 
 //		Button leaders = (Button) findViewById(R.id.hunt_leaders_button);
 //		leaders.setOnClickListener(this);
+	}
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 2) {
+			//Returning back from update clue. Do nothing
+		}
 	}
 
 	@Override

@@ -168,6 +168,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
                     UpdateHuntDataInDatabase(hunt);
                     UpdateClueListInDatabase(hunt);
 				}
+				finish();
 				break;
 		}
 	}

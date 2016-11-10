@@ -74,6 +74,10 @@ public class ClueItemRecyclerViewAdapter extends RecyclerView.Adapter<ClueItemRe
                     count += 1;
                     if (count-1 == position){
                         Clue currentClue =  hunt.getCurrentClue();
+                        if(currentClue == null) {
+                            count -= 1;
+                            continue;
+                        }
                         SetUIElementsFromClue(holder,currentClue);
 
                         holder.mView.setOnClickListener(new ClueClickListener(currentClue,currentLocation));
@@ -109,7 +113,7 @@ public class ClueItemRecyclerViewAdapter extends RecyclerView.Adapter<ClueItemRe
         }
         else {
             for (Hunt hunt : session.getParticipatingHuntsList()) {
-                if (hunt.getClueList() != null)
+                if (hunt.getClueList() != null && hunt.getClueList().size() >0)
                     count += 1;
             }
         }

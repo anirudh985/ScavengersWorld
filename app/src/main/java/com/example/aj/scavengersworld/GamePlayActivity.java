@@ -19,6 +19,7 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 import android.location.Location;
 
+import com.example.aj.scavengersworld.Activities.BaseActivity;
 import com.example.aj.scavengersworld.CluesRelated.CurrentClueActivity;
 import com.example.aj.scavengersworld.Model.Clue;
 import com.example.aj.scavengersworld.Model.Hunt;
@@ -45,7 +46,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class GamePlayActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,View.OnClickListener {
+public class GamePlayActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,View.OnClickListener {
 
     private GoogleMap mMap;
     private static final int MY_LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -69,7 +70,7 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_play);
+        //setContentView(R.layout.activity_game_play);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -78,6 +79,16 @@ public class GamePlayActivity extends FragmentActivity implements OnMapReadyCall
         mSolveClueButton.setOnClickListener(this);
         //mShowCluesButton = (Button)findViewById(R.id.button7);
         buildGoogleApiClient();
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_game_play;
+    }
+
+    @Override
+    protected String getScreenName() {
+        return getString(R.string.gameplay);
     }
 
     protected synchronized void buildGoogleApiClient() {
