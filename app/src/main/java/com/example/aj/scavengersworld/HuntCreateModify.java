@@ -106,8 +106,10 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		toggle.setOnClickListener(this);
 
 		//get all clues for this hunt
-		DatabaseReference mDataBaseRef = mDatabase.getReference(getString(R.string.huntsToClues) + "/" + mHuntName);
-		mDataBaseRef.addListenerForSingleValueEvent(huntsToCluesListener);
+		if(!newHunt) {
+			DatabaseReference mDataBaseRef = mDatabase.getReference(getString(R.string.huntsToClues) + "/" + mHuntName);
+			mDataBaseRef.addListenerForSingleValueEvent(huntsToCluesListener);
+		}
 
 		//set up "clues" recycler
 		mCluesRecyclerView = (RecyclerView) findViewById(R.id.clues_recycler);
@@ -203,7 +205,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			for(DataSnapshot userToHuntsSnapshot : dataSnapshot.getChildren()){
 				Hunt currentHunt = session.getAdminHuntByName(dataSnapshot.getKey());
 				Clue newClue = userToHuntsSnapshot.getValue(Clue.class);
-				if(newClue != null) {
+				if(currentHunt != null && newClue != null) {
 					newClue.setHuntName(currentHunt.getHuntName());
 					currentHunt.addClueToClueList(newClue);
 				}
