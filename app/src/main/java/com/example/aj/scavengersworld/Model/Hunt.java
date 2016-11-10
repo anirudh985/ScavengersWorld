@@ -1,8 +1,5 @@
 package com.example.aj.scavengersworld.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
@@ -35,7 +32,7 @@ public class Hunt implements Comparable<Hunt> {
     private List<Clue> clueList;
 
     public Hunt(){
-
+        this.clueList = new ArrayList<>();
     }
 
     public List<Clue> getClueList() {
