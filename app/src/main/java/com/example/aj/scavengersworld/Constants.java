@@ -34,5 +34,6 @@ public final class Constants {
 
     // CLUES //
     public static final int SEQUENCE_OF_FIRST_CLUE = 1;
+    public static final double RADIUS_OF_ACCEPTANCE = 100.0;
 
 }

@@ -16,7 +16,7 @@ import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.Model.Location;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
-
+import static com.example.aj.scavengersworld.Constants.RADIUS_OF_ACCEPTANCE;
 /**
  * Created by kalyan on 11/3/16.
  */
@@ -51,7 +51,8 @@ public class ClueItemRecyclerViewAdapter extends RecyclerView.Adapter<ClueItemRe
         @Override
         public void onClick(View v) {
             Intent newIntent = new Intent(v.getContext(),ClueFeedbackActivity.class);
-            if(clue.getLocation().distanceFromLocationInMeters(currentLocation) < 10.0)
+            double distance = clue.getLocation().distanceFromLocationInMeters(currentLocation);
+            if(distance < RADIUS_OF_ACCEPTANCE)
             {
                 newIntent.putExtra("RESULT",true);
             }

@@ -52,13 +52,13 @@ public class ClueFeedbackActivity extends BaseActivity {
 
     private void updateClueSuccess(){
         Clue currentClue = currentHunt.getCurrentClue();
-        Clue nextClue = currentHunt.getClueAtSequence(currentClue.getSequenceNumberInHunt());
+        Clue nextClue = currentHunt.getClueAtSequence(currentClue.getSequenceNumberInHunt()+1);
         currentHunt.setCurrentClueSequence(nextClue.getSequenceNumberInHunt());
         int totalCluesInCurrentHunt = currentHunt.getClueList().size();
         Double progress = (double) currentClue.getSequenceNumberInHunt() * 100 / totalCluesInCurrentHunt;
-        mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+R.string.currentClueSequence);
+        mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+getString(R.string.currentClueSequence));
         mDatabaseRef.setValue(nextClue.getSequenceNumberInHunt());
-        mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+R.string.progress);
+        mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+getString(R.string.progress));
         mDatabaseRef.setValue(progress.intValue());
     }
 
