@@ -117,6 +117,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		});
 
 		ToggleButton toggle = (ToggleButton) findViewById(R.id.public_private_toggle);
+		toggle.setChecked(hunt.isPrivateHunt());
 		toggle.setOnClickListener(this);
 
 		//get all clues for this hunt
@@ -165,11 +166,12 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				break;
 			case R.id.public_private_toggle:
 				ToggleButton toggle = (ToggleButton) findViewById(R.id.public_private_toggle);
-				boolean isPublic = toggle.isChecked(); //TODO ensure this isn't reversed
-				if(isPublic == hunt.isPrivateHunt()) {
+				boolean isPrivate = toggle.isChecked(); //TODO ensure this isn't reversed
+				if(isPrivate != hunt.isPrivateHunt()) {
 					changed = true;
-					hunt.setPrivateHunt(isPublic);
+					hunt.setPrivateHunt(isPrivate);
 				}
+				break;
 			case R.id.save_button:
 				if(changed) {
 					if(newHunt) {

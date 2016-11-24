@@ -33,6 +33,7 @@ public class Hunt implements Comparable<Hunt> {
 
     public Hunt(){
         this.clueList = new ArrayList<>();
+        this.privateHunt = false;
     }
 
     public List<Clue> getClueList() {
