@@ -70,6 +70,7 @@ public enum UserSessionManager {
     private List<Hunt> allHuntsList = new ArrayList<>();
 
     private UserProfile userProfile;
+    private String userProfileKey;
 
     public void checkLogin(){
         if(!this.isLoggedIn() && mContext != null){
@@ -107,6 +108,8 @@ public enum UserSessionManager {
     public String getUserName(){
         return this.mUserName;
     }
+
+    public String getUserProfileKey(){ return this.userProfileKey; }
 
     public void setUpSession(FirebaseUser firebaseUser, Context context){
         if(firebaseUser != null && context != null){
@@ -178,8 +181,9 @@ public enum UserSessionManager {
         return hunt;
     }
 
-    public void updateUserProfile(@NonNull UserProfile userProfile){
+    public void updateUserProfile(@NonNull UserProfile userProfile, @NonNull String key){
         this.userProfile = userProfile;
+        this.userProfileKey = key;
     }
 
     public UserProfile getUserProfile(){

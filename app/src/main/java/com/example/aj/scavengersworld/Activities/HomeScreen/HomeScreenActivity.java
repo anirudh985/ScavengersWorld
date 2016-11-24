@@ -79,11 +79,13 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             UserProfile userProfile = null;
+            String key = null;
             for(DataSnapshot userProfileSnapshot : dataSnapshot.getChildren()){
                 userProfile = userProfileSnapshot.getValue(UserProfile.class);
+                key = userProfileSnapshot.getKey();
             }
-            if(userProfile != null){
-                session.updateUserProfile(userProfile);
+            if(userProfile != null && key != null){
+                session.updateUserProfile(userProfile, key);
             }
             else{
                 createNewUserProfile();
@@ -239,7 +241,9 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
         UserProfile newUserProfile = new UserProfile();
         newUserProfile.setPointsEarned(0);
         newUserProfile.setBadgesEarned(new ArrayList<Integer>());
-        mDatabaseRefUserProfile.push().setValue(newUserProfile);
+        String key = mDatabaseRefUserProfile.push().getKey();
+        mDatabaseRefUserProfile.child(key).setValue(newUserProfile);
+        session.updateUserProfile(newUserProfile, key);
     }
 
     private void getCurrentCluesAndSaveInSession(){
