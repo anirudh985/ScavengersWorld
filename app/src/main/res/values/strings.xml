@@ -129,6 +129,7 @@
     <string name="edit_clue">Edit Clue</string>
     <string name="public_event">Public Event?</string>
     <string name="save_button">Save Hunt</string>
+    <string name="duplicateHunt">Hunt with the given name already exists. Please modify the name of the hunt and save again</string>
 
     <!-- LEADERBOARD ACTIVITY -->
     <string name="leaderboard_header">Leaderboard</string>

@@ -36,4 +36,6 @@ public final class Constants {
     public static final int SEQUENCE_OF_FIRST_CLUE = 1;
     public static final double RADIUS_OF_ACCEPTANCE = 100.0;
 
+    public static final double METERS_PER_MILE = 1609.34;
+
 }

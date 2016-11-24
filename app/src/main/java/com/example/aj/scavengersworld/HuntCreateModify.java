@@ -3,6 +3,7 @@ package com.example.aj.scavengersworld;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -15,6 +16,7 @@ import android.widget.ToggleButton;
 import com.example.aj.scavengersworld.Activities.BaseActivity;
 import com.example.aj.scavengersworld.CluesRelated.UpdateClueRecyclerViewAdapter;
 import com.example.aj.scavengersworld.DatabaseModels.HuntsData;
+import com.example.aj.scavengersworld.DatabaseModels.SearchableHunt;
 import com.example.aj.scavengersworld.DatabaseModels.UserToHunts;
 import com.example.aj.scavengersworld.Model.Clue;
 import com.example.aj.scavengersworld.Model.Hunt;
@@ -27,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 import static com.example.aj.scavengersworld.Constants.ADMIN;
+import static com.example.aj.scavengersworld.Constants.METERS_PER_MILE;
 
 public class HuntCreateModify extends BaseActivity implements View.OnClickListener, android.text.TextWatcher {
     private String mHuntName;
@@ -49,6 +52,10 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	private DatabaseReference mDatabaseRefHuntsData;
 	private DatabaseReference mDatabaseRefClues;
 	private DatabaseReference mDatabaseRefUserHunts;
+	private DatabaseReference mDatabaseSearchableHunts;
+
+	private int numberOfPlayers;
+	private String searchableHuntKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +80,12 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				if(hunt != null) {
 					mHuntDescription = hunt.getDescription();
 				}
+				getNumberOfPlayers(mHuntName);
 			} else {
 				mHuntDescription = getString(R.string.hunt_description);
 				hunt = new Hunt();
 				hunt.setHuntName(mHuntName);
+				numberOfPlayers = 0;
 			}
         }
 
@@ -84,6 +93,9 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		editName.setText(mHuntName);
 		if(newHunt) {
 			editName.addTextChangedListener(this);
+		}
+		else{
+			editName.setFocusable(false);
 		}
 
 		EditText editDescription = (EditText) findViewById(R.id.editHuntDescription);
@@ -161,15 +173,20 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			case R.id.save_button:
 				if(changed) {
 					if(newHunt) {
-						newHunt = false;
 						if(session.getAdminHuntByName(mHuntName) == null) {
 							session.addHunt(ADMIN, hunt);
 						}
 						editName.removeTextChangedListener(this);
+						checkWhetherAHuntIsAlreadyPresentAndInsert(hunt);
+						newHunt = false;
 					}
-                    UpdateHuntDataInDatabase(hunt);
-                    UpdateClueListInDatabase(hunt);
-					UpdateUserHuntsTableInDatabase(hunt);
+					else{
+						UpdateHuntDataInDatabase(hunt);
+						UpdateClueListInDatabase(hunt);
+						UpdateUserHuntsTableInDatabase(hunt);
+						updateSearchableHuntsTableInDatabase(hunt, numberOfPlayers, false);
+					}
+
 				}
 				finish();
 				break;
@@ -274,5 +291,112 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		userToHunts.setState(ADMIN);
 		mDatabaseRefUserHunts.setValue(userToHunts);
 	}
+
+	private void updateSearchableHuntsTableInDatabase(Hunt currentHunt, int numberOfPlayers, boolean newHunt){
+		mDatabaseSearchableHunts = mDatabase.getReference(getString(R.string.searchableHuntsTable));
+		SearchableHunt searchableHunt = new SearchableHunt();
+		searchableHunt.setPrivateHunt(currentHunt.isPrivateHunt());
+		searchableHunt.setNumberOfPlayers(numberOfPlayers);
+		searchableHunt.setHuntName(currentHunt.getHuntName());
+		searchableHunt.setLocationOfFirstClue(currentHunt.getClueAtSequence(1).getLocation());
+		searchableHunt.setMaxRadius(getMaxRadius(currentHunt));
+		if(newHunt){
+			mDatabaseSearchableHunts.push().setValue(searchableHunt);
+		}
+		else{
+			mDatabaseSearchableHunts.child(searchableHuntKey).setValue(searchableHunt);
+		}
+	}
+
+	private double getMaxRadius(Hunt currentHunt){
+		if(currentHunt == null){
+			return -1;
+		}
+		double maxDistance = -1;
+		if(currentHunt.getClueList() != null && currentHunt.getClueList().size() != 0){
+			List<Clue> clueList = currentHunt.getClueList();
+			double distanceBetweenClues;
+			for(int i = 0; i < clueList.size(); i++){
+				for(int j = i+1; j < clueList.size(); j++){
+					distanceBetweenClues = getDistanceBetweenClues(clueList.get(i), clueList.get(j));
+					if(maxDistance < distanceBetweenClues){
+						maxDistance = distanceBetweenClues;
+					}
+				}
+			}
+
+		}
+		return maxDistance/METERS_PER_MILE;
+	}
+
+	private double getDistanceBetweenClues(Clue clue1, Clue clue2){
+		double distanceBetweenClues = 0;
+		if(clue1 != null && clue1.getLocation() != null && clue2 != null && clue2.getLocation() != null){
+			distanceBetweenClues = clue1.getLocation().distanceFromLocationInMeters(clue2.getLocation());
+		}
+		return distanceBetweenClues;
+	}
+
+	private void checkWhetherAHuntIsAlreadyPresentAndInsert(Hunt currentHunt){
+		mDatabaseRefHuntsData = mDatabase.getReference(getString(R.string.hunts) + "/" + currentHunt.getHuntName());
+		mDatabaseRefHuntsData.orderByChild("huntName")
+				.equalTo(currentHunt.getHuntName())
+				.addListenerForSingleValueEvent(checkForHuntAndInsertListener);
+	}
+
+	ValueEventListener checkForHuntAndInsertListener = new ValueEventListener() {
+		@Override
+		public void onDataChange(DataSnapshot dataSnapshot) {
+			boolean retrieved = false;
+			for(DataSnapshot huntSnapshot : dataSnapshot.getChildren()){
+				HuntsData huntsData = huntSnapshot.getValue(HuntsData.class);
+				if(huntsData != null){
+					retrieved = true;
+				}
+			}
+			if(!retrieved){
+				UpdateHuntDataInDatabase(hunt);
+				UpdateClueListInDatabase(hunt);
+				UpdateUserHuntsTableInDatabase(hunt);
+				updateSearchableHuntsTableInDatabase(hunt, 0, true);
+			}
+			else{
+				AlertDialog.Builder builder = new AlertDialog.Builder(HuntCreateModify.this);
+				builder.setMessage(getString(R.string.duplicateHunt));
+				AlertDialog dialog = builder.create();
+				dialog.show();
+			}
+		}
+
+		@Override
+		public void onCancelled(DatabaseError databaseError) {
+
+		}
+	};
+
+	private void getNumberOfPlayers(String huntName){
+		if(huntName != null){
+			mDatabaseSearchableHunts = mDatabase.getReference(getString(R.string.searchableHuntsTable));
+			mDatabaseSearchableHunts.orderByChild("huntName")
+					.equalTo(huntName).addListenerForSingleValueEvent(retrieveNumberOfPlayersListener);
+		}
+	}
+
+	ValueEventListener retrieveNumberOfPlayersListener = new ValueEventListener() {
+		@Override
+		public void onDataChange(DataSnapshot dataSnapshot) {
+			for(DataSnapshot searchableHuntSnapshot : dataSnapshot.getChildren()){
+				SearchableHunt searchableHunt = searchableHuntSnapshot.getValue(SearchableHunt.class);
+				numberOfPlayers = searchableHunt.getNumberOfPlayers();
+				searchableHuntKey = searchableHuntSnapshot.getKey();
+				break;
+			}
+		}
+
+		@Override
+		public void onCancelled(DatabaseError databaseError) {
+
+		}
+	};
 
 }

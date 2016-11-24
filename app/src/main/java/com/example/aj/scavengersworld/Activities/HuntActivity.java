@@ -49,6 +49,7 @@ public class HuntActivity extends BaseActivity{
 	private final String LOG_TAG = getClass().getSimpleName();
 
 	private TextView description;
+	private TextView huntNameView;
 
 	private ValueEventListener huntListener = new ValueEventListener() {
 		@Override
@@ -78,7 +79,7 @@ public class HuntActivity extends BaseActivity{
 
 
 
-		TextView huntNameView = (TextView) findViewById(R.id.hunt_name);
+		huntNameView = (TextView) findViewById(R.id.hunt_name);
 		huntNameView.setText(huntName);
 
 		getHuntObjectFromDatabaseAndUpdateInSession(huntName);
@@ -144,7 +145,8 @@ public class HuntActivity extends BaseActivity{
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == 2) {
-			//Returning back from update clue. Do nothing
+			huntNameView.setText(huntName);
+			description.setText(hunt.getDescription());
 		}
 	}
 
@@ -167,6 +169,7 @@ public class HuntActivity extends BaseActivity{
 	protected void onResume() {
 		super.onResume();
 		Log.d(LOG_TAG, getString(R.string.log_onResume));
+
 	}
 
 	@Override
