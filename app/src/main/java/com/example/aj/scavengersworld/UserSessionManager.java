@@ -62,11 +62,15 @@ public enum UserSessionManager {
     private HashMap<String, Hunt> adminHunts = new HashMap<>();
     private HashMap<String, Hunt> participatingHunts = new HashMap<>();
     private HashMap<String, Hunt> completedHunts = new HashMap<>();
+    private HashMap<String, Hunt> requestedHunts = new HashMap<>();
+    private HashMap<String, Hunt> invitedHunts = new HashMap<>();
     private HashMap<String, Hunt> allHunts = new HashMap<>();
 
     private List<Hunt> adminHuntsList = new ArrayList<>();
     private List<Hunt> participatingHuntsList = new ArrayList<>();
     private List<Hunt> completedHuntsList = new ArrayList<>();
+    private List<Hunt> requestedHuntsList = new ArrayList<>();
+    private List<Hunt> invitedHuntsList = new ArrayList<>();
     private List<Hunt> allHuntsList = new ArrayList<>();
 
     private UserProfile userProfile;
@@ -148,9 +152,27 @@ public enum UserSessionManager {
                     participatingHuntsList.add(hunt);
                 }
             } else if (userToHunts.getState().equals(REQUESTED)) {
-
+                if (requestedHunts.containsKey(userToHunts.getHuntName())) {
+                    Hunt hunt = requestedHunts.get(userToHunts.getHuntName());
+                    updateHuntObject(hunt, userToHunts);
+                } else {
+                    Hunt hunt = createHuntObject(userToHunts);
+                    requestedHunts.put(userToHunts.getHuntName(), hunt);
+                    //TODO: need to add to requestedHuntsList and sort OR some other mechanism if we want to
+                    //TODO  display the hunts in sorted order
+                   requestedHuntsList.add(hunt);
+                }
             } else if (userToHunts.getState().equals(INVITED)) {
-
+                if (invitedHunts.containsKey(userToHunts.getHuntName())) {
+                    Hunt hunt = invitedHunts.get(userToHunts.getHuntName());
+                    updateHuntObject(hunt, userToHunts);
+                } else {
+                    Hunt hunt = createHuntObject(userToHunts);
+                    invitedHunts.put(userToHunts.getHuntName(), hunt);
+                    //TODO: need to add to participatingHuntsList and sort OR some other mechanism if we want to
+                    //TODO  display the hunts in sorted order
+                    invitedHuntsList.add(hunt);
+                }
             } else if (userToHunts.getState().equals(COMPLETED)) {
                 // update Created Hunts
                 if (completedHunts.containsKey(userToHunts.getHuntName())) {
@@ -217,9 +239,11 @@ public enum UserSessionManager {
             return ADMIN;
         } else if(completedHunts.get(huntName) != null) {
             return COMPLETED;
-            //TODO add any other cases
-        }
-        else {
+        } else if(requestedHunts.get(huntName) != null) {
+            return REQUESTED;
+        } else if(invitedHunts.get(huntName) != null) {
+            return INVITED;
+        } else {
             return null;
         }
     }
