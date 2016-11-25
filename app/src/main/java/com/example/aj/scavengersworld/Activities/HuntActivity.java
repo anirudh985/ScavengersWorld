@@ -24,7 +24,17 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import static com.example.aj.scavengersworld.Constants.ADMIN;
 import static com.example.aj.scavengersworld.Constants.COMPLETED;
@@ -36,7 +46,7 @@ import static com.example.aj.scavengersworld.Constants.SEQUENCE_OF_FIRST_CLUE;
 /**
  * Created by Jennifer on 10/17/2016.
  */
-public class HuntActivity extends BaseActivity{
+public class HuntActivity extends BaseActivity {
 
 	private Intent intent;
 	private String huntName;
@@ -46,6 +56,7 @@ public class HuntActivity extends BaseActivity{
 
 	private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 	private DatabaseReference mDatabaseRefHunts;
+	private DatabaseReference mDatabaseUserIdDeviceId;
 
 	private UserSessionManager session = UserSessionManager.INSTANCE;
 
@@ -57,7 +68,7 @@ public class HuntActivity extends BaseActivity{
 	private ValueEventListener huntListener = new ValueEventListener() {
 		@Override
 		public void onDataChange(DataSnapshot dataSnapshot) {
-			for(DataSnapshot huntSnapshot : dataSnapshot.getChildren()){
+			for (DataSnapshot huntSnapshot : dataSnapshot.getChildren()) {
 				Hunt currentHunt = huntSnapshot.getValue(Hunt.class);
 				updateHuntInSession(currentHunt);
 				updateUI();
@@ -81,18 +92,17 @@ public class HuntActivity extends BaseActivity{
 		mDatabaseRefHunts = mDatabase.getReference(getString(R.string.huntsTable));
 
 
-
 		huntNameView = (TextView) findViewById(R.id.hunt_name);
 		huntNameView.setText(huntName);
 
 		getHuntObjectFromDatabaseAndUpdateInSession(huntName);
 		String userHuntStatus = session.getHuntStatusByName(huntName);
-		if(userHuntStatus != null) {
-			if(userHuntStatus.equals(INPROGRESS)) {
+		if (userHuntStatus != null) {
+			if (userHuntStatus.equals(INPROGRESS)) {
 				hunt = session.getParticipatingHuntByName(huntName);
-			} else if(userHuntStatus.equals(ADMIN)) {
+			} else if (userHuntStatus.equals(ADMIN)) {
 				hunt = session.getAdminHuntByName(huntName);
-			} else if(userHuntStatus.equals(COMPLETED)) {
+			} else if (userHuntStatus.equals(COMPLETED)) {
 				hunt = session.getCompletedHuntByName(huntName);
 			}
 		} else {
@@ -103,8 +113,8 @@ public class HuntActivity extends BaseActivity{
 //		description.setText(hunt.getDescription());
 
 		Button join = (Button) findViewById(R.id.hunt_join_button);
-		if(userHuntStatus != null) {
-			if(userHuntStatus.equals(INPROGRESS) || userHuntStatus.equals(COMPLETED)) {
+		if (userHuntStatus != null) {
+			if (userHuntStatus.equals(INPROGRESS) || userHuntStatus.equals(COMPLETED)) {
 				join.setText(R.string.view_clues);
 				join.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -115,14 +125,14 @@ public class HuntActivity extends BaseActivity{
 						startActivity(clueIntent);
 					}
 				});
-			} else if(userHuntStatus.equals(ADMIN)) {
+			} else if (userHuntStatus.equals(ADMIN)) {
 				join.setText(R.string.update_hunt);
 				join.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
 						Intent updateHunt = new Intent(view.getContext(), HuntCreateModify.class);
 						updateHunt.putExtra("Name", huntName);
-						startActivityForResult(updateHunt,2);
+						startActivityForResult(updateHunt, 2);
 
 					}
 				});
@@ -139,24 +149,24 @@ public class HuntActivity extends BaseActivity{
 //					}
 //				});
 //			}
-		}else if(hunt.isPrivateHunt()){
+		} else if (hunt.isPrivateHunt()) {
 			join.setText(R.string.request_hunt);
-			join.setOnClickListener(new View.OnClickListener(){
+			join.setOnClickListener(new View.OnClickListener() {
 
 				@Override
 				public void onClick(View view) {
 					HashMap<String, String> pendingRequests = hunt.getPendingRequests();
-					if(pendingRequests == null){
+					if (pendingRequests == null) {
 						pendingRequests = new HashMap<>();
 					}
 					pendingRequests.put(session.getUniqueUserId(), session.getUserName());
 
 					updateHuntStatus(REQUESTED);
 					updateHuntsTableWithNewRequestedUser();
+					sendNotificationToAdmin();
 				}
 			});
-		}
-		else {
+		} else {
 			join.setText(R.string.hunt_join);
 			join.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -173,6 +183,7 @@ public class HuntActivity extends BaseActivity{
 //		Button leaders = (Button) findViewById(R.id.hunt_leaders_button);
 //		leaders.setOnClickListener(this);
 	}
+
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == 2) {
@@ -182,11 +193,11 @@ public class HuntActivity extends BaseActivity{
 	}
 
 	@Override
-	public int getLayoutResource(){
+	public int getLayoutResource() {
 		return R.layout.activity_hunt;
 	}
 
-	public String getScreenName(){
+	public String getScreenName() {
 		return huntName;
 	}
 
@@ -230,9 +241,9 @@ public class HuntActivity extends BaseActivity{
 	ValueEventListener searchableHuntsListener = new ValueEventListener() {
 		@Override
 		public void onDataChange(DataSnapshot dataSnapshot) {
-			for(DataSnapshot searchableHuntsSnapshot : dataSnapshot.getChildren()){
+			for (DataSnapshot searchableHuntsSnapshot : dataSnapshot.getChildren()) {
 				SearchableHunt searchableHunt = searchableHuntsSnapshot.getValue(SearchableHunt.class);
-				if(searchableHunt.getHuntName().equals(huntName)){
+				if (searchableHunt.getHuntName().equals(huntName)) {
 					hunt.setHuntName(searchableHunt.getHuntName());
 					//TODO need to get description and the like from database
 					break;
@@ -248,13 +259,12 @@ public class HuntActivity extends BaseActivity{
 		}
 	};
 
-	private void getHuntObjectFromDatabaseAndUpdateInSession(String huntName){
-		if(huntName != null){
+	private void getHuntObjectFromDatabaseAndUpdateInSession(String huntName) {
+		if (huntName != null) {
 			mDatabaseRefHunts.orderByChild(getString(R.string.orderByHuntName))
-					         .equalTo(huntName)
-					         .addListenerForSingleValueEvent(huntListener);
-		}
-		else{
+					.equalTo(huntName)
+					.addListenerForSingleValueEvent(huntListener);
+		} else {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage("Please select a hunt to update")
 					.setTitle("Error")
@@ -264,14 +274,14 @@ public class HuntActivity extends BaseActivity{
 		}
 	}
 
-	private void updateUI(){
-		if(description != null){
+	private void updateUI() {
+		if (description != null) {
 			description.setText(hunt.getDescription());
 		}
 	}
 
-	private void updateHuntInSession(Hunt currentHunt){
-		if(hunt != null && currentHunt != null){
+	private void updateHuntInSession(Hunt currentHunt) {
+		if (hunt != null && currentHunt != null) {
 			hunt.setCreatedByUserId(currentHunt.getCreatedByUserId());
 			hunt.setDescription(currentHunt.getDescription());
 			hunt.setEndTime(currentHunt.getEndTime());
@@ -280,7 +290,7 @@ public class HuntActivity extends BaseActivity{
 		}
 	}
 
-	private void addHuntToSession(){
+	private void addHuntToSession() {
 		hunt.setHuntName(huntName);
 		hunt.setCurrentClueSequence(SEQUENCE_OF_FIRST_CLUE);
 		hunt.setState(INPROGRESS);
@@ -289,7 +299,7 @@ public class HuntActivity extends BaseActivity{
 		session.addHunt(INPROGRESS, hunt);
 	}
 
-	private void updateHuntStatus(String state){
+	private void updateHuntStatus(String state) {
 		userToHunts = new UserToHunts();
 		userToHunts.setHuntName(huntName);
 		userToHunts.setCurrentClueSequence(SEQUENCE_OF_FIRST_CLUE);
@@ -301,59 +311,89 @@ public class HuntActivity extends BaseActivity{
 		dbRef.child(session.getUniqueUserId()).child(huntName).setValue(userToHunts);
 	}
 
-	private void updateHuntsTableWithNewRequestedUser(){
+	private void updateHuntsTableWithNewRequestedUser() {
 		mDatabaseRefHunts.child(huntName).child(getString(R.string.pendingRequests))
 				.setValue(hunt.getPendingRequests());
 	}
 
-	private void startGamePlayScreen(){
+	private void startGamePlayScreen() {
 		Intent gamePlayScreenIntent = new Intent(this, GamePlayActivity.class);
 		startActivity(gamePlayScreenIntent);
 		finish();
 	}
 
-	private void incrementNumberOfPlayersInHunt(){
+	private void incrementNumberOfPlayersInHunt() {
 		mDatabase.getReference(getString(R.string.searchableHuntsTable))
-									.orderByChild(getString(R.string.orderByHuntName))
-									.equalTo(huntName).addListenerForSingleValueEvent(
+				.orderByChild(getString(R.string.orderByHuntName))
+				.equalTo(huntName).addListenerForSingleValueEvent(
 				new ValueEventListener() {
-			@Override
-			public void onDataChange(DataSnapshot dataSnapshot) {
-				for(DataSnapshot searchableHuntSnapshot : dataSnapshot.getChildren()){
-					String key = searchableHuntSnapshot.getKey();
-					if(key != null){
-						DatabaseReference dbRef = mDatabase.getReference(getString(R.string.searchableHuntsTable) +
-																		 getString(R.string.pathSeparator) +
-																		 key +
-																		 getString(R.string.pathSeparator) +
-																		 getString(R.string.orderByNumPlayers));
-						dbRef.runTransaction(new Transaction.Handler() {
-							@Override
-							public Transaction.Result doTransaction(MutableData mutableData) {
-								long numberOfPlayers = 0;
-								if(mutableData.getValue() != null){
-									numberOfPlayers = (long) mutableData.getValue();
-									numberOfPlayers++;
-								}
-								mutableData.setValue(numberOfPlayers);
-								return Transaction.success(mutableData);
-							}
+					@Override
+					public void onDataChange(DataSnapshot dataSnapshot) {
+						for (DataSnapshot searchableHuntSnapshot : dataSnapshot.getChildren()) {
+							String key = searchableHuntSnapshot.getKey();
+							if (key != null) {
+								DatabaseReference dbRef = mDatabase.getReference(getString(R.string.searchableHuntsTable) +
+										getString(R.string.pathSeparator) +
+										key +
+										getString(R.string.pathSeparator) +
+										getString(R.string.orderByNumPlayers));
+								dbRef.runTransaction(new Transaction.Handler() {
+									@Override
+									public Transaction.Result doTransaction(MutableData mutableData) {
+										long numberOfPlayers = 0;
+										if (mutableData.getValue() != null) {
+											numberOfPlayers = (long) mutableData.getValue();
+											numberOfPlayers++;
+										}
+										mutableData.setValue(numberOfPlayers);
+										return Transaction.success(mutableData);
+									}
 
-							@Override
-							public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-								if(databaseError != null) {
-									Log.d(LOG_TAG, "postTransaction Error: Error in updating database \n" + databaseError);
-								}
+									@Override
+									public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+										if (databaseError != null) {
+											Log.d(LOG_TAG, "postTransaction Error: Error in updating database \n" + databaseError);
+										}
+									}
+								});
 							}
-						});
+						}
 					}
-				}
-			}
 
-			@Override
-			public void onCancelled(DatabaseError databaseError) {
+					@Override
+					public void onCancelled(DatabaseError databaseError) {
 
-			}
-		});
+					}
+				});
 	}
+
+	private void sendNotificationToAdmin(){
+		mDatabaseUserIdDeviceId = mDatabase.getReference(getString(R.string.userToDeviceId))
+										.child(hunt.getCreatedByUserId());
+		mDatabaseUserIdDeviceId.addListenerForSingleValueEvent(notificationListener);
+	}
+
+	ValueEventListener notificationListener = new ValueEventListener() {
+		@Override
+		public void onDataChange(DataSnapshot dataSnapshot) {
+			String deviceIdString = null;
+			for(DataSnapshot deviceIdStringSnapshot: dataSnapshot.getChildren()){
+				deviceIdString = deviceIdStringSnapshot.getValue(String.class);
+			}
+			if(deviceIdString != null){
+				StringBuilder stringBuilder = new StringBuilder();
+				stringBuilder.append(session.getUserName());
+				stringBuilder.append(" has requested to join ");
+				stringBuilder.append(hunt.getHuntName());
+				String notificationBody = stringBuilder.toString();
+				session.sendNotification(deviceIdString, getString(R.string.notificationRequestTitle), notificationBody);
+			}
+		}
+
+		@Override
+		public void onCancelled(DatabaseError databaseError) {
+
+		}
+	};
+
 }
