@@ -83,7 +83,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.ProfileActivity" />
+        <activity android:name=".Activities.ProfileActivity"
+                  android:noHistory="true"/>
 
         <!-- FIREBASE STUFF -->
         <activity

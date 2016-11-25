@@ -1,5 +1,7 @@
 package com.example.aj.scavengersworld.DatabaseModels;
 
+import java.util.HashMap;
+
 /**
  * Created by kalyan on 11/7/16.
  */
@@ -11,6 +13,7 @@ public class HuntsData {
     private String huntName;
     private Boolean isPrivate;
     private long startTime;
+    private HashMap<String, String> pendingRequests;
 
     public String getCreatedByUserId() {
         return createdByUserId;
@@ -58,5 +61,13 @@ public class HuntsData {
 
     public void setStartTime(long startTime) {
         this.startTime = startTime;
+    }
+
+    public HashMap<String, String> getPendingRequests() {
+        return pendingRequests;
+    }
+
+    public void setPendingRequests(HashMap<String, String> pendingRequests) {
+        this.pendingRequests = pendingRequests;
     }
 }

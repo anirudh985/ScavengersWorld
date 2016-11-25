@@ -85,6 +85,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				mHuntDescription = getString(R.string.hunt_description);
 				hunt = new Hunt();
 				hunt.setHuntName(mHuntName);
+				hunt.setCreatedByUserId(session.getUniqueUserId());
 				numberOfPlayers = 0;
 			}
         }

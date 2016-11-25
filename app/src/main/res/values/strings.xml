@@ -81,8 +81,17 @@
     <string name="loginUsername">Email</string>
     <string name="loginPassword">Password</string>
     <string name="login">Login</string>
+    <string name="invalidEmailMessage">Please enter a valid email address</string>
+    <string name="invalidEmailTitle">Invalid Email Address</string>
     <string name="passwordMismatch">Password Mismatch</string>
     <string name="passwordMismatchMessage">Please make sure that both the passwords are same.</string>
+    <string name="enterUsernameTitle">Invalid Username</string>
+    <string name="enterUsernameMessage">Please enter Username</string>
+    <string name="passwordNotEnteredTitle">Enter Password</string>
+    <string name="passwordNotEnteredMessage">Please enter a valid password</string>
+    <string name="googleLoginFailedTitle">Error in login</string>
+    <string name="googleLoginFailedMessage">Failed to login with Google Account</string>
+    <string name="loginFailedMessage">Invalid email and password combination</string>
 
 
     <!-- LOGIN ACTIVITY -->
@@ -118,6 +127,7 @@
     <string name="hunt_join">Join Hunt</string>
     <string name="view_clues">View Hunt Clues</string>
     <string name="update_hunt">Update Hunt</string>
+    <string name="request_hunt">Request to Join</string>
     <string name="hunt_leaders">View Leader Board</string>
 
     <!-- Hunt create modify activity -->
@@ -155,6 +165,7 @@
     <string name="hunts">hunts</string>
     <string name="huntsTable">hunts</string>
     <string name="orderByNumPlayers">numberOfPlayers</string>
+    <string name="pendingRequests">pendingRequests</string>
 
     <string name="pathSeparator">/</string>
 

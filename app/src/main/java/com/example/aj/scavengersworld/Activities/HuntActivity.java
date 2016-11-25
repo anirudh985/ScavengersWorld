@@ -24,9 +24,12 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 import static com.example.aj.scavengersworld.Constants.ADMIN;
 import static com.example.aj.scavengersworld.Constants.COMPLETED;
 import static com.example.aj.scavengersworld.Constants.INPROGRESS;
+import static com.example.aj.scavengersworld.Constants.REQUESTED;
 import static com.example.aj.scavengersworld.Constants.SEQUENCE_OF_FIRST_CLUE;
 
 
@@ -124,17 +127,45 @@ public class HuntActivity extends BaseActivity{
 					}
 				});
 			}
-		} else {
+//			else if(userHuntStatus.equals(REQUESTED)){
+//				join.setText(R.string.request_hunt);
+//				join.setOnClickListener(new View.OnClickListener() {
+//					@Override
+//					public void onClick(View view) {
+//						Intent updateHunt = new Intent(view.getContext(), HuntCreateModify.class);
+//						updateHunt.putExtra("Name", huntName);
+//						startActivityForResult(updateHunt,2);
+//
+//					}
+//				});
+//			}
+		}else if(hunt.isPrivateHunt()){
+			join.setText(R.string.request_hunt);
+			join.setOnClickListener(new View.OnClickListener(){
+
+				@Override
+				public void onClick(View view) {
+					HashMap<String, String> pendingRequests = hunt.getPendingRequests();
+					if(pendingRequests == null){
+						pendingRequests = new HashMap<>();
+					}
+					pendingRequests.put(session.getUniqueUserId(), session.getUserName());
+
+					updateHuntStatus(REQUESTED);
+					updateHuntsTableWithNewRequestedUser();
+				}
+			});
+		}
+		else {
 			join.setText(R.string.hunt_join);
 			join.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
 					// TODO: add hunt to yourHuntsList and update in database and open gameplay screen
 					addHuntToSession();
-					updateHuntStatusToJoinInDB();
+					updateHuntStatus(INPROGRESS);
 					incrementNumberOfPlayersInHunt();
 					startGamePlayScreen();
-
 				}
 			});
 		}
@@ -258,16 +289,21 @@ public class HuntActivity extends BaseActivity{
 		session.addHunt(INPROGRESS, hunt);
 	}
 
-	private void updateHuntStatusToJoinInDB(){
+	private void updateHuntStatus(String state){
 		userToHunts = new UserToHunts();
 		userToHunts.setHuntName(huntName);
 		userToHunts.setCurrentClueSequence(SEQUENCE_OF_FIRST_CLUE);
-		userToHunts.setState(INPROGRESS);
+		userToHunts.setState(state);
 		userToHunts.setScore(0);
 		userToHunts.setProgress(0);
 
 		DatabaseReference dbRef = mDatabase.getReference(getString(R.string.userToHunts));
 		dbRef.child(session.getUniqueUserId()).child(huntName).setValue(userToHunts);
+	}
+
+	private void updateHuntsTableWithNewRequestedUser(){
+		mDatabaseRefHunts.child(huntName).child(getString(R.string.pendingRequests))
+				.setValue(hunt.getPendingRequests());
 	}
 
 	private void startGamePlayScreen(){

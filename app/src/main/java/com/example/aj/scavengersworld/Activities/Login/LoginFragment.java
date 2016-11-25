@@ -208,9 +208,27 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
                 });
     }
 
+    private void showAlertDialogue(int titleString, int messageString){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(messageString)
+                .setTitle(titleString)
+                .setPositiveButton(android.R.string.ok, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
     private void validateAndLogin(String email, String password){
         Log.d(LOG_TAG, "validateAndLogin() called");
-        if(email != null && !email.equals("") && password != null && !password.equals("")){
+        if(email == null || !email.contains("@")){
+            showAlertDialogue(R.string.invalidEmailTitle, R.string.invalidEmailMessage);
+            return;
+        }
+        if(password == null || password.equals("")){
+            showAlertDialogue(R.string.passwordNotEnteredTitle, R.string.passwordNotEnteredMessage);
+            return;
+        }
+//        if(){
             mFirebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                         @Override
@@ -225,10 +243,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
                             }
                         }
                     });
-        }
-        else{
-            loginFailed("Please enter email and password");
-        }
+//        }
+//        else{
+//            showAlertDialogue(R.string.login_error_title, R.string.loginFailedMessage);
+//            loginFailed("Please enter email and password");
+//        }
     }
 
     @Override
@@ -301,7 +320,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
 //            mTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
 //            openHomeScreen(createUser(account));
         } else {
-            loginFailed("Failed to login with Google Account");
+            showAlertDialogue(R.string.googleLoginFailedTitle, R.string.googleLoginFailedMessage);
+//            loginFailed("Failed to login with Google Account");
             // Signed out, show unauthenticated UI.
 //            updateUI(false);
         }
@@ -387,6 +407,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
     private void openHomeScreen(){
         Log.d(LOG_TAG, "openHomeScreen() called");
         Intent homeScreen = new Intent(getActivity(), HomeScreenActivity.class);
+        homeScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(homeScreen);
         getActivity().finish();
     }

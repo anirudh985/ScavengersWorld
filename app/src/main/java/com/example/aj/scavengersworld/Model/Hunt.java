@@ -4,6 +4,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -30,6 +31,8 @@ public class Hunt implements Comparable<Hunt> {
     private double progress;
 
     private List<Clue> clueList;
+
+    private HashMap<String, String> pendingRequests;
 
     public Hunt(){
         this.clueList = new ArrayList<>();
@@ -194,5 +197,13 @@ public class Hunt implements Comparable<Hunt> {
 
     public void setEndDate(Date endDate){
         this.endTime = endDate.getTime();
+    }
+
+    public HashMap<String, String> getPendingRequests() {
+        return pendingRequests;
+    }
+
+    public void setPendingRequests(HashMap<String, String> pendingRequests) {
+        this.pendingRequests = pendingRequests;
     }
 }

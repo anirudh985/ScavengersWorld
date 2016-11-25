@@ -147,15 +147,26 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    private void showAlertDialogue(int titleString, int messageString){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(messageString)
+                .setTitle(titleString)
+                .setPositiveButton(android.R.string.ok, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     private boolean validateInput(){
         Log.d(LOG_TAG, "validateInput()");
+        if(!mEmail.getText().toString().trim().contains("@")){
+            showAlertDialogue(R.string.invalidEmailTitle, R.string.invalidEmailMessage);
+            return false;
+        }
+        if(mUsername.getText().toString() == null || mUsername.getText().toString().trim().length() == 0){
+            showAlertDialogue(R.string.enterUsernameTitle, R.string.enterUsernameMessage);
+        }
         if(!mPassword.getText().toString().trim().equals(mConfirmPassword.getText().toString().trim())){
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(getString(R.string.passwordMismatch))
-                    .setTitle(getString(R.string.passwordMismatchMessage))
-                    .setPositiveButton(android.R.string.ok, null);
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            showAlertDialogue(R.string.passwordMismatch, R.string.passwordMismatchMessage);
             return false;
         }
         return true;
