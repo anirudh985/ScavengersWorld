@@ -27,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import static com.example.aj.scavengersworld.Constants.ADMIN;
 import static com.example.aj.scavengersworld.Constants.COMPLETED;
 import static com.example.aj.scavengersworld.Constants.INPROGRESS;
+import static com.example.aj.scavengersworld.Constants.INVITED;
+import static com.example.aj.scavengersworld.Constants.REQUESTED;
 import static com.example.aj.scavengersworld.Constants.SEQUENCE_OF_FIRST_CLUE;
 
 
@@ -91,6 +93,10 @@ public class HuntActivity extends BaseActivity{
 				hunt = session.getAdminHuntByName(huntName);
 			} else if(userHuntStatus.equals(COMPLETED)) {
 				hunt = session.getCompletedHuntByName(huntName);
+			} else if(userHuntStatus.equals(INVITED)) {
+				hunt = session.getInvitedHuntByName(huntName);
+			} else if(userHuntStatus.equals(REQUESTED)) {
+				hunt = session.getRequestedHuntByName(huntName);
 			}
 		} else {
 			hunt = new Hunt();
@@ -123,6 +129,10 @@ public class HuntActivity extends BaseActivity{
 
 					}
 				});
+			} else if(userHuntStatus.equals(INVITED)) {
+				join.setText("Invitation Received");
+			} else if(userHuntStatus.equals(REQUESTED)) {
+				join.setText("Request sent");
 			}
 		} else {
 			join.setText(R.string.hunt_join);

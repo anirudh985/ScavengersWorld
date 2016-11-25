@@ -224,6 +224,12 @@ public enum UserSessionManager {
 	public Hunt getCompletedHuntByName(String huntName){
 		return completedHunts.get(huntName);
 	}
+    public Hunt getInvitedHuntByName(String huntName){
+        return invitedHunts.get(huntName);
+    }
+    public Hunt getRequestedHuntByName(String huntName){
+        return requestedHunts.get(huntName);
+    }
     public List<Hunt> getParticipatingHuntsList(){
         return participatingHuntsList;
     }
