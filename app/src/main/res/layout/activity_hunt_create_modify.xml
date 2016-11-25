@@ -11,118 +11,128 @@
     android:orientation="vertical"
     tools:context="com.example.aj.scavengersworld.HuntCreateModify">
 
-    <EditText
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:inputType="textPersonName"
-        android:text="@string/hunt_name"
-        android:ems="10"
-        android:textSize = "25sp"
-        android:id="@+id/editHuntName" />
-    
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".25"
-        android:text="@string/hunt_description"
-        android:id="@+id/editHuntDescription"/>
+        android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <TextView
-            android:text="@string/start_time"
-            android:layout_height="match_parent"
-            android:layout_width="150dp" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="time"
-            android:ems="10"
-            android:id="@+id/start_time"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <TextView
-            android:text="@string/end_time"
-            android:layout_width="150dp"
-            android:layout_height="match_parent" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="time"
-            android:ems="10"
-            android:id="@+id/end_time"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <TextView
-            android:text="@string/private_event"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:id="@+id/textView8" />
-
-        <ToggleButton
-            android:text="ToggleButton"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/public_private_toggle"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content">
 
-    </LinearLayout>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:inputType="textPersonName"
+                android:text="@string/hunt_name"
+                android:ems="10"
+                android:textSize = "25sp"
+                android:id="@+id/editHuntName" />
 
-    <TextView
-        android:text="@string/clues"
-        android:layout_width="match_parent"
-        android:id="@+id/textView"
-        android:textSize="20sp"
-        android:layout_height="wrap_content"
-        android:padding="10dp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hunt_description"
+                android:id="@+id/editHuntDescription"/>
 
-    <android.support.design.widget.CoordinatorLayout android:id="@+id/cluesLayout"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
 
-        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/clues_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/fragment_clue_item" />
+                <TextView
+                    android:text="@string/start_time"
+                    android:layout_height="match_parent"
+                    android:layout_width="150dp" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/add_clue_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@mipmap/ic_add_white_24dp"
-            app:fabSize="mini"/>
-    </android.support.design.widget.CoordinatorLayout>
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="time"
+                    android:ems="10"
+                    android:id="@+id/start_time"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save_button"
-        android:id="@+id/save_button"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:text="@string/end_time"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="time"
+                    android:ems="10"
+                    android:id="@+id/end_time"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:text="@string/private_event"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textView8" />
+
+                <ToggleButton
+                    android:text="ToggleButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/public_private_toggle"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <TextView
+                android:text="@string/clues"
+                android:layout_width="match_parent"
+                android:id="@+id/textView"
+                android:textSize="20sp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"/>
+
+            <android.support.design.widget.CoordinatorLayout android:id="@+id/cluesLayout"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+                <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/clues_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    app:layoutManager="LinearLayoutManager"
+                    tools:listitem="@layout/fragment_clue_item" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/add_clue_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:src="@mipmap/ic_add_white_24dp"
+                    app:fabSize="mini"/>
+            </android.support.design.widget.CoordinatorLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/save_button"
+                android:id="@+id/save_button"/>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
