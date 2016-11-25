@@ -16,6 +16,7 @@ public final class Constants {
     public static final String COMPLETED = "C";
     public static final String REQUESTED = "R";
     public static final String INVITED = "I";
+    public static final String REJECTED = "X";
 
     // DISPLAY MESSAGES //
     public static final String progressMessage = "Progress: ";

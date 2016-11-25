@@ -29,6 +29,23 @@
         android:text="@string/hunt_join"
         android:id="@+id/hunt_join_button"/>
 
+    <android.support.design.widget.CoordinatorLayout android:id="@+id/requestedUsers"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/requestedUser_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/fragment_requestedUser_item" />
+    </android.support.design.widget.CoordinatorLayout>
     <!--<Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -153,6 +153,7 @@
     <!-- DATABASE REFERENCE POINTS -->
     <string name="userToHunts">user-hunts</string>
     <string name="huntsToClues">hunts-clues</string>
+    <string name="userToDeviceId">user-deviceid</string>
     <string name="orderByHuntId">huntId</string>
     <string name="orderByHuntName">huntName</string>
     <string name="orderByProgress">progress</string>
@@ -194,5 +195,7 @@
     <string name="modify_clue">Modify Clue</string>
     <string name="modify_location">Modify Location</string>
     <string name="back_to_hunt_screen">Back to Hunt Screen</string>
+
+    <string name="hunt_state">state</string>
 
 </resources>

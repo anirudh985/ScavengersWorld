@@ -24,9 +24,19 @@
     <!-- <application android:theme="@style/Theme.AppCompat.DayNight"> -->
     <application
         android:name="android.support.multidex.MultiDexApplication"
-        android:theme="@style/AppTheme"
+        android:icon="@mipmap/scavengerhunt"
         android:label="@string/app_name"
-        android:icon="@mipmap/scavengerhunt">
+        android:theme="@style/AppTheme">
+
+        <!--meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_ic_notification" /-->
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
         <activity android:name=".Activities.Login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -106,9 +116,17 @@
         <activity
             android:name=".Activities.HuntActivity"
             android:label="HuntActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity android:name=".CluesRelated.CurrentClueActivity" />
-        <activity android:name=".CluesRelated.ClueFeedbackActivity"></activity>
+        <activity android:name=".CluesRelated.ClueFeedbackActivity" />
+
+        <service
+            android:name=".Services.RefreshFirebaseInstanceIDService" >
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

@@ -14,9 +14,19 @@ import com.example.aj.scavengersworld.DatabaseModels.UserToHunts;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 import static com.example.aj.scavengersworld.Constants.ADMIN;
 import static com.example.aj.scavengersworld.Constants.COMPLETED;
@@ -272,6 +282,51 @@ public enum UserSessionManager {
 //        allHunts.putAll(adminHunts);
         allHunts.putAll(completedHunts);
         return allHunts;
+    }
+    public void sendNotification(String userToken, String title, String body){
+        String serverKey = "AIzaSyBr6hwMLMGdoQFF92_RTY3jXlNnwmnFK3s";
+        try{
+            URL url = new URL("https://fcm.googleapis.com/fcm/send");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setDoOutput(true);
+
+            // HTTP request header
+            //con.setRequestProperty("project_id", senderId);
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setRequestProperty("Authorization", "key="+serverKey);
+            con.setRequestMethod("POST");
+            con.connect();
+
+            JSONObject messagedata = new JSONObject();
+            messagedata.put("body",body);
+            messagedata.put("title",title);
+            //messagedata.put("body","This is a Firebase Cloud Messaging Device Group Message!");
+            // HTTP request
+            JSONObject data = new JSONObject();
+            data.put("to", userToken);
+            data.put("notification", messagedata);
+            // data.put("registration_ids", new JSONArray(Arrays.asList(registrationId)));
+            //data.put("id_token", idToken);
+
+            OutputStream os = con.getOutputStream();
+            os.write(data.toString().getBytes("UTF-8"));
+            os.close();
+
+            // Read the response into a string
+            InputStream is = con.getInputStream();
+            String responseString = new Scanner(is, "UTF-8").useDelimiter("\\A").next();
+            is.close();
+
+            // Parse the JSON string and return the notification key
+            JSONObject response = new JSONObject(responseString);
+            //return response.getString("notification_key");
+        }catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 }
