@@ -34,6 +34,7 @@ import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import static com.example.aj.scavengersworld.Constants.ADMIN;
@@ -71,6 +72,7 @@ public class HuntActivity extends BaseActivity {
 			for (DataSnapshot huntSnapshot : dataSnapshot.getChildren()) {
 				Hunt currentHunt = huntSnapshot.getValue(Hunt.class);
 				updateHuntInSession(currentHunt);
+				createUI();
 				updateUI();
 			}
 		}
@@ -96,6 +98,10 @@ public class HuntActivity extends BaseActivity {
 		huntNameView.setText(huntName);
 
 		getHuntObjectFromDatabaseAndUpdateInSession(huntName);
+
+	}
+
+	private void createUI() {
 		String userHuntStatus = session.getHuntStatusByName(huntName);
 		if (userHuntStatus != null) {
 			if (userHuntStatus.equals(INPROGRESS)) {
@@ -105,9 +111,10 @@ public class HuntActivity extends BaseActivity {
 			} else if (userHuntStatus.equals(COMPLETED)) {
 				hunt = session.getCompletedHuntByName(huntName);
 			}
-		} else {
-			hunt = new Hunt();
 		}
+//		else {
+//			hunt = new Hunt();
+//		}
 
 		description = (TextView) findViewById(R.id.hunt_description);
 //		description.setText(hunt.getDescription());
@@ -137,48 +144,36 @@ public class HuntActivity extends BaseActivity {
 					}
 				});
 			}
-//			else if(userHuntStatus.equals(REQUESTED)){
-//				join.setText(R.string.request_hunt);
-//				join.setOnClickListener(new View.OnClickListener() {
-//					@Override
-//					public void onClick(View view) {
-//						Intent updateHunt = new Intent(view.getContext(), HuntCreateModify.class);
-//						updateHunt.putExtra("Name", huntName);
-//						startActivityForResult(updateHunt,2);
-//
-//					}
-//				});
-//			}
-		} else if (hunt.isPrivateHunt()) {
-			join.setText(R.string.request_hunt);
-			join.setOnClickListener(new View.OnClickListener() {
+		}else if (hunt.isPrivateHunt()) {
+				join.setText(R.string.request_hunt);
+				join.setOnClickListener(new View.OnClickListener() {
 
-				@Override
-				public void onClick(View view) {
-					HashMap<String, String> pendingRequests = hunt.getPendingRequests();
-					if (pendingRequests == null) {
-						pendingRequests = new HashMap<>();
+					@Override
+					public void onClick(View view) {
+						HashMap<String, String> pendingRequests = hunt.getPendingRequests();
+						if (pendingRequests == null) {
+							pendingRequests = new HashMap<>();
+						}
+						pendingRequests.put(session.getUniqueUserId(), session.getUserName());
+						hunt.setPendingRequests(pendingRequests);
+						updateHuntStatus(REQUESTED);
+						updateHuntsTableWithNewRequestedUser();
+						sendNotificationToAdmin();
 					}
-					pendingRequests.put(session.getUniqueUserId(), session.getUserName());
-
-					updateHuntStatus(REQUESTED);
-					updateHuntsTableWithNewRequestedUser();
-					sendNotificationToAdmin();
-				}
-			});
+				});
 		} else {
-			join.setText(R.string.hunt_join);
-			join.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					// TODO: add hunt to yourHuntsList and update in database and open gameplay screen
-					addHuntToSession();
-					updateHuntStatus(INPROGRESS);
-					incrementNumberOfPlayersInHunt();
-					startGamePlayScreen();
-				}
-			});
-		}
+				join.setText(R.string.hunt_join);
+				join.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						// TODO: add hunt to yourHuntsList and update in database and open gameplay screen
+						addHuntToSession();
+						updateHuntStatus(INPROGRESS);
+						incrementNumberOfPlayersInHunt();
+						startGamePlayScreen();
+					}
+				});
+			}
 
 //		Button leaders = (Button) findViewById(R.id.hunt_leaders_button);
 //		leaders.setOnClickListener(this);
@@ -281,12 +276,15 @@ public class HuntActivity extends BaseActivity {
 	}
 
 	private void updateHuntInSession(Hunt currentHunt) {
-		if (hunt != null && currentHunt != null) {
+		if (hunt == null && currentHunt != null) {
+			hunt = new Hunt();
+			hunt.setHuntName(currentHunt.getHuntName());
 			hunt.setCreatedByUserId(currentHunt.getCreatedByUserId());
 			hunt.setDescription(currentHunt.getDescription());
 			hunt.setEndTime(currentHunt.getEndTime());
 			hunt.setStartTime(currentHunt.getStartTime());
 			hunt.setPrivateHunt(currentHunt.isPrivateHunt());
+			hunt.setPendingRequests(currentHunt.getPendingRequests());
 		}
 	}
 
@@ -312,8 +310,16 @@ public class HuntActivity extends BaseActivity {
 	}
 
 	private void updateHuntsTableWithNewRequestedUser() {
-		mDatabaseRefHunts.child(huntName).child(getString(R.string.pendingRequests))
-				.setValue(hunt.getPendingRequests());
+		String baseRef = getString(R.string.huntsTable) +
+				getString(R.string.pathSeparator) +
+				huntName +
+				getString(R.string.pathSeparator) +
+				getString(R.string.pendingRequests) +
+				getString(R.string.pathSeparator);
+		for(Map.Entry<String, String> entry : hunt.getPendingRequests().entrySet()){
+			mDatabaseRefHunts = mDatabase.getReference(baseRef+entry.getKey());
+			mDatabaseRefHunts.setValue(entry.getValue());
+		}
 	}
 
 	private void startGamePlayScreen() {

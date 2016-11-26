@@ -275,7 +275,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		huntsData.setDescription(currentHunt.getDescription());
 		huntsData.setEndTime(currentHunt.getEndTime());
 		huntsData.setStartTime(currentHunt.getStartTime());
-		huntsData.setPrivate(currentHunt.isPrivateHunt());
+		huntsData.setPrivateHunt(currentHunt.isPrivateHunt());
 		mDatabaseRefHuntsData = mDatabase.getReference(getString(R.string.hunts) + "/" + currentHunt.getHuntName());
 		mDatabaseRefHuntsData.setValue(huntsData);
 	}

@@ -36,7 +36,6 @@ public class Hunt implements Comparable<Hunt> {
 
     public Hunt(){
         this.clueList = new ArrayList<>();
-        this.privateHunt = false;
     }
 
     public List<Clue> getClueList() {
@@ -100,8 +99,8 @@ public class Hunt implements Comparable<Hunt> {
         return privateHunt;
     }
 
-    public void setPrivateHunt(boolean aPrivate) {
-        privateHunt = aPrivate;
+    public void setPrivateHunt(boolean privateHunt) {
+        this.privateHunt = privateHunt;
     }
 
     public List<User> getListOfAdmins() {
