@@ -21,11 +21,27 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 import static com.example.aj.scavengersworld.Constants.CREATED_HUNTS;
 import static com.example.aj.scavengersworld.Constants.YOUR_HUNTS;
@@ -46,7 +62,9 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
     private DatabaseReference mDatabaseRefUserHunts;
     private DatabaseReference mDatabaseRefUserProfile;
     private DatabaseReference mDatabaseRefHuntClues;
-
+    private FirebaseInstanceId mFirebaseInstanceId;
+    private String mFirebaseInstanceToken;
+    private DatabaseReference mDatabaseRefUseridDeciceId;
     private int numberOfClueEventListeners = 0;
 
 
@@ -102,6 +120,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate called()");
+        checkAndRefreshFirebaseInstanceId();
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         mDatabaseRefUserHunts = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId());
         mDatabaseRefUserProfile = mDatabase.getReference(getString(R.string.userToProfile) + "/" + session.getUniqueUserId());
@@ -253,6 +272,14 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
             mDatabaseRefHuntClues = mDatabase.getReference(getString(R.string.huntsToClues) + "/" +curHunt.getHuntName());
             mDatabaseRefHuntClues.addListenerForSingleValueEvent(huntsToCluesListener);
         }
+    }
+    public void checkAndRefreshFirebaseInstanceId(){
+        mFirebaseInstanceId = FirebaseInstanceId.getInstance();
+        //FirebaseMessaging.getInstance().send();
+        mFirebaseInstanceToken = mFirebaseInstanceId.getToken();
+        mDatabaseRefUseridDeciceId = mDatabase.getReference(getString(R.string.userToDeviceId) + "/" + session.getUniqueUserId());
+        mDatabaseRefUseridDeciceId.setValue(mFirebaseInstanceToken);
+        Log.d(LOG_TAG, "Refreshed token: " + mFirebaseInstanceToken);
     }
     ValueEventListener huntsToCluesListener = new ValueEventListener() {
         @Override

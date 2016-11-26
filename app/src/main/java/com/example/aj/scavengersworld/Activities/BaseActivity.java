@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.aj.scavengersworld.Activities.HomeScreen.HomeScreenActivity;
 import com.example.aj.scavengersworld.Activities.Login.LoginActivity;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
@@ -40,7 +41,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
+//            getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_home_white_24dp);
             getSupportActionBar().setTitle(getScreenName());
 
         }
@@ -58,12 +61,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "onOptionsItemSelected()");
         switch (item.getItemId()) {
             case android.R.id.home:
-                FragmentManager fm = getSupportFragmentManager();
-                if (fm != null && fm.getBackStackEntryCount() > 0) {
-                    fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                } else {
-                    finish();
-                }
+//                FragmentManager fm = getSupportFragmentManager();
+//                if (fm != null && fm.getBackStackEntryCount() > 0) {
+//                    fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                } else {
+//                    finish();
+//                }
+//                onBackPressed();
+                openHomeScreen();
                 return true;
             case R.id.signout:
                 signout();
@@ -80,8 +85,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "openProfileActivitiy()");
         Intent profileActivity = new Intent(this, ProfileActivity.class);
         startActivity(profileActivity);
-        //TODO: use UserSessionManager to retrieve username and query for Profile Information
-
     }
 
     private void signout(){
@@ -98,8 +101,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivity(login);
     }
 
+    private void openHomeScreen(){
+        Intent homeScreen = new Intent(this, HomeScreenActivity.class);
+        homeScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(homeScreen);
+    }
+
     private void clearSession(){
         UserSessionManager sessionManager = UserSessionManager.INSTANCE;
         sessionManager.clearSession();
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        finish();
     }
 }

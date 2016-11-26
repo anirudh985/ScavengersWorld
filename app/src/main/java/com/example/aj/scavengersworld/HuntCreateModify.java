@@ -85,6 +85,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				mHuntDescription = getString(R.string.hunt_description);
 				hunt = new Hunt();
 				hunt.setHuntName(mHuntName);
+				hunt.setCreatedByUserId(session.getUniqueUserId());
 				numberOfPlayers = 0;
 			}
         }
@@ -274,7 +275,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		huntsData.setDescription(currentHunt.getDescription());
 		huntsData.setEndTime(currentHunt.getEndTime());
 		huntsData.setStartTime(currentHunt.getStartTime());
-		huntsData.setPrivate(currentHunt.isPrivateHunt());
+		huntsData.setPrivateHunt(currentHunt.isPrivateHunt());
 		mDatabaseRefHuntsData = mDatabase.getReference(getString(R.string.hunts) + "/" + currentHunt.getHuntName());
 		mDatabaseRefHuntsData.setValue(huntsData);
 	}

@@ -8,7 +8,7 @@
     </item>
     <item
         android:id="@+id/profile"
-        android:icon="@mipmap/ic_account_circle_black_24dp"
+        android:icon="@mipmap/ic_account_circle_white_24dp"
         app:showAsAction="ifRoom"
         android:title="Profile">
     </item>
