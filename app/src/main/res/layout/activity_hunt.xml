@@ -44,7 +44,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/fragment_requestedUser_item" />
+            tools:listitem="@layout/fragment_requested_user_item" />
     </android.support.design.widget.CoordinatorLayout>
     <!--<Button
         android:layout_width="wrap_content"

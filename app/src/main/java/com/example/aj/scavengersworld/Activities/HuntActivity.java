@@ -3,11 +3,14 @@ package com.example.aj.scavengersworld.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.aj.scavengersworld.CluesRelated.ClueItemRecyclerViewAdapter;
 import com.example.aj.scavengersworld.CluesRelated.CurrentClueActivity;
 import com.example.aj.scavengersworld.DatabaseModels.SearchableHunt;
 import com.example.aj.scavengersworld.DatabaseModels.UserToHunts;
@@ -15,6 +18,7 @@ import com.example.aj.scavengersworld.GamePlayActivity;
 import com.example.aj.scavengersworld.HuntCreateModify;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
+import com.example.aj.scavengersworld.RequestedUserItemRecyclerViewAdapter;
 import com.example.aj.scavengersworld.UserSessionManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,6 +69,9 @@ public class HuntActivity extends BaseActivity {
 
 	private TextView description;
 	private TextView huntNameView;
+	private RecyclerView mRecyclerView;
+	private RecyclerView.Adapter mAdapter;
+	private RecyclerView.LayoutManager mLayoutManager;
 
 	private ValueEventListener huntListener = new ValueEventListener() {
 		@Override
@@ -143,6 +150,13 @@ public class HuntActivity extends BaseActivity {
 
 					}
 				});
+				mRecyclerView = (RecyclerView) findViewById(R.id.requestedUser_recycler);
+				mLayoutManager = new LinearLayoutManager(this);
+				mRecyclerView.setLayoutManager(mLayoutManager);
+				Hunt currentHunt = session.getAdminHuntByName(huntName);
+				//String [] myDataset = {};
+				mAdapter = new RequestedUserItemRecyclerViewAdapter(currentHunt);
+				mRecyclerView.setAdapter(mAdapter);
 			}
 		}else if (hunt.isPrivateHunt()) {
 				join.setText(R.string.request_hunt);
@@ -273,6 +287,7 @@ public class HuntActivity extends BaseActivity {
 		if (description != null) {
 			description.setText(hunt.getDescription());
 		}
+		mAdapter.notifyDataSetChanged();
 	}
 
 	private void updateHuntInSession(Hunt currentHunt) {
@@ -285,6 +300,17 @@ public class HuntActivity extends BaseActivity {
 			hunt.setStartTime(currentHunt.getStartTime());
 			hunt.setPrivateHunt(currentHunt.isPrivateHunt());
 			hunt.setPendingRequests(currentHunt.getPendingRequests());
+		}
+		String userHuntStatus = session.getHuntStatusByName(huntName);
+		if(userHuntStatus.equals(ADMIN) ){
+			Hunt huntInSession = session.getAdminHuntByName(huntName);
+			huntInSession.setHuntName(currentHunt.getHuntName());
+			huntInSession.setCreatedByUserId(currentHunt.getCreatedByUserId());
+			huntInSession.setDescription(currentHunt.getDescription());
+			huntInSession.setEndTime(currentHunt.getEndTime());
+			huntInSession.setStartTime(currentHunt.getStartTime());
+			huntInSession.setPrivateHunt(currentHunt.isPrivateHunt());
+			huntInSession.setPendingRequests(currentHunt.getPendingRequests());
 		}
 	}
 
