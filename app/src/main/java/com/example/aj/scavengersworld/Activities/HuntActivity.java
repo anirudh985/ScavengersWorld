@@ -128,7 +128,7 @@ public class HuntActivity extends BaseActivity {
 //			hunt = new Hunt();
 //		}
 
-		description = (TextView) findViewById(R.id.hunt_description);
+		//description = (TextView) findViewById(R.id.hunt_description);
 //		description.setText(hunt.getDescription());
 
 		Button join = (Button) findViewById(R.id.hunt_join_button);
