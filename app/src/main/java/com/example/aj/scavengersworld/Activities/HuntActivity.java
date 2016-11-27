@@ -68,7 +68,7 @@ public class HuntActivity extends BaseActivity {
 
 	private final String LOG_TAG = getClass().getSimpleName();
 
-	private TextView description;
+	//private TextView description;
 	private TextView huntNameView;
 	private RecyclerView mRecyclerView;
 	private RecyclerView.Adapter mAdapter;
@@ -194,8 +194,8 @@ public class HuntActivity extends BaseActivity {
 				});
 			}
 
-//		Button leaders = (Button) findViewById(R.id.hunt_leaders_button);
-//		leaders.setOnClickListener(this);
+		Button leaders = (Button) findViewById(R.id.hunt_leaders_button);
+		leaders.setOnClickListener(this);
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -203,6 +203,17 @@ public class HuntActivity extends BaseActivity {
 		if (requestCode == 2) {
 			huntNameView.setText(huntName);
 			description.setText(hunt.getDescription());
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.hunt_leaders_button:
+				Intent leaders = new Intent(this, LeaderboardActivity.class);
+				leaders.putExtra("HUNTNAME", hunt.getHuntName());
+				startActivity(leaders);
+				break;
 		}
 	}
 
