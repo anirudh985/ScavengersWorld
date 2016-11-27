@@ -1,22 +1,22 @@
 <resources>
     <string name="app_name">Scavenger\'s World</string>
-    <string name="log_onCreate">+ onCreate() +</string>
-    <string name="log_onStart">++ onStart() ++</string>
-    <string name="log_onResume">+++ onResume() +++</string>
-    <string name="log_onPause">--- onPause() ---</string>
-    <string name="log_onStop">-- onStop() --</string>
-    <string name="log_onDestroy">- onDestroy() -</string>
-    <string name="log_onRestart">* onRestart() *</string>
+    <string name="log_onCreate" translatable="false">+ onCreate() +</string>
+    <string name="log_onStart" translatable="false">++ onStart() ++</string>
+    <string name="log_onResume" translatable="false">+++ onResume() +++</string>
+    <string name="log_onPause" translatable="false">--- onPause() ---</string>
+    <string name="log_onStop" translatable="false">-- onStop() --</string>
+    <string name="log_onDestroy" translatable="false">- onDestroy() -</string>
+    <string name="log_onRestart" translatable="false">* onRestart() *</string>
 
     <!-- FACEBOOK -->
-    <string name="facebook_app_id">566074280252089</string>
+    <string name="facebook_app_id" translatable="false">566074280252089</string>
 
     <!-- FIREBASE -->
-    <string name="fb_login_protocol_scheme">fb566074280252089</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb566074280252089</string>
 
     <!-- GOOGLE -->
     <string name="signed_in_fmt">Signed in as: %s</string>
-    <string name="server_client_id">435212579805-gvug6do3kbp6q6dkuchsa27u367sbj7p.apps.googleusercontent.com</string>
+    <string name="server_client_id" translatable="false">435212579805-gvug6do3kbp6q6dkuchsa27u367sbj7p.apps.googleusercontent.com</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -34,19 +34,19 @@
     </string>
     <string name="decline">Decline</string>
     <string name="eula"><p>By using this app, you agree to abide by the <a href="https://developers.google.com/maps/terms">Google Maps Terms of Service</a> and <a href="https://www.google.com/intl/en/policies/terms/">Google\'s Terms of Service</a>.</p><p><strong>Privacy Policy:</strong> Upon request, this app uses your location in order to show it via Google Maps. Internet access permission is necessary for this purpose. No other information is collected, stored, or transmitted.</p></string>
-    <string name="eula_accepted_key">eula_accepted</string>
+    <string name="eula_accepted_key" translatable="false">eula_accepted</string>
     <string name="get_location">Get Current Location</string>
     <string name="title_activity_modify_clue_location">Map</string>
     <string name="about_app">About Scavenger\'s World</string>
-    <string name="prefs">Prefs</string>
-    <string name="mylocation_button">My Location Button</string>
-    <string name="mylocation_layer">My Location Layer</string>
-    <string name="scroll">Scroll Gestures</string>
-    <string name="tilt">Tilt Gestures</string>
-    <string name="rotation">Rotation:</string>
-    <string name="rotate">Rotate Gestures</string>
-    <string name="zoom_gestures">Zoom Gestures</string>
-    <string name="zoom_buttons">Zoom Buttons</string>
+    <string name="prefs" translatable="false">Prefs</string>
+    <string name="mylocation_button" translatable="false">My Location Button</string>
+    <string name="mylocation_layer" translatable="false">My Location Layer</string>
+    <string name="scroll" translatable="false">Scroll Gestures</string>
+    <string name="tilt" translatable="false">Tilt Gestures</string>
+    <string name="rotation" translatable="false">Rotation:</string>
+    <string name="rotate" translatable="false">Rotate Gestures</string>
+    <string name="zoom_gestures" translatable="false">Zoom Gestures</string>
+    <string name="zoom_buttons" translatable="false">Zoom Buttons</string>
     <string name="compass">Compass</string>
     <string name="map_not_ready">Map is not ready yet</string>
     <!--    Permissions    -->
@@ -65,7 +65,7 @@
     <string name="edit_beacon_id">Edit Beacon String</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
 
     <!-- SIGN UP FRAGMENT -->
@@ -144,47 +144,47 @@
     <!-- LEADERBOARD ACTIVITY -->
     <string name="leaderboard_header">Leaderboard</string>
     <string name="leaderboard_temp">Nothing to show.</string>
-    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_main2" translatable="false">Main2Activity</string>
 
     <!-- HUNT CREATE MODIFY ACTIVITY -->
     <string name="newHuntName">New Hunt</string>
 
 
     <!-- DATABASE REFERENCE POINTS -->
-    <string name="userToHunts">user-hunts</string>
-    <string name="huntsToClues">hunts-clues</string>
-    <string name="userToDeviceId">user-deviceid</string>
-    <string name="orderByHuntId">huntId</string>
-    <string name="orderByHuntName">huntName</string>
-    <string name="orderByProgress">progress</string>
-    <string name="searchableHuntsTable">searchable-hunts</string>
-    <string name="userToProfile">user-profile</string>
-    <string name="allHuntsTableRef">allhunts</string>
-    <string name="clueId">clueId</string>
-    <string name="currentClueSequence">currentClueSequence</string>
+    <string name="userToHunts" translatable="false">user-hunts</string>
+    <string name="huntsToClues" translatable="false">hunts-clues</string>
+    <string name="userToDeviceId" translatable="false">user-deviceid</string>
+    <string name="orderByHuntId" translatable="false">huntId</string>
+    <string name="orderByHuntName" translatable="false">huntName</string>
+    <string name="orderByProgress" translatable="false">progress</string>
+    <string name="searchableHuntsTable" translatable="false">searchable-hunts</string>
+    <string name="userToProfile" translatable="false">user-profile</string>
+    <string name="allHuntsTableRef" translatable="false">allhunts</string>
+    <string name="clueId" translatable="false">clueId</string>
+    <string name="currentClueSequence" translatable="false">currentClueSequence</string>
     <string name="progress">progress</string>
-    <string name="hunts">hunts</string>
-    <string name="huntsTable">hunts</string>
-    <string name="orderByNumPlayers">numberOfPlayers</string>
-    <string name="pendingRequests">pendingRequests</string>
+    <string name="hunts" translatable="false">hunts</string>
+    <string name="huntsTable" translatable="false">hunts</string>
+    <string name="orderByNumPlayers" translatable="false">numberOfPlayers</string>
+    <string name="pendingRequests" translatable="false">pendingRequests</string>
 
-    <string name="pathSeparator">/</string>
+    <string name="pathSeparator" translatable="false">/</string>
 
     <!-- HUNTFEED ACTIVITY -->
     <string name="allFeeds">All</string>
     <string name="popularFeeds">Popular</string>
-    <string name="huntKey">OPENHUNTSCREEN</string>
-    <string name="title_activity_search_preference">SearchPreferenceActivity</string>
-    <string name="escapeChar">\uf8ff</string>
+    <string name="huntKey" translatable="false">OPENHUNTSCREEN</string>
+    <string name="title_activity_search_preference" translatable="false">SearchPreferenceActivity</string>
+    <string name="escapeChar" translatable="false">\uf8ff</string>
 
     <!-- SHARED PREFERENCES KEYS -->
-    <string name="cityName">cityName</string>
-    <string name="showPrivateHunts">showPrivateHunts</string>
-    <string name="maxRadius">maxRadius</string>
+    <string name="cityName" translatable="false">cityName</string>
+    <string name="showPrivateHunts" translatable="false">showPrivateHunts</string>
+    <string name="maxRadius" translatable="false">maxRadius</string>
 
     <!-- CLUE FEEDBACK ACTIVITY-->
-    <string name="clue_feedback_success">Correct! You have succeeded in solving the clue.</string>
-    <string name="clue_feedback_failure">Sorry, you are not in the correct location of the clue.</string>
+    <string name="clue_feedback_success">Correct! You have solved the clue.</string>
+    <string name="clue_feedback_failure">Sorry, you are not in the correct location for this clue.</string>
     <string name="clue_feedback_gameplay">Return to Game Screen</string>
 
     <!-- ADD/MODIFY CLUE ACTIVITY-->
@@ -197,7 +197,7 @@
     <string name="back_to_hunt_screen">Back to Hunt Screen</string>
 
 
-    <string name="hunt_state">state</string>
+    <string name="hunt_state" translatable="false">state</string>
     <string name="notificationRequestTitle">New User Request</string>
     <string name="notificationApprovalTitle">Request approved</string>
     <string name="notificationDeclineTitle">Request declined</string>
