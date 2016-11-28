@@ -121,7 +121,7 @@
         <activity android:name=".CluesRelated.ClueFeedbackActivity" />
 
         <service
-            android:name=".Services.RefreshFirebaseInstanceIDService" >
+            android:name=".Services.DisplayNotificationOnMessageReceivedService" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>

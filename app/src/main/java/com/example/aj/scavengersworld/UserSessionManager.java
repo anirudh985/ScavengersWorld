@@ -298,6 +298,23 @@ public enum UserSessionManager {
         }
     }
 
+    public void removeHunt(String typeOfHunt, Hunt hunt){
+        if(hunt != null){
+            if(typeOfHunt.equals(INPROGRESS)){
+                participatingHunts.remove(hunt.getHuntName());
+                participatingHuntsList.remove(hunt);
+            }
+            else if(typeOfHunt.equals(ADMIN)){
+                adminHunts.remove(hunt.getHuntName());
+                adminHuntsList.remove(hunt);
+            }
+            else if(typeOfHunt.equals(COMPLETED)){
+                completedHunts.remove(hunt.getHuntName());
+                completedHuntsList.remove(hunt);
+            }
+        }
+    }
+
     public List<Hunt> getAllHuntsList(){
         allHuntsList.clear();
         allHuntsList.addAll(participatingHuntsList);
@@ -313,49 +330,74 @@ public enum UserSessionManager {
         allHunts.putAll(completedHunts);
         return allHunts;
     }
+
+    private class SendNotificationThread extends Thread{
+        private String userToken;
+        private String title;
+        private String body;
+
+        public SendNotificationThread(String userToken, String title, String body){
+            this.userToken = userToken;
+            this.title = title;
+            this.body = body;
+        }
+
+        @Override
+        public void run(){
+            sendNotification(userToken, title, body);
+        }
+
+        private void sendNotification(String userToken, String title, String body){
+            String serverKey = "AIzaSyBr6hwMLMGdoQFF92_RTY3jXlNnwmnFK3s";
+            try{
+                URL url = new URL("https://fcm.googleapis.com/fcm/send");
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setDoOutput(true);
+
+                // HTTP request header
+                //con.setRequestProperty("project_id", senderId);
+                con.setRequestProperty("Content-Type", "application/json");
+                con.setRequestProperty("Authorization", "key="+serverKey);
+                con.setRequestMethod("POST");
+                con.connect();
+
+                JSONObject messagedata = new JSONObject();
+                messagedata.put("body",body);
+                messagedata.put("title",title);
+                //messagedata.put("body","This is a Firebase Cloud Messaging Device Group Message!");
+                // HTTP request
+                JSONObject data = new JSONObject();
+                data.put("to", userToken);
+                data.put("notification", messagedata);
+                // data.put("registration_ids", new JSONArray(Arrays.asList(registrationId)));
+                //data.put("id_token", idToken);
+
+                OutputStream os = con.getOutputStream();
+                os.write(data.toString().getBytes("UTF-8"));
+                os.close();
+
+                // Read the response into a string
+                InputStream is = con.getInputStream();
+                String responseString = new Scanner(is, "UTF-8").useDelimiter("\\A").next();
+                is.close();
+
+                // Parse the JSON string and return the notification key
+                JSONObject response = new JSONObject(responseString);
+                //return response.getString("notification_key");
+            }catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void sendNotification(String userToken, String title, String body){
-        String serverKey = "AIzaSyBr6hwMLMGdoQFF92_RTY3jXlNnwmnFK3s";
-        try{
-            URL url = new URL("https://fcm.googleapis.com/fcm/send");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setDoOutput(true);
-
-            // HTTP request header
-            //con.setRequestProperty("project_id", senderId);
-            con.setRequestProperty("Content-Type", "application/json");
-            con.setRequestProperty("Authorization", "key="+serverKey);
-            con.setRequestMethod("POST");
-            con.connect();
-
-            JSONObject messagedata = new JSONObject();
-            messagedata.put("body",body);
-            messagedata.put("title",title);
-            //messagedata.put("body","This is a Firebase Cloud Messaging Device Group Message!");
-            // HTTP request
-            JSONObject data = new JSONObject();
-            data.put("to", userToken);
-            data.put("notification", messagedata);
-            // data.put("registration_ids", new JSONArray(Arrays.asList(registrationId)));
-            //data.put("id_token", idToken);
-
-            OutputStream os = con.getOutputStream();
-            os.write(data.toString().getBytes("UTF-8"));
-            os.close();
-
-            // Read the response into a string
-            InputStream is = con.getInputStream();
-            String responseString = new Scanner(is, "UTF-8").useDelimiter("\\A").next();
-            is.close();
-
-            // Parse the JSON string and return the notification key
-            JSONObject response = new JSONObject(responseString);
-            //return response.getString("notification_key");
-        }catch (ProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if(userToken != null && title != null && body != null){
+            SendNotificationThread notificationThread = new SendNotificationThread(userToken, title, body);
+            notificationThread.start();
         }
     }
 

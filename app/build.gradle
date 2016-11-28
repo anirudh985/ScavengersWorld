@@ -18,10 +18,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java']
+        }
+        androidTest {
+            java.srcDirs = ['src/androidTest/java']
+        }
+    }
 }
 
 repositories {
     mavenCentral()
+    jcenter()
     maven {
         url 'http://dl.bintray.com/amulyakhare/maven'
     }
@@ -44,7 +54,8 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:10.0.0'
     compile 'com.google.firebase:firebase-core:10.0.0'
     compile 'com.google.firebase:firebase-messaging:10.0.0'
-    testCompile 'junit:junit:4.12'
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile 'com.jayway.android.robotium:robotium:5.6.3'
 }
 
 

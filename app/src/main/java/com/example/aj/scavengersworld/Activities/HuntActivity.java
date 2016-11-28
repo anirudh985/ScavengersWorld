@@ -28,18 +28,8 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 import static com.example.aj.scavengersworld.Constants.ADMIN;
 import static com.example.aj.scavengersworld.Constants.COMPLETED;
@@ -303,7 +293,9 @@ public class HuntActivity extends BaseActivity {
 		if (description != null) {
 			description.setText(hunt.getDescription());
 		}
-		mAdapter.notifyDataSetChanged();
+		if(mAdapter != null){
+			mAdapter.notifyDataSetChanged();
+		}
 	}
 
 	private void updateHuntInSession(Hunt currentHunt) {
@@ -318,7 +310,7 @@ public class HuntActivity extends BaseActivity {
 			hunt.setPendingRequests(currentHunt.getPendingRequests());
 		}
 		String userHuntStatus = session.getHuntStatusByName(huntName);
-		if(userHuntStatus.equals(ADMIN) ){
+		if(userHuntStatus != null && userHuntStatus.equals(ADMIN) ){
 			Hunt huntInSession = session.getAdminHuntByName(huntName);
 			huntInSession.setHuntName(currentHunt.getHuntName());
 			huntInSession.setCreatedByUserId(currentHunt.getCreatedByUserId());
@@ -424,10 +416,8 @@ public class HuntActivity extends BaseActivity {
 	ValueEventListener notificationListener = new ValueEventListener() {
 		@Override
 		public void onDataChange(DataSnapshot dataSnapshot) {
-			String deviceIdString = null;
-			for(DataSnapshot deviceIdStringSnapshot: dataSnapshot.getChildren()){
-				deviceIdString = deviceIdStringSnapshot.getValue(String.class);
-			}
+			String deviceIdString = dataSnapshot.getValue(String.class);
+
 			if(deviceIdString != null){
 				StringBuilder stringBuilder = new StringBuilder();
 				stringBuilder.append(session.getUserName());

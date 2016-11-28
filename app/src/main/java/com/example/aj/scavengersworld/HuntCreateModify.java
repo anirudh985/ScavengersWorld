@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.aj.scavengersworld.Constants.ADMIN;
@@ -89,6 +92,9 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				numberOfPlayers = 0;
 			}
         }
+		else{
+			restoreHuntInstance(savedInstanceState);
+		}
 
         editName = (EditText) findViewById(R.id.editHuntName);
 		editName.setText(mHuntName);
@@ -144,6 +150,47 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		save_button.setOnClickListener(this);
     }
 
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		saveHuntInstance(outState);
+	}
+
+	private void saveHuntInstance(Bundle outState){
+		if(outState != null){
+			outState.putString(getString(R.string.huntNameKey), hunt.getHuntName());
+			outState.putString(getString(R.string.huntDescKey), hunt.getDescription());
+			outState.putBoolean(getString(R.string.huntPrivateKey), hunt.isPrivateHunt());
+			outState.putBoolean(getString(R.string.newHunt), newHunt);
+			outState.putBoolean(getString(R.string.changed), changed);
+			outState.putInt(getString(R.string.numPlayers), numberOfPlayers);
+			outState.putString(getString(R.string.searchableHuntKey), searchableHuntKey);
+			if(hunt.getClueList() != null && hunt.getClueList().size() != 0){
+				outState.putParcelableArrayList(getString(R.string.clueListKey), (ArrayList<Clue>) hunt.getClueList());
+			}
+		}
+	}
+
+//	@Override
+//	public void onRestoreInstanceState(Bundle inState){
+//		super.onRestoreInstanceState(inState);
+//		restoreHuntInstance(inState);
+//	}
+
+	private void restoreHuntInstance(Bundle inState){
+		if(inState != null){
+			hunt = new Hunt();
+			hunt.setHuntName(inState.getString(getString(R.string.huntNameKey)));
+			hunt.setDescription(inState.getString(getString(R.string.huntDescKey)));
+			hunt.setPrivateHunt(inState.getBoolean(getString(R.string.huntPrivateKey)));
+			hunt.setClueList(inState.<Clue>getParcelableArrayList(getString(R.string.clueListKey)));
+			newHunt = inState.getBoolean(getString(R.string.newHunt));
+			changed = inState.getBoolean(getString(R.string.changed));
+			numberOfPlayers = inState.getInt(getString(R.string.numPlayers));
+			searchableHuntKey = inState.getString(getString(R.string.searchableHuntKey));
+		}
+	}
+
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_hunt_create_modify;
@@ -176,9 +223,6 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			case R.id.save_button:
 				if(changed) {
 					if(newHunt) {
-						if(session.getAdminHuntByName(mHuntName) == null) {
-							session.addHunt(ADMIN, hunt);
-						}
 						editName.removeTextChangedListener(this);
 						checkWhetherAHuntIsAlreadyPresentAndInsert(hunt);
 						newHunt = false;
@@ -188,10 +232,11 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 						UpdateClueListInDatabase(hunt);
 						UpdateUserHuntsTableInDatabase(hunt);
 						updateSearchableHuntsTableInDatabase(hunt, numberOfPlayers, false);
+						finish();
 					}
 
 				}
-				finish();
+				//finish();
 				break;
 		}
 	}
@@ -341,7 +386,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	}
 
 	private void checkWhetherAHuntIsAlreadyPresentAndInsert(Hunt currentHunt){
-		mDatabaseRefHuntsData = mDatabase.getReference(getString(R.string.hunts) + "/" + currentHunt.getHuntName());
+		mDatabaseRefHuntsData = mDatabase.getReference(getString(R.string.hunts));
 		mDatabaseRefHuntsData.orderByChild("huntName")
 				.equalTo(currentHunt.getHuntName())
 				.addListenerForSingleValueEvent(checkForHuntAndInsertListener);
@@ -358,16 +403,23 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				}
 			}
 			if(!retrieved){
+//				if(session.getAdminHuntByName(mHuntName) == null) {
+//					session.addHunt(ADMIN, hunt);
+//				}
 				UpdateHuntDataInDatabase(hunt);
 				UpdateClueListInDatabase(hunt);
 				UpdateUserHuntsTableInDatabase(hunt);
 				updateSearchableHuntsTableInDatabase(hunt, 0, true);
+				finish();
 			}
 			else{
 				AlertDialog.Builder builder = new AlertDialog.Builder(HuntCreateModify.this);
-				builder.setMessage(getString(R.string.duplicateHunt));
+				builder.setMessage(getString(R.string.duplicateHunt))
+						.setPositiveButton(android.R.string.ok, null);
 				AlertDialog dialog = builder.create();
 				dialog.show();
+				newHunt = true;
+				editName.addTextChangedListener(HuntCreateModify.this);
 			}
 		}
 
@@ -401,5 +453,20 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 		}
 	};
+
+	@Override
+	public void onBackPressed(){
+		removeHuntFromSession(hunt);
+		super.onBackPressed();
+	}
+
+	private void removeHuntFromSession(Hunt hunt){
+		session.removeHunt(ADMIN, hunt);
+	}
+
+	@Override
+	public void homeButtonClicked(){
+		session.removeHunt(ADMIN, hunt);
+	}
 
 }
