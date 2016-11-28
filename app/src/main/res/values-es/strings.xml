@@ -37,7 +37,7 @@
     <string name="error_incorrect_password">Esta contraseña es incorrecta</string>
     <string name="error_invalid_email">Esta dirección de correo electrónico no válido</string>
     <string name="error_invalid_password">Esta contraseña es demasiado corta</string>
-    <string name="eula"><p>Al usar esta aplicación, acepta cumplir con los <a href="https://developers.google.com/maps/terms">Google Maps Terms of Service</a> y <a href="https://www.google.com/intl/en/policies/terms/">Google's Terms of Service</a>.</p><p><strong>Política de privacidad:<strong> a solicitud, esta aplicación utiliza tu ubicación para mostrarla a través de Google Maps. El permiso de acceso a Internet es necesario para este propósito. No se recopila, almacena o transmite ninguna otra información.</p></string>
+    <string name="eula"><p>Al usar esta aplicación, acepta cumplir con los <a href="https://developers.google.com/maps/terms">Google Maps Terms of Service</a> y <a href="https://www.google.com/intl/en/policies/terms/">Google\'s Terms of Service</a>.</p><p><strong>Política de privacidad:</strong> a solicitud, esta aplicación utiliza tu ubicación para mostrarla a través de Google Maps. El permiso de acceso a Internet es necesario para este propósito. No se recopila, almacena o transmite ninguna otra información.</p></string>
     <string name="eula_accepted_key"></string>
     <string name="facebookLogin">Acceder con Facebook</string>
     <string name="facebook_app_id"></string>
