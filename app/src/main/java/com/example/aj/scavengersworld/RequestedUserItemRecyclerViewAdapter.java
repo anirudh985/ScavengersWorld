@@ -116,10 +116,7 @@ public class RequestedUserItemRecyclerViewAdapter extends RecyclerView.Adapter<R
             }
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String deviceIdString = null;
-                for(DataSnapshot deviceIdStringSnapshot: dataSnapshot.getChildren()){
-                    deviceIdString = deviceIdStringSnapshot.getValue(String.class);
-                }
+                String deviceIdString = dataSnapshot.getValue(String.class);
                 if(deviceIdString != null){
                     UserSessionManager session = UserSessionManager.INSTANCE;
                     StringBuilder stringBuilder = new StringBuilder();

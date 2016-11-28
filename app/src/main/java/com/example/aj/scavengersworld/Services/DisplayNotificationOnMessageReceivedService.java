@@ -18,8 +18,8 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-public class RefreshFirebaseInstanceIDService extends FirebaseMessagingService {
-    public RefreshFirebaseInstanceIDService() {
+public class DisplayNotificationOnMessageReceivedService extends FirebaseMessagingService {
+    public DisplayNotificationOnMessageReceivedService() {
     }
     private static final String TAG = "MyFirebaseIIDService";
 
@@ -79,7 +79,8 @@ public class RefreshFirebaseInstanceIDService extends FirebaseMessagingService {
                     .setContentText(remoteMessage.getNotification().getBody());
 // Creates an explicit intent for an Activity in your app
     Intent resultIntent = new Intent(this, LoginActivity.class);
-
+    resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 // The stack builder object will contain an artificial back stack for the
 // started Activity.
 // This ensures that navigating backward from the Activity leads out of
