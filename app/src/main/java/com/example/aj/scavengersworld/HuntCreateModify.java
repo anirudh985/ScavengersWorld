@@ -1,5 +1,7 @@
 package com.example.aj.scavengersworld;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,7 +13,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
 import com.example.aj.scavengersworld.Activities.BaseActivity;
@@ -28,12 +32,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.aj.scavengersworld.Constants.ADMIN;
 import static com.example.aj.scavengersworld.Constants.METERS_PER_MILE;
 
-public class HuntCreateModify extends BaseActivity implements View.OnClickListener, android.text.TextWatcher {
+public class HuntCreateModify extends BaseActivity implements View.OnClickListener, android.text.TextWatcher, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
     private String mHuntName;
     private String mHuntDescription;
     private Hunt hunt;
@@ -476,6 +481,32 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = new DatePickerFragment();
 		newFragment.show(getSupportFragmentManager(), "datePicker");
+	}
+
+	@Override
+	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+		switch(view.getId()) {
+			case R.id.start_time:
+				hunt.setStartTime((view.getHour()*100)+view.getMinute());
+				break;
+			case R.id.end_time:
+				hunt.setEndTime((view.getHour()*100)+view.getMinute());
+				break;
+		}
+	}
+
+	@Override
+	public void onDateSet(DatePicker view, int year, int month, int day) {
+		switch(view.getId()) {
+			case R.id.start_date:
+				Date startDate = new Date(view.getYear(), view.getMonth(), view.getDayOfMonth());
+				hunt.setStartDate(startDate);
+				break;
+			case R.id.end_date:
+				Date endDate = new Date(view.getYear(), view.getMonth(), view.getDayOfMonth());
+				hunt.setStartDate(endDate);
+				break;
+		}
 	}
 
 }
