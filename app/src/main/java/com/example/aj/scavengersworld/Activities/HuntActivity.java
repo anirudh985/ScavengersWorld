@@ -277,7 +277,9 @@ public class HuntActivity extends BaseActivity {
 		if (description != null) {
 			description.setText(hunt.getDescription());
 		}
-		mAdapter.notifyDataSetChanged();
+		if(mAdapter != null){
+			mAdapter.notifyDataSetChanged();
+		}
 	}
 
 	private void updateHuntInSession(Hunt currentHunt) {
@@ -292,7 +294,7 @@ public class HuntActivity extends BaseActivity {
 			hunt.setPendingRequests(currentHunt.getPendingRequests());
 		}
 		String userHuntStatus = session.getHuntStatusByName(huntName);
-		if(userHuntStatus.equals(ADMIN) ){
+		if(userHuntStatus != null && userHuntStatus.equals(ADMIN) ){
 			Hunt huntInSession = session.getAdminHuntByName(huntName);
 			huntInSession.setHuntName(currentHunt.getHuntName());
 			huntInSession.setCreatedByUserId(currentHunt.getCreatedByUserId());
