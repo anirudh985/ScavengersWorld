@@ -16,6 +16,8 @@ import com.example.aj.scavengersworld.UserSessionManager;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import static com.example.aj.scavengersworld.Constants.COMPLETED;
+
 public class ClueFeedbackActivity extends BaseActivity {
     private boolean clueResult;
     private Hunt currentHunt;
@@ -53,12 +55,33 @@ public class ClueFeedbackActivity extends BaseActivity {
     private void updateClueSuccess(){
         Clue currentClue = currentHunt.getCurrentClue();
         Clue nextClue = currentHunt.getClueAtSequence(currentClue.getSequenceNumberInHunt()+1);
-        currentHunt.setCurrentClueSequence(nextClue.getSequenceNumberInHunt());
+        Double progress = 0.0;
         int totalCluesInCurrentHunt = currentHunt.getClueList().size();
-        Double progress = (double) currentClue.getSequenceNumberInHunt() * 100 / totalCluesInCurrentHunt;
-        mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+getString(R.string.currentClueSequence));
-        mDatabaseRef.setValue(nextClue.getSequenceNumberInHunt());
+        if(nextClue == null)
+        {
+            if(currentClue.getSequenceNumberInHunt() == totalCluesInCurrentHunt)
+            {
+                updateUIElements(getString(R.string.clue_feedback_hunt_complete),currentClue.getClueDescription(),currentClue.getHuntName() + currentClue.getClueTitle());
+                progress = 100.0;
+                mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+getString(R.string.hunt_state));
+                mDatabaseRef.setValue(COMPLETED);
+            }
+            else{
+                updateUIElements(getString(R.string.clue_feedback_success),currentClue.getClueDescription(),currentClue.getHuntName() + currentClue.getClueTitle());
+            }
+        }
+        else{
+            updateUIElements(getString(R.string.clue_feedback_success),currentClue.getClueDescription(),currentClue.getHuntName() + currentClue.getClueTitle());
+            currentHunt.setCurrentClueSequence(nextClue.getSequenceNumberInHunt());
+            progress = (double) currentClue.getSequenceNumberInHunt() * 100 / totalCluesInCurrentHunt;
+            mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+getString(R.string.currentClueSequence));
+            mDatabaseRef.setValue(nextClue.getSequenceNumberInHunt());
+        }
         mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+getString(R.string.progress));
+        mDatabaseRef.setValue(progress.intValue());
+        mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+getString(R.string.score));
+        mDatabaseRef.setValue(progress.intValue());
+        mDatabaseRef = mDatabase.getReference(getString(R.string.huntToLeaderboard) + "/" + currentHunt.getHuntName() +"/"+session.getUserName());
         mDatabaseRef.setValue(progress.intValue());
     }
 
@@ -95,8 +118,6 @@ public class ClueFeedbackActivity extends BaseActivity {
             currentHunt = session.getParticipatingHuntByName(huntName);
             if (extrasBundle.getBoolean("RESULT")) {
                 clueResult = true;
-                Clue currentClue = currentHunt.getCurrentClue();
-                updateUIElements(getString(R.string.clue_feedback_success),currentClue.getClueDescription(),currentClue.getHuntName() + currentClue.getClueTitle());
                 updateClueSuccess();
             }
             else{

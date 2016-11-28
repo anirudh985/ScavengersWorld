@@ -168,6 +168,7 @@
     <string name="clueId" translatable="false">clueId</string>
     <string name="currentClueSequence" translatable="false">currentClueSequence</string>
     <string name="progress">progress</string>
+    <string name="score">score</string>
     <string name="hunts" translatable="false">hunts</string>
     <string name="huntsTable" translatable="false">hunts</string>
     <string name="orderByNumPlayers" translatable="false">numberOfPlayers</string>
@@ -189,6 +190,7 @@
 
     <!-- CLUE FEEDBACK ACTIVITY-->
     <string name="clue_feedback_success">Correct! You have solved the clue.</string>
+    <string name="clue_feedback_hunt_complete">Congrats! You have successfully completed the hunt</string>
     <string name="clue_feedback_failure">Sorry, you are not in the correct location for this clue.</string>
     <string name="clue_feedback_gameplay">Return to Game Screen</string>
 
