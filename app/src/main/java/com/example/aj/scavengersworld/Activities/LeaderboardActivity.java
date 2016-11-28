@@ -6,8 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.example.aj.scavengersworld.CluesRelated.UpdateClueRecyclerViewAdapter;
-import com.example.aj.scavengersworld.Model.Clue;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.Model.User;
 import com.example.aj.scavengersworld.R;
@@ -42,20 +40,26 @@ public class LeaderboardActivity extends BaseActivity {
 		session = UserSessionManager.INSTANCE;
 
 		Intent intent = getIntent();
-		String huntName = intent.getStringExtra("HUNTNAME");
+		Bundle extras = intent.getExtras();
+		hunt = extras.getParcelable("HUNT");
 
-		mDataBaseRef = mDatabase.getReference(getString(R.string.huntsToLeaders) + "/" + huntName);
-		mDataBaseRef.addListenerForSingleValueEvent(huntsToLeadersListener);
+		if(hunt != null) {
 
-		//set up "clues" recycler
-		mRecyclerView = (RecyclerView) findViewById(R.id.clues_recycler);
-		mRecyclerView.setHasFixedSize(true);
+			mDataBaseRef = mDatabase.getReference(getString(R.string.huntsToLeaders) + "/" + hunt.getHuntName());
+			mDataBaseRef.addListenerForSingleValueEvent(huntsToLeadersListener);
 
-		LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-		mRecyclerView.setLayoutManager(mLayoutManager);
+			//set up "leaders" recycler
+			mRecyclerView = (RecyclerView) findViewById(R.id.leaders_recycler);
+			mRecyclerView.setHasFixedSize(true);
 
-		RecyclerView.Adapter mAdapter = new UpdateClueRecyclerViewAdapter(hunt, this);
-		mRecyclerView.setAdapter(mAdapter);
+			mLayoutManager = new LinearLayoutManager(this);
+			mRecyclerView.setLayoutManager(mLayoutManager);
+
+			//TODO
+			//RecyclerView.Adapter mAdapter = new LeadersRecyclerViewAdapter(hunt);
+			RecyclerView.Adapter mAdapter = new LeadersRecyclerViewAdapter();
+			mRecyclerView.setAdapter(mAdapter);
+		}
 	}
 
 	@Override
@@ -106,18 +110,17 @@ public class LeaderboardActivity extends BaseActivity {
 	ValueEventListener huntsToLeadersListener = new ValueEventListener() {
 		@Override
 		public void onDataChange(DataSnapshot dataSnapshot) {
-			for(DataSnapshot userToHuntsSnapshot : dataSnapshot.getChildren()){
-				/*Hunt currentHunt = session.getAdminHuntByName(dataSnapshot.getKey());
-				if(currentHunt != null && newClue != null) {
-					newClue.setHuntName(currentHunt.getHuntName());
-					currentHunt.addClueToClueList(newClue);
-				}TODO*/
+			for(DataSnapshot userToHuntsSnapshot : dataSnapshot.getChildren()) {
+				User leader = userToHuntsSnapshot.getValue(User.class);
+				if(hunt != null && leader != null) {
+					//hunt.addLeaderToLeadersList(leader);
+				}
 
 			}
-			RecyclerView mCluesRecyclerView = (RecyclerView) findViewById(R.id.clues_recycler);
-			if(mCluesRecyclerView != null) {
-				UpdateClueRecyclerViewAdapter clueRecyclerViewAdapter = (UpdateClueRecyclerViewAdapter) mCluesRecyclerView.getAdapter();
-				clueRecyclerViewAdapter.notifyDataSetChanged();
+			RecyclerView mLeadersRecyclerView = (RecyclerView) findViewById(R.id.leaders_recycler);
+			if(mLeadersRecyclerView != null) {
+				LeadersRecyclerViewAdapter leadersRecyclerViewAdapter = (LeadersRecyclerViewAdapter) mLeadersRecyclerView.getAdapter();
+				leadersRecyclerViewAdapter.notifyDataSetChanged();
 			}
 		}
 

@@ -2,6 +2,7 @@ package com.example.aj.scavengersworld.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.aj.scavengersworld.CluesRelated.ClueItemRecyclerViewAdapter;
 import com.example.aj.scavengersworld.CluesRelated.CurrentClueActivity;
 import com.example.aj.scavengersworld.DatabaseModels.SearchableHunt;
 import com.example.aj.scavengersworld.DatabaseModels.UserToHunts;
@@ -34,15 +34,15 @@ import java.util.Map;
 import static com.example.aj.scavengersworld.Constants.ADMIN;
 import static com.example.aj.scavengersworld.Constants.COMPLETED;
 import static com.example.aj.scavengersworld.Constants.INPROGRESS;
-import static com.example.aj.scavengersworld.Constants.REQUESTED;
 import static com.example.aj.scavengersworld.Constants.INVITED;
+import static com.example.aj.scavengersworld.Constants.REQUESTED;
 import static com.example.aj.scavengersworld.Constants.SEQUENCE_OF_FIRST_CLUE;
 
 
 /**
  * Created by Jennifer on 10/17/2016.
  */
-public class HuntActivity extends BaseActivity {
+public class HuntActivity extends BaseActivity implements View.OnClickListener {
 
 	private Intent intent;
 	private String huntName;
@@ -58,7 +58,7 @@ public class HuntActivity extends BaseActivity {
 
 	private final String LOG_TAG = getClass().getSimpleName();
 
-	//private TextView description;
+	private TextView description;
 	private TextView huntNameView;
 	private RecyclerView mRecyclerView;
 	private RecyclerView.Adapter mAdapter;
@@ -118,8 +118,8 @@ public class HuntActivity extends BaseActivity {
 //			hunt = new Hunt();
 //		}
 
-		//description = (TextView) findViewById(R.id.hunt_description);
-//		description.setText(hunt.getDescription());
+		description = (TextView) findViewById(R.id.hunt_description);
+		description.setText(hunt.getDescription());
 
 		Button join = (Button) findViewById(R.id.hunt_join_button);
 		if (userHuntStatus != null) {
@@ -201,7 +201,7 @@ public class HuntActivity extends BaseActivity {
 		switch (v.getId()) {
 			case R.id.hunt_leaders_button:
 				Intent leaders = new Intent(this, LeaderboardActivity.class);
-				leaders.putExtra("HUNTNAME", hunt.getHuntName());
+				leaders.putExtra("HUNT", (Parcelable)hunt);
 				startActivity(leaders);
 				break;
 		}

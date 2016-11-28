@@ -85,6 +85,7 @@
         <!-- FACEBOOK STUFF - END -->
 
         <activity android:name=".Activities.HomeScreen.HomeScreenActivity" />
+        <activity android:name=".Activities.LeaderboardActivity" />
         <activity android:name=".Activities.HuntsFeed.HuntFeedActivity" />
         <activity android:name=".HuntCreateModify">
             <intent-filter>
