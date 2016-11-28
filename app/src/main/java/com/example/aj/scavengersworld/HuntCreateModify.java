@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.aj.scavengersworld.Constants.ADMIN;
@@ -89,6 +92,9 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				numberOfPlayers = 0;
 			}
         }
+		else{
+			restoreHuntInstance(savedInstanceState);
+		}
 
         editName = (EditText) findViewById(R.id.editHuntName);
 		editName.setText(mHuntName);
@@ -143,6 +149,47 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		Button save_button = (Button) findViewById(R.id.save_button);
 		save_button.setOnClickListener(this);
     }
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		saveHuntInstance(outState);
+	}
+
+	private void saveHuntInstance(Bundle outState){
+		if(outState != null){
+			outState.putString(getString(R.string.huntNameKey), hunt.getHuntName());
+			outState.putString(getString(R.string.huntDescKey), hunt.getDescription());
+			outState.putBoolean(getString(R.string.huntPrivateKey), hunt.isPrivateHunt());
+			outState.putBoolean(getString(R.string.newHunt), newHunt);
+			outState.putBoolean(getString(R.string.changed), changed);
+			outState.putInt(getString(R.string.numPlayers), numberOfPlayers);
+			outState.putString(getString(R.string.searchableHuntKey), searchableHuntKey);
+			if(hunt.getClueList() != null && hunt.getClueList().size() != 0){
+				outState.putParcelableArrayList(getString(R.string.clueListKey), (ArrayList<Clue>) hunt.getClueList());
+			}
+		}
+	}
+
+//	@Override
+//	public void onRestoreInstanceState(Bundle inState){
+//		super.onRestoreInstanceState(inState);
+//		restoreHuntInstance(inState);
+//	}
+
+	private void restoreHuntInstance(Bundle inState){
+		if(inState != null){
+			hunt = new Hunt();
+			hunt.setHuntName(inState.getString(getString(R.string.huntNameKey)));
+			hunt.setDescription(inState.getString(getString(R.string.huntDescKey)));
+			hunt.setPrivateHunt(inState.getBoolean(getString(R.string.huntPrivateKey)));
+			hunt.setClueList(inState.<Clue>getParcelableArrayList(getString(R.string.clueListKey)));
+			newHunt = inState.getBoolean(getString(R.string.newHunt));
+			changed = inState.getBoolean(getString(R.string.changed));
+			numberOfPlayers = inState.getInt(getString(R.string.numPlayers));
+			searchableHuntKey = inState.getString(getString(R.string.searchableHuntKey));
+		}
+	}
 
     @Override
     protected int getLayoutResource() {

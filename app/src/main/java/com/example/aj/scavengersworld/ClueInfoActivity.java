@@ -123,26 +123,30 @@ public class ClueInfoActivity extends BaseActivity implements View.OnClickListen
             startActivityForResult(editLocationIntent,2);
         }
         else if( v.getId() == R.id.back_to_hunts_button){
-            Bundle savedbundle = new Bundle();
-            Intent backToHuntsIntent = new Intent(ClueInfoActivity.this, HuntCreateModify.class);
-            Double mCurrentLatitude = Double.parseDouble(mLatitudeLabel.getText().toString().equals(mDefaultLocationText)? "0.0":mLatitudeLabel.getText().toString() );
-            Double mCurrentLongitude = Double.parseDouble(mLongitudelabel.getText().toString().equals(mDefaultLocationText)? "0.0":mLongitudelabel.getText().toString());
-            currentClue.setLocation(new Location(mCurrentLatitude, mCurrentLongitude));
-            currentClue.setClueDescription(mClueDesctiptionEditText.getText().toString());
-            currentClue.setClueTitle(mClueNameEditText.getText().toString());
-            currentClue.setLandmarkDescription(mClueLandmarkEditText.getText().toString());
-            //savedbundle.putDouble("LATITUDE", mCurrentLatitude);
-            //savedbundle.putDouble("LONGITUDE",mCurrentLongitude);
-            //savedbundle.putString("CLUEDESCRITION",mClueDesctiptionEditText.getText().toString());
-            //savedbundle.putString("CLUENAME",mClueNameEditText.getText().toString());
-            //savedbundle.putString("CLUELANDMARK",mClueLandmarkEditText.getText().toString());
-            savedbundle.putParcelable("CLUE",currentClue);
-            backToHuntsIntent.putExtras(savedbundle);
-            setResult(RESULT_OK,backToHuntsIntent);
+            sendClueToCreateModifyHuntScreen();
             finish();
-
         }
     }
+
+    private void sendClueToCreateModifyHuntScreen(){
+        Bundle savedbundle = new Bundle();
+        Intent backToHuntsIntent = new Intent(ClueInfoActivity.this, HuntCreateModify.class);
+        Double mCurrentLatitude = Double.parseDouble(mLatitudeLabel.getText().toString().equals(mDefaultLocationText)? "0.0":mLatitudeLabel.getText().toString() );
+        Double mCurrentLongitude = Double.parseDouble(mLongitudelabel.getText().toString().equals(mDefaultLocationText)? "0.0":mLongitudelabel.getText().toString());
+        currentClue.setLocation(new Location(mCurrentLatitude, mCurrentLongitude));
+        currentClue.setClueDescription(mClueDesctiptionEditText.getText().toString());
+        currentClue.setClueTitle(mClueNameEditText.getText().toString());
+        currentClue.setLandmarkDescription(mClueLandmarkEditText.getText().toString());
+        //savedbundle.putDouble("LATITUDE", mCurrentLatitude);
+        //savedbundle.putDouble("LONGITUDE",mCurrentLongitude);
+        //savedbundle.putString("CLUEDESCRITION",mClueDesctiptionEditText.getText().toString());
+        //savedbundle.putString("CLUENAME",mClueNameEditText.getText().toString());
+        //savedbundle.putString("CLUELANDMARK",mClueLandmarkEditText.getText().toString());
+        savedbundle.putParcelable("CLUE",currentClue);
+        backToHuntsIntent.putExtras(savedbundle);
+        setResult(RESULT_OK,backToHuntsIntent);
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
@@ -169,5 +173,11 @@ public class ClueInfoActivity extends BaseActivity implements View.OnClickListen
         currentClue.setLandmarkDescription(mClueLandmarkEditText.getText().toString());
         savedbundle.putParcelable("CLUE",currentClue);
         savedbundle.putString("ADDMODIFYCLUE",mAddModifyClueLabel.getText().toString());
+    }
+
+    @Override
+    public void onBackPressed(){
+        sendClueToCreateModifyHuntScreen();
+        super.onBackPressed();
     }
 }
