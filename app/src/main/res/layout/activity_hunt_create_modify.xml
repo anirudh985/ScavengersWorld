@@ -38,24 +38,56 @@
         android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="@string/start_time"
+                    android:text="@string/start_date"
                     android:layout_height="match_parent"
                     android:layout_width="150dp" />
 
-                <!--EditText
-                    android:layout_width="wrap_content"
+                <Button
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="time"
-                    android:ems="10"
-                    android:id="@+id/start_time"
-                    android:layout_weight="1" /><!-->
-
-                <TimePicker
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/start_time"/>
+                    android:text="@string/select_date"
+                    android:textSize="12sp"
+                    android:onClick="showDatePickerDialog" />
 
             </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/start_time"
+            android:layout_height="match_parent"
+            android:layout_width="150dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_time"
+            android:textSize="12sp"
+            android:onClick="showTimePickerDialog" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/end_date"
+            android:layout_height="match_parent"
+            android:layout_width="150dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_date"
+            android:textSize="12sp"
+            android:onClick="showDatePickerDialog" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -67,13 +99,12 @@
                     android:layout_width="150dp"
                     android:layout_height="match_parent" />
 
-                <EditText
-                    android:layout_width="wrap_content"
+                <Button
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="time"
-                    android:ems="10"
-                    android:id="@+id/end_time"
-                    android:layout_weight="1" />
+                    android:text="@string/select_time"
+                    android:textSize="12sp"
+                    android:onClick="showTimePickerDialog" />
             </LinearLayout>
 
     <LinearLayout

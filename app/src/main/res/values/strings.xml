@@ -134,7 +134,11 @@
     <string name="hunt_name">Hunt Name</string>
     <string name="hunt_description">Hunt Description...</string>
     <string name="start_time">Start Time</string>
+    <string name="start_date">Start Date</string>
     <string name="end_time">End Time</string>
+    <string name="end_date">End Date</string>
+    <string name="select_time">Select Time</string>
+    <string name="select_date">Select Date</string>
     <string name="clues">Clues</string>
     <string name="edit_clue">Edit Clue</string>
     <string name="private_event">Private Event?</string>
@@ -153,6 +157,7 @@
     <!-- DATABASE REFERENCE POINTS -->
     <string name="userToHunts" translatable="false">user-hunts</string>
     <string name="huntsToClues" translatable="false">hunts-clues</string>
+    <string name="huntsToLeaders" translatable="false">hunt-leaderboard</string>
     <string name="userToDeviceId" translatable="false">user-deviceid</string>
     <string name="orderByHuntId" translatable="false">huntId</string>
     <string name="orderByHuntName" translatable="false">huntName</string>
