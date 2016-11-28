@@ -4,21 +4,20 @@
     android:id="@+id/map_container"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1">
+    android:layout_height="match_parent">
 
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="459dp"
+        android:layout_height="0dp"
         tools:context="com.example.aj.scavengersworld.ModifyClueLocationActivity"
-        android:layout_weight="0.75" />
+        android:layout_weight="1" />
 
     <Button
         android:text="@string/confirm_location"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:id="@+id/button5" />
 
 </LinearLayout>

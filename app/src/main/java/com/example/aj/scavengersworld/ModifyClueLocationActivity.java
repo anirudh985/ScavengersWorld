@@ -38,7 +38,7 @@ public class ModifyClueLocationActivity extends FragmentActivity implements OnMa
     private UiSettings mUiSettings;
 
     private SupportMapFragment mMapFragment;
-    private static final LatLng DEFAULT_MARKER_POSITION = new LatLng(48.858179, 2.294576);
+    private static final LatLng DEFAULT_MARKER_POSITION = new LatLng(40.002962, -83.014992);
     private static final int MY_LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int LOCATION_LAYER_PERMISSION_REQUEST_CODE = 2;
     private static final String MARKER_POSITION = "markerPosition";

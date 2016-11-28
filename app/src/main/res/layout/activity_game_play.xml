@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    >
     <include
         layout="@layout/toolbar"
         android:layout_width="match_parent"
@@ -14,20 +14,21 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="463dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         tools:context="com.example.aj.scavengersworld.GamePlayActivity" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        >
 
         <Button
             android:text="@string/solve_clue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button6"
-            android:layout_weight="0.60" />
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/button6"/>
 
     </LinearLayout>
 
