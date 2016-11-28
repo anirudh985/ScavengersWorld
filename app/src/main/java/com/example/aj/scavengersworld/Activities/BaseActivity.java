@@ -102,10 +102,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void openHomeScreen(){
+        homeButtonClicked();
         Intent homeScreen = new Intent(this, HomeScreenActivity.class);
         homeScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(homeScreen);
+    }
+
+    protected void homeButtonClicked(){
+
     }
 
     private void clearSession(){

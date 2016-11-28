@@ -176,9 +176,6 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 			case R.id.save_button:
 				if(changed) {
 					if(newHunt) {
-						if(session.getAdminHuntByName(mHuntName) == null) {
-							session.addHunt(ADMIN, hunt);
-						}
 						editName.removeTextChangedListener(this);
 						checkWhetherAHuntIsAlreadyPresentAndInsert(hunt);
 						newHunt = false;
@@ -188,10 +185,11 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 						UpdateClueListInDatabase(hunt);
 						UpdateUserHuntsTableInDatabase(hunt);
 						updateSearchableHuntsTableInDatabase(hunt, numberOfPlayers, false);
+						finish();
 					}
 
 				}
-				finish();
+				//finish();
 				break;
 		}
 	}
@@ -341,7 +339,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	}
 
 	private void checkWhetherAHuntIsAlreadyPresentAndInsert(Hunt currentHunt){
-		mDatabaseRefHuntsData = mDatabase.getReference(getString(R.string.hunts) + "/" + currentHunt.getHuntName());
+		mDatabaseRefHuntsData = mDatabase.getReference(getString(R.string.hunts));
 		mDatabaseRefHuntsData.orderByChild("huntName")
 				.equalTo(currentHunt.getHuntName())
 				.addListenerForSingleValueEvent(checkForHuntAndInsertListener);
@@ -358,16 +356,23 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				}
 			}
 			if(!retrieved){
+//				if(session.getAdminHuntByName(mHuntName) == null) {
+//					session.addHunt(ADMIN, hunt);
+//				}
 				UpdateHuntDataInDatabase(hunt);
 				UpdateClueListInDatabase(hunt);
 				UpdateUserHuntsTableInDatabase(hunt);
 				updateSearchableHuntsTableInDatabase(hunt, 0, true);
+				finish();
 			}
 			else{
 				AlertDialog.Builder builder = new AlertDialog.Builder(HuntCreateModify.this);
-				builder.setMessage(getString(R.string.duplicateHunt));
+				builder.setMessage(getString(R.string.duplicateHunt))
+						.setPositiveButton(android.R.string.ok, null);
 				AlertDialog dialog = builder.create();
 				dialog.show();
+				newHunt = true;
+				editName.addTextChangedListener(HuntCreateModify.this);
 			}
 		}
 
@@ -401,5 +406,20 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 		}
 	};
+
+	@Override
+	public void onBackPressed(){
+		removeHuntFromSession(hunt);
+		super.onBackPressed();
+	}
+
+	private void removeHuntFromSession(Hunt hunt){
+		session.removeHunt(ADMIN, hunt);
+	}
+
+	@Override
+	public void homeButtonClicked(){
+		session.removeHunt(ADMIN, hunt);
+	}
 
 }

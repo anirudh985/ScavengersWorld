@@ -28,18 +28,8 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 import static com.example.aj.scavengersworld.Constants.ADMIN;
 import static com.example.aj.scavengersworld.Constants.COMPLETED;
@@ -408,10 +398,8 @@ public class HuntActivity extends BaseActivity {
 	ValueEventListener notificationListener = new ValueEventListener() {
 		@Override
 		public void onDataChange(DataSnapshot dataSnapshot) {
-			String deviceIdString = null;
-			for(DataSnapshot deviceIdStringSnapshot: dataSnapshot.getChildren()){
-				deviceIdString = deviceIdStringSnapshot.getValue(String.class);
-			}
+			String deviceIdString = dataSnapshot.getValue(String.class);
+
 			if(deviceIdString != null){
 				StringBuilder stringBuilder = new StringBuilder();
 				stringBuilder.append(session.getUserName());

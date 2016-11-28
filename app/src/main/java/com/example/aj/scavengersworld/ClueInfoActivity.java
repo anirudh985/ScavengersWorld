@@ -68,7 +68,7 @@ public class ClueInfoActivity extends BaseActivity implements View.OnClickListen
             if(savedbundle == null || savedbundle.get("CLUE") == null) {
                 currentClue = new Clue();
                 currentClue.setHuntName(huntName);
-                int numberOfCluesInhunt = currentHunt.getClueList() == null ? 0 :currentHunt.getClueList().size();
+                int numberOfCluesInhunt = currentHunt == null || currentHunt.getClueList() == null ? 0 :currentHunt.getClueList().size();
                 currentClue.setSequenceNumberInHunt(numberOfCluesInhunt+1);
                 currentClue.setClueId(numberOfCluesInhunt+1);
                 currentClue.setLocation(new Location());
