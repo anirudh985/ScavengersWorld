@@ -154,6 +154,7 @@
     <string name="userToHunts">user-hunts</string>
     <string name="huntsToClues">hunts-clues</string>
     <string name="userToDeviceId">user-deviceid</string>
+    <string name="huntToLeaderboard">hunt-leaderboard</string>
     <string name="orderByHuntId">huntId</string>
     <string name="orderByHuntName">huntName</string>
     <string name="orderByProgress">progress</string>
@@ -163,6 +164,7 @@
     <string name="clueId">clueId</string>
     <string name="currentClueSequence">currentClueSequence</string>
     <string name="progress">progress</string>
+    <string name="score">score</string>
     <string name="hunts">hunts</string>
     <string name="huntsTable">hunts</string>
     <string name="orderByNumPlayers">numberOfPlayers</string>
@@ -184,6 +186,7 @@
 
     <!-- CLUE FEEDBACK ACTIVITY-->
     <string name="clue_feedback_success">Correct! You have succeeded in solving the clue.</string>
+    <string name="clue_feedback_hunt_complete">Congrats! You have successfully completed the hunt</string>
     <string name="clue_feedback_failure">Sorry, you are not in the correct location of the clue.</string>
     <string name="clue_feedback_gameplay">Return to Game Screen</string>
 
