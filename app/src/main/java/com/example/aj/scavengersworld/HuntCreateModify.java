@@ -487,10 +487,10 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 		switch(view.getId()) {
 			case R.id.start_time:
-				hunt.setStartTime((view.getHour()*100)+view.getMinute());
+				//hunt.setStartTime((view.getHour()*100)+view.getMinute());
 				break;
 			case R.id.end_time:
-				hunt.setEndTime((view.getHour()*100)+view.getMinute());
+				//hunt.setEndTime((view.getHour()*100)+view.getMinute());
 				break;
 		}
 	}
