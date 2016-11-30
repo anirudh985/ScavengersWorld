@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
@@ -15,7 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -30,12 +31,12 @@ public class LeaderboardActivity extends BaseActivity {
 
 	private RecyclerView mRecyclerView;
 	private RecyclerView.Adapter mAdapter;
-	private RecyclerView.LayoutManager mLayoutManager;
+	private LinearLayoutManager mLayoutManager;
 
 	private String huntName;
 	private Hunt hunt;
 
-	private Map<String, Integer> leaders = new HashMap<>();
+	private Map<String, Integer> leaders = new LinkedHashMap<>();
 
 	private final String LOG_TAG = getClass().getSimpleName();
 	@Override
@@ -48,24 +49,24 @@ public class LeaderboardActivity extends BaseActivity {
 		Intent intent = getIntent();
 		huntName = intent.getStringExtra("HUNTNAME");
 
-		mDataBaseRefHunts = mDatabase.getReference(R.string.hunts + "/" + huntName);
-		mDataBaseRefHunts.addListenerForSingleValueEvent(huntListener);
+		TextView header = (TextView) findViewById(R.id.leaderboard_hunt_name);
+		header.setText(huntName);
 
-		if(hunt != null) {
+		//set up "leaders" recycler
+		mRecyclerView = (RecyclerView) findViewById(R.id.leaders_recycler);
+		mRecyclerView.setHasFixedSize(true);
 
-			mDataBaseRefLeaders = mDatabase.getReference(getString(R.string.huntsToLeaders) + "/" + huntName);
-			mDataBaseRefLeaders.addListenerForSingleValueEvent(huntsToLeadersListener);
+		mLayoutManager = new LinearLayoutManager(LeaderboardActivity.this);
+		mLayoutManager.setReverseLayout(true);
+		mLayoutManager.setStackFromEnd(true);
+		mRecyclerView.setLayoutManager(mLayoutManager);
 
-			//set up "leaders" recycler
-			mRecyclerView = (RecyclerView) findViewById(R.id.leaders_recycler);
-			mRecyclerView.setHasFixedSize(true);
+		mAdapter = new LeadersRecyclerViewAdapter(leaders);
+		mRecyclerView.setAdapter(mAdapter);
 
-			mLayoutManager = new LinearLayoutManager(this);
-			mRecyclerView.setLayoutManager(mLayoutManager);
+		mDataBaseRefLeaders = mDatabase.getReference(getString(R.string.huntsToLeaders) + "/" + huntName);
+		mDataBaseRefLeaders.orderByValue().addListenerForSingleValueEvent(huntsToLeadersListener);
 
-			mAdapter = new LeadersRecyclerViewAdapter(leaders);
-			mRecyclerView.setAdapter(mAdapter);
-		}
 	}
 
 	@Override
@@ -131,20 +132,6 @@ public class LeaderboardActivity extends BaseActivity {
 		@Override
 		public void onCancelled(DatabaseError databaseError) {
 			// Getting Post failed, log a message
-
-		}
-	};
-
-	private ValueEventListener huntListener = new ValueEventListener() {
-		@Override
-		public void onDataChange(DataSnapshot dataSnapshot) {
-			for (DataSnapshot huntSnapshot : dataSnapshot.getChildren()) {
-				hunt = huntSnapshot.getValue(Hunt.class);
-			}
-		}
-
-		@Override
-		public void onCancelled(DatabaseError databaseError) {
 
 		}
 	};
