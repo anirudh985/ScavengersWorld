@@ -105,7 +105,7 @@
     <!-- HOME SCREEN ACTIVITY -->
     <string name="createdHuntsTab">Created Hunts</string>
     <string name="joinedHuntsTab">Your Hunts</string>
-    <string name="welcomeMessage">Hello </string>
+    <string name="welcomeMessage">Hello\u0020</string>
     <string name="progressMessage">Progress: </string>
     <string name="join_hunt">Join Hunt</string>
     <string name="gameplay">Gameplay</string>
@@ -129,6 +129,9 @@
     <string name="update_hunt">Update Hunt</string>
     <string name="request_hunt">Request to Join</string>
     <string name="hunt_leaders">View Leader Board</string>
+    <string name="requestToJoin">\u0020has requested to join\u0020</string>
+    <string name="huntUpdate">Please select a hunt to update</string>
+    <string name="Error">Error</string>
 
     <!-- Hunt create modify activity -->
     <string name="hunt_name">Hunt Name</string>
@@ -138,7 +141,7 @@
     <string name="end_time">End Time</string>
     <string name="end_date">End Date</string>
     <string name="select_time">Select Time</string>
-    <string name="select_date">Select Date</string>
+    <string name="select_date" translatable="false">Select Date</string>
     <string name="clues">Clues</string>
     <string name="edit_clue">Edit Clue</string>
     <string name="private_event">Private Event?</string>
@@ -212,14 +215,14 @@
     <string name="reject">Reject</string>
 
 
-    <string name="huntNameKey">huntName</string>
-    <string name="huntDescKey">huntDesc</string>
-    <string name="huntPrivateKey">huntPrivate</string>
-    <string name="clueListKey">clueList</string>
-    <string name="newHunt">newHunt</string>
+    <string name="huntNameKey" translatable="false">huntName</string>
+    <string name="huntDescKey" translatable="false">huntDesc</string>
+    <string name="huntPrivateKey" translatable="false">huntPrivate</string>
+    <string name="clueListKey" translatable="false">clueList</string>
+    <string name="newHunt" translatable="false">newHunt</string>
     <string name="changed">changed</string>
-    <string name="numPlayers">numPlayers</string>
-    <string name="searchableHuntKey">searchableHuntKey</string>
+    <string name="numPlayers" translatable="false">numPlayers</string>
+    <string name="searchableHuntKey" translatable="false">searchableHuntKey</string>
 
 
 
