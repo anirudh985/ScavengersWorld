@@ -2,7 +2,6 @@ package com.example.aj.scavengersworld.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -201,7 +200,7 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 		switch (v.getId()) {
 			case R.id.hunt_leaders_button:
 				Intent leaders = new Intent(this, LeaderboardActivity.class);
-				leaders.putExtra("HUNT", (Parcelable)hunt);
+				leaders.putExtra("HUNTNAME", hunt.getHuntName());
 				startActivity(leaders);
 				break;
 		}
