@@ -1,14 +1,21 @@
 package com.example.aj.scavengersworld.Activities.Login;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.aj.scavengersworld.R;
 import com.facebook.FacebookSdk;
@@ -34,6 +41,15 @@ public class LoginActivity extends AppCompatActivity {
         if(savedInstaceState != null){
 
         }
+        if(!isOnline()){
+            handleOffline();
+        }
+        else {
+            handleOnline();
+        }
+//        fbHashKey();
+    }
+    private void handleOnline(){
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         setContentView(R.layout.activity_login);
@@ -64,9 +80,38 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+    }
+    private void handleOffline(){
+        Toast.makeText(this,getString(R.string.offline_toast),Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(getString(R.string.offline_display_message))
+                .setCancelable(false);
+        alertDialogBuilder.setPositiveButton(getString(R.string.offline_goto_settings), new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int id){
+                startActivityForResult(new Intent(Settings.ACTION_WIFI_SETTINGS), 3);
 
-
-//        fbHashKey();
+            }
+        });
+        alertDialogBuilder.setNegativeButton(getString(R.string.offline_close_app),
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.cancel();
+                        finish();
+                        System.exit(0);
+                        //openHomeScreen();
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 3){
+            if(!isOnline()){
+                handleOffline();
+            }
+            else handleOnline();
+        }
     }
 
     private void fbHashKey(){
@@ -84,6 +129,24 @@ public class LoginActivity extends AppCompatActivity {
         } catch (NoSuchAlgorithmException e) {
 
         }
+    }
+    public boolean isOnline() {
+        boolean connected = false;
+        try {
+            ConnectivityManager connectivityManager = (ConnectivityManager)
+                    getSystemService(CONNECTIVITY_SERVICE);
+
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+             connected = networkInfo != null && networkInfo.isAvailable() &&
+                    networkInfo.isConnected();
+            return connected;
+
+
+        } catch (Exception e) {
+            System.out.println("CheckConnectivity Exception: " + e.getMessage());
+            Log.v("connectivity", e.toString());
+        }
+        return connected;
     }
     @Override
     protected void onStart() {

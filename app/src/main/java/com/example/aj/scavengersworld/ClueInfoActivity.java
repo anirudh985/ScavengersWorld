@@ -116,8 +116,8 @@ public class ClueInfoActivity extends BaseActivity implements View.OnClickListen
             //Bundle initLocation = new Bundle();
             Double mCurrentLatitude = Double.parseDouble(mLatitudeLabel.getText().toString().equals(mDefaultLocationText)? "0.0":mLatitudeLabel.getText().toString());
             Double mCurrentLongitude = Double.parseDouble(mLongitudelabel.getText().toString().equals(mDefaultLocationText)? "0.0": mLongitudelabel.getText().toString());
-            if(mCurrentLatitude == 0) mCurrentLatitude = 23.5;
-            if(mCurrentLongitude == 0) mCurrentLongitude = 83.5;
+            if(mCurrentLatitude == 0) mCurrentLatitude = 40.002962;
+            if(mCurrentLongitude == 0) mCurrentLongitude = -83.014992;
             editLocationIntent.putExtra("LATITUDE",mCurrentLatitude);
             editLocationIntent.putExtra("LONGITUDE",mCurrentLongitude);
             startActivityForResult(editLocationIntent,2);

@@ -2,9 +2,11 @@ package com.example.aj.scavengersworld;
 
 import android.*;
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -12,6 +14,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,11 +23,13 @@ import android.widget.Toast;
 import android.location.Location;
 
 import com.example.aj.scavengersworld.Activities.BaseActivity;
+import com.example.aj.scavengersworld.Activities.HomeScreen.HomeScreenActivity;
 import com.example.aj.scavengersworld.CluesRelated.CurrentClueActivity;
 import com.example.aj.scavengersworld.Model.Clue;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Game;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -60,6 +65,7 @@ public class GamePlayActivity extends BaseActivity implements OnMapReadyCallback
     private GoogleApiClient mGoogleApiClient;
     private Button mShowCluesButton;
     private Button mSolveClueButton;
+    private LocationManager locationManager;
     private UiSettings mUiSettings;
     private UserSessionManager session = UserSessionManager.INSTANCE;
     //private List<Hunt> yourHuntsList = session.getParticipatingHuntsList();
@@ -78,6 +84,11 @@ public class GamePlayActivity extends BaseActivity implements OnMapReadyCallback
         mSolveClueButton = (Button)findViewById(R.id.button6);
         mSolveClueButton.setOnClickListener(this);
         //mShowCluesButton = (Button)findViewById(R.id.button7);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            showGPSDisabledAlertToUser();
+        }
         buildGoogleApiClient();
     }
 
@@ -239,6 +250,28 @@ public class GamePlayActivity extends BaseActivity implements OnMapReadyCallback
             // updateUI();
         }
     }
+    private void showGPSDisabledAlertToUser(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(getString(R.string.gps_disabled_mdisplay_message))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.gps_goto_settings),
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id){
+                                Intent callGPSSettingIntent = new Intent(
+                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivityForResult(callGPSSettingIntent,4);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton(getString(R.string.gps_cancel),
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.cancel();
+                        openHomeScreen();
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
 
     private Location GetCurrentLocation() {
 
@@ -260,6 +293,15 @@ public class GamePlayActivity extends BaseActivity implements OnMapReadyCallback
     public void onConnectionSuspended(int i) {
         Log.i(TAG, "Connection suspended");
         mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 4){
+            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                showGPSDisabledAlertToUser();
+            }
+        }
     }
 
     @Override
