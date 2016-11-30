@@ -24,7 +24,7 @@
         android:ems="10"
         android:textSize = "25sp"
         android:id="@+id/editHuntName" />
-    
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,66 +37,107 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+                <TextView
+                    android:text="@string/start_date"
+                    android:layout_height="match_parent"
+                    android:layout_width="150dp" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_date"
+                    android:textSize="12sp"
+                    android:onClick="showDatePickerDialog"
+                    android:id="@+id/start_date"/>
+
+            </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <TextView
             android:text="@string/start_time"
             android:layout_height="match_parent"
             android:layout_width="150dp" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="time"
-            android:ems="10"
-            android:id="@+id/start_time"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:text="@string/end_time"
-            android:layout_width="150dp"
-            android:layout_height="match_parent" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="time"
-            android:ems="10"
-            android:id="@+id/end_time"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:text="@string/private_event"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:id="@+id/textView8" />
-
-        <ToggleButton
-            android:text="ToggleButton"
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/public_private_toggle"
-            android:layout_weight="1" />
+            android:text="@string/select_time"
+            android:textSize="12sp"
+            android:onClick="showTimePickerDialog"
+            android:id="@+id/start_time"/>
 
     </LinearLayout>
 
-    <TextView
-        android:text="@string/clues"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:id="@+id/textView"
-        android:textSize="20sp"
-        android:layout_height="wrap_content"
-        android:padding="10dp"/>
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/end_date"
+            android:layout_height="match_parent"
+            android:layout_width="150dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_date"
+            android:textSize="12sp"
+            android:onClick="showDatePickerDialog"
+            android:id="@+id/end_date"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="@string/end_time"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_time"
+                    android:textSize="12sp"
+                    android:onClick="showTimePickerDialog"
+                    android:id="@+id/end_time"/>
+            </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="@string/private_event"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textView8" />
+
+                <ToggleButton
+                    android:text="ToggleButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/public_private_toggle"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <TextView
+                android:text="@string/clues"
+                android:layout_width="match_parent"
+                android:id="@+id/textView"
+                android:textSize="20sp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"/>
 
     <android.support.design.widget.CoordinatorLayout android:id="@+id/cluesLayout"
         android:layout_width="match_parent"
@@ -116,15 +157,15 @@
             tools:listitem="@layout/fragment_clue_item"
             android:layout_weight="20"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/add_clue_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@mipmap/ic_add_white_24dp"
-            app:fabSize="mini"/>
-    </android.support.design.widget.CoordinatorLayout>
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/add_clue_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:src="@mipmap/ic_add_white_24dp"
+                    app:fabSize="mini"/>
+            </android.support.design.widget.CoordinatorLayout>
 
     <Button
         android:layout_width="match_parent"
