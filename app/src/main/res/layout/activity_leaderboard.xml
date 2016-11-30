@@ -15,6 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/leaderboard_header"
+        android:id="@+id/leaderboard_hunt_name"
         android:textSize="25sp"
         android:padding="10dp"/>
 
@@ -24,10 +25,10 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/leaders_recycler"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/fragment_leader" />
+        tools:listitem="@layout/fragment_leader"/>
 
 </LinearLayout>
