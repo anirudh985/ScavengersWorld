@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.example.aj.scavengersworld.R;
 
+import java.util.Map;
+
 /**
  * Created by Jennifer on 11/28/2016.
  */
@@ -16,9 +18,10 @@ import com.example.aj.scavengersworld.R;
 public class LeadersRecyclerViewAdapter extends RecyclerView.Adapter<LeadersRecyclerViewAdapter.ViewHolder> {
 
 	private final String LOG_TAG = getClass().getSimpleName();
+	private Map<String, Integer> leaders;
 
-	public LeadersRecyclerViewAdapter() {
-
+	public LeadersRecyclerViewAdapter(Map<String, Integer> huntLeaders) {
+		leaders = huntLeaders;
 	}
 
 	@Override
@@ -36,17 +39,9 @@ public class LeadersRecyclerViewAdapter extends RecyclerView.Adapter<LeadersRecy
 	@Override
 	public int getItemCount() {
 		int count = 0;
-		/*if(cluesDisplayMode == CurrentClueActivity.CluesDisplayMode.HUNTCLUES){
-			if(currentHunt.getCurrentClue() != null) {
-				count = currentHunt.getCurrentClue().getSequenceNumberInHunt();
-			}
+		if(leaders != null) {
+			count = leaders.size();
 		}
-		else {
-			for (Hunt hunt : session.getParticipatingHuntsList()) {
-				if (hunt.getClueList() != null && hunt.getClueList().size() >0)
-					count += 1;
-			}
-		}*/
 		Log.w(LOG_TAG, "*****GET COUNT"+ count);
 		return count;
 	}

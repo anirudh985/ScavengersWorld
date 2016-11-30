@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.example.aj.scavengersworld.Model.Hunt;
-import com.example.aj.scavengersworld.Model.User;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
 import com.google.firebase.database.DataSnapshot;
@@ -16,6 +15,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Jennifer on 10/17/2016.
  */
@@ -23,13 +25,17 @@ public class LeaderboardActivity extends BaseActivity {
 	private UserSessionManager session;
 
 	private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-	private DatabaseReference mDataBaseRef;
+	private DatabaseReference mDataBaseRefHunts;
+	private DatabaseReference mDataBaseRefLeaders;
 
 	private RecyclerView mRecyclerView;
 	private RecyclerView.Adapter mAdapter;
 	private RecyclerView.LayoutManager mLayoutManager;
 
+	private String huntName;
 	private Hunt hunt;
+
+	private Map<String, Integer> leaders = new HashMap<>();
 
 	private final String LOG_TAG = getClass().getSimpleName();
 	@Override
@@ -40,13 +46,15 @@ public class LeaderboardActivity extends BaseActivity {
 		session = UserSessionManager.INSTANCE;
 
 		Intent intent = getIntent();
-		Bundle extras = intent.getExtras();
-		hunt = extras.getParcelable("HUNT");
+		huntName = intent.getStringExtra("HUNTNAME");
+
+		mDataBaseRefHunts = mDatabase.getReference(R.string.hunts + "/" + huntName);
+		mDataBaseRefHunts.addListenerForSingleValueEvent(huntListener);
 
 		if(hunt != null) {
 
-			mDataBaseRef = mDatabase.getReference(getString(R.string.huntsToLeaders) + "/" + hunt.getHuntName());
-			mDataBaseRef.addListenerForSingleValueEvent(huntsToLeadersListener);
+			mDataBaseRefLeaders = mDatabase.getReference(getString(R.string.huntsToLeaders) + "/" + huntName);
+			mDataBaseRefLeaders.addListenerForSingleValueEvent(huntsToLeadersListener);
 
 			//set up "leaders" recycler
 			mRecyclerView = (RecyclerView) findViewById(R.id.leaders_recycler);
@@ -55,9 +63,7 @@ public class LeaderboardActivity extends BaseActivity {
 			mLayoutManager = new LinearLayoutManager(this);
 			mRecyclerView.setLayoutManager(mLayoutManager);
 
-			//TODO
-			//RecyclerView.Adapter mAdapter = new LeadersRecyclerViewAdapter(hunt);
-			RecyclerView.Adapter mAdapter = new LeadersRecyclerViewAdapter();
+			mAdapter = new LeadersRecyclerViewAdapter(leaders);
 			mRecyclerView.setAdapter(mAdapter);
 		}
 	}
@@ -110,12 +116,10 @@ public class LeaderboardActivity extends BaseActivity {
 	ValueEventListener huntsToLeadersListener = new ValueEventListener() {
 		@Override
 		public void onDataChange(DataSnapshot dataSnapshot) {
-			for(DataSnapshot userToHuntsSnapshot : dataSnapshot.getChildren()) {
-				User leader = userToHuntsSnapshot.getValue(User.class);
-				if(hunt != null && leader != null) {
-					//hunt.addLeaderToLeadersList(leader);
-				}
-
+			for(DataSnapshot huntsToLeadersSnapshot : dataSnapshot.getChildren()) {
+				String leader = huntsToLeadersSnapshot.getKey();
+				int score = huntsToLeadersSnapshot.getValue(Integer.class);
+				leaders.put(leader, score);
 			}
 			RecyclerView mLeadersRecyclerView = (RecyclerView) findViewById(R.id.leaders_recycler);
 			if(mLeadersRecyclerView != null) {
@@ -127,6 +131,20 @@ public class LeaderboardActivity extends BaseActivity {
 		@Override
 		public void onCancelled(DatabaseError databaseError) {
 			// Getting Post failed, log a message
+
+		}
+	};
+
+	private ValueEventListener huntListener = new ValueEventListener() {
+		@Override
+		public void onDataChange(DataSnapshot dataSnapshot) {
+			for (DataSnapshot huntSnapshot : dataSnapshot.getChildren()) {
+				hunt = huntSnapshot.getValue(Hunt.class);
+			}
+		}
+
+		@Override
+		public void onCancelled(DatabaseError databaseError) {
 
 		}
 	};
