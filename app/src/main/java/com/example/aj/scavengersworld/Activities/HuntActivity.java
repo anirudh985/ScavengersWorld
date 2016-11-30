@@ -281,8 +281,8 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 					.addListenerForSingleValueEvent(huntListener);
 		} else {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("Please select a hunt to update")
-					.setTitle("Error")
+			builder.setMessage(R.string.huntUpdate)
+					.setTitle(R.string.Error)
 					.setPositiveButton(android.R.string.ok, null);
 			AlertDialog dialog = builder.create();
 			dialog.show();
@@ -421,7 +421,7 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 			if(deviceIdString != null){
 				StringBuilder stringBuilder = new StringBuilder();
 				stringBuilder.append(session.getUserName());
-				stringBuilder.append(" has requested to join ");
+				stringBuilder.append(R.string.requestToJoin);
 				stringBuilder.append(hunt.getHuntName());
 				String notificationBody = stringBuilder.toString();
 				session.sendNotification(deviceIdString, getString(R.string.notificationRequestTitle), notificationBody);
