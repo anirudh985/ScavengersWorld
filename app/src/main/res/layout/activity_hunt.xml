@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/hunt_name"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:padding="10dp"/>
 
     <TextView
@@ -26,8 +26,18 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="@string/hunt_join"
         android:id="@+id/hunt_join_button"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+
+
+        android:text="@string/hunt_leaders"
+        android:id="@+id/hunt_leaders_button"/>
 
     <android.support.design.widget.CoordinatorLayout android:id="@+id/requestedUsers"
         android:layout_width="match_parent"
@@ -40,17 +50,11 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/requestedUser_recycler"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/fragment_requested_user_item" />
     </android.support.design.widget.CoordinatorLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hunt_leaders"
-        android:id="@+id/hunt_leaders_button"/>
 
 </LinearLayout>
