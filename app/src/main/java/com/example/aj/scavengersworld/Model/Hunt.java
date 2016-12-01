@@ -3,7 +3,7 @@ package com.example.aj.scavengersworld.Model;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -182,12 +182,16 @@ public class Hunt implements Comparable<Hunt> {
         return null;
     }
 
-    public Date getStartDate(){
-        return new Date(this.startTime);
+    public Calendar getStartDate(){
+        Calendar startDate = Calendar.getInstance();
+        startDate.setTimeInMillis(this.startTime);
+        return startDate;
     }
 
-    public Date getEndDate(){
-        return new Date(this.endTime);
+    public Calendar getEndDate(){
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTimeInMillis(this.endTime);
+        return endDate;
     }
 
     public void setStartDate(long startDate){
