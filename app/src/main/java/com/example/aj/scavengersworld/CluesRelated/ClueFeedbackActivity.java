@@ -1,7 +1,6 @@
 package com.example.aj.scavengersworld.CluesRelated;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -81,7 +80,7 @@ public class ClueFeedbackActivity extends BaseActivity {
         mDatabaseRef.setValue(progress.intValue());
         mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+getString(R.string.score));
         mDatabaseRef.setValue(progress.intValue());
-        mDatabaseRef = mDatabase.getReference(getString(R.string.huntToLeaderboard) + "/" + currentHunt.getHuntName() +"/"+session.getUserName());
+        mDatabaseRef = mDatabase.getReference(getString(R.string.huntsToLeaders) + "/" + currentHunt.getHuntName() +"/"+session.getUserName());
         mDatabaseRef.setValue(progress.intValue());
     }
 
