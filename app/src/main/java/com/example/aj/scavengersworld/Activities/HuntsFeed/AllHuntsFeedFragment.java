@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -345,6 +346,14 @@ public class AllHuntsFeedFragment extends Fragment {
         }
     }
 
+    private boolean isCurrentTimeBetweenStartAndEnd(long startTime, long endTime){
+        long currentTime = System.currentTimeMillis();
+        if(currentTime >= startTime && currentTime < endTime){
+            return true;
+        }
+        return false;
+    }
+
     private ValueEventListener initialLoadHuntListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -352,6 +361,9 @@ public class AllHuntsFeedFragment extends Fragment {
             int numberOfItemsRetrieved = 0;
             for(DataSnapshot searchableHuntSnapshot : dataSnapshot.getChildren()){
                 SearchableHunt searchableHunt = searchableHuntSnapshot.getValue(SearchableHunt.class);
+                if(!isCurrentTimeBetweenStartAndEnd(searchableHunt.getStartTime(), searchableHunt.getEndTime())){
+                    continue;
+                }
                 if(searchString != null && !searchString.equals("")){
                     if(!searchableHunt.getHuntName().contains(searchString)){
                         continue;

@@ -80,9 +80,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         solo.assertCurrentActivity("Login Activity", LoginActivity.class, true);
     }
 
-    //TODO: Rotating the screen in each test method
-
-
     @Override
     public void tearDown() throws Exception{
         solo.finishOpenedActivities();

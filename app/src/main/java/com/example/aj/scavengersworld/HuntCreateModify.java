@@ -365,6 +365,8 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		mDatabaseSearchableHunts = mDatabase.getReference(getString(R.string.searchableHuntsTable));
 		SearchableHunt searchableHunt = new SearchableHunt();
 		searchableHunt.setPrivateHunt(currentHunt.isPrivateHunt());
+		searchableHunt.setStartTime(currentHunt.getStartTime());
+		searchableHunt.setEndTime(currentHunt.getEndTime());
 		searchableHunt.setNumberOfPlayers(numberOfPlayers);
 		searchableHunt.setHuntName(currentHunt.getHuntName());
 		searchableHunt.setLocationOfFirstClue(currentHunt.getClueAtSequence(1).getLocation());
