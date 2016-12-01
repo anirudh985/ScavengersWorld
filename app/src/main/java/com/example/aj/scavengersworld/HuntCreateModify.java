@@ -32,7 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import static com.example.aj.scavengersworld.Constants.ADMIN;
@@ -64,11 +64,17 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	private int numberOfPlayers;
 	private String searchableHuntKey;
 
+	private Button start_date;
+	private Button end_date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent createdIntent = getIntent();
         Bundle extrasBundle = createdIntent.getExtras();
+
+		start_date = (Button) findViewById(R.id.start_date);
+		end_date = (Button) findViewById(R.id.end_date);
 
 		mDatabaseRefHuntClues = mDatabase.getReference("hunts-clues");
 
@@ -488,9 +494,11 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		switch(view.getId()) {
 			case R.id.start_time:
 				//hunt.setStartTime((view.getHour()*100)+view.getMinute());
+				changed = true;
 				break;
 			case R.id.end_time:
 				//hunt.setEndTime((view.getHour()*100)+view.getMinute());
+				changed = true;
 				break;
 		}
 	}
@@ -499,12 +507,20 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	public void onDateSet(DatePicker view, int year, int month, int day) {
 		switch(view.getId()) {
 			case R.id.start_date:
-				Date startDate = new Date(view.getYear(), view.getMonth(), view.getDayOfMonth());
-				hunt.setStartDate(startDate);
-				break;
+				Calendar startDate = Calendar.getInstance();
+				startDate.set(view.getYear(), view.getMonth(), view.getDayOfMonth(), 0, 0, 0);
+				hunt.setStartDate(startDate.getTimeInMillis());
+
+				start_date.setText(startDate.toString()); //TODO
+				changed = true;
+ 				break;
 			case R.id.end_date:
-				Date endDate = new Date(view.getYear(), view.getMonth(), view.getDayOfMonth());
-				hunt.setStartDate(endDate);
+				Calendar endDate = Calendar.getInstance();
+				endDate.set(view.getYear(), view.getMonth(), view.getDayOfMonth(), 0, 0, 0);
+				hunt.setEndDate(endDate.getTimeInMillis());
+
+				end_date.setText(endDate.toString());
+				changed = true;
 				break;
 		}
 	}

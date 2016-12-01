@@ -190,12 +190,12 @@ public class Hunt implements Comparable<Hunt> {
         return new Date(this.endTime);
     }
 
-    public void setStartDate(Date startDate){
-        this.startTime = startDate.getTime();
+    public void setStartDate(long startDate){
+        this.startTime = startDate;
     }
 
-    public void setEndDate(Date endDate){
-        this.endTime = endDate.getTime();
+    public void setEndDate(long endDate){
+        this.endTime = endDate;
     }
 
     public HashMap<String, String> getPendingRequests() {
