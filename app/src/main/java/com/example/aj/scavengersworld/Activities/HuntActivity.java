@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.aj.scavengersworld.CluesRelated.CurrentClueActivity;
 import com.example.aj.scavengersworld.DatabaseModels.SearchableHunt;
@@ -120,7 +121,7 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 		description = (TextView) findViewById(R.id.hunt_description);
 		description.setText(hunt.getDescription());
 
-		Button join = (Button) findViewById(R.id.hunt_join_button);
+		final Button join = (Button) findViewById(R.id.hunt_join_button);
 		if (userHuntStatus != null) {
 			if (userHuntStatus.equals(INPROGRESS) || userHuntStatus.equals(COMPLETED)) {
 				join.setText(R.string.view_clues);
@@ -167,6 +168,9 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 						updateHuntStatus(REQUESTED);
 						updateHuntsTableWithNewRequestedUser();
 						sendNotificationToAdmin();
+						Toast requestSent = Toast.makeText(HuntActivity.this, R.string.requestSent, Toast.LENGTH_LONG);
+						requestSent.show();
+						join.setText(R.string.requestPending);
 					}
 				});
 		} else {
