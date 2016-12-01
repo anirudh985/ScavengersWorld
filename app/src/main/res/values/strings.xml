@@ -132,6 +132,8 @@
     <string name="requestToJoin">\u0020has requested to join\u0020</string>
     <string name="huntUpdate">Please select a hunt to update</string>
     <string name="Error">Error</string>
+    <string name="requestSent">Request Sent</string>
+    <string name="requestPending">Request Pending</string>
 
     <!-- Hunt create modify activity -->
     <string name="hunt_name">Hunt Name</string>
