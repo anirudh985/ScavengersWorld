@@ -147,6 +147,8 @@
     <string name="private_event">Private Event?</string>
     <string name="save_button">Save Hunt</string>
     <string name="duplicateHunt">Hunt with the given name already exists. Please modify the name of the hunt and save again</string>
+    <string name="start_date_warning">Start Date must be before End Date</string>
+    <string name="end_date_warning">End Date must be after Start Date</string>
 
     <!-- LEADERBOARD ACTIVITY -->
     <string name="leaderboard_header">Leaderboard</string>
