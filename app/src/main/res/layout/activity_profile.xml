@@ -58,6 +58,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
+        android:layout_weight="1"
         tools:context="com.example.aj.scavengersworld.Activities.HomeScreen.YourHuntsFragment"
         tools:listitem="@layout/fragment_yourhunts" />
 
@@ -78,6 +79,7 @@
         android:layout_height="150dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_weight="1"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.example.aj.scavengersworld.Activities.HomeScreen.YourHuntsFragment"
         tools:listitem="@layout/fragment_yourhunts" />
