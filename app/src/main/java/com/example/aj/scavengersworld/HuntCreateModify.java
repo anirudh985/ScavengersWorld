@@ -156,6 +156,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 		Button save_button = (Button) findViewById(R.id.save_button);
 		save_button.setOnClickListener(this);
+
     }
 
 	@Override
@@ -478,8 +479,14 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	}
 
 	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment = new DatePickerFragment();
-		newFragment.show(getSupportFragmentManager(), "datePicker");
+		final Calendar c = Calendar.getInstance();
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH);
+		int day = c.get(Calendar.DAY_OF_MONTH);
+
+		// Create a new instance of DatePickerDialog and return it
+		DatePickerDialog datePickerDialog =  new DatePickerDialog(this, this, year, month, day);
+		datePickerDialog.show();
 	}
 
 	@Override
