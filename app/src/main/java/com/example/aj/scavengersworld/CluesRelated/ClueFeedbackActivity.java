@@ -74,6 +74,9 @@ public class ClueFeedbackActivity extends BaseActivity {
                 progress = 100.0;
                 mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+getString(R.string.hunt_state));
                 mDatabaseRef.setValue(COMPLETED);
+                currentHunt.setState(COMPLETED);
+                session.getParticipatingHuntsList().remove(currentHunt);
+                session.getCompletedHuntsList().add(currentHunt);
             }
             else{
                 updateUIElements(getString(R.string.clue_feedback_success),currentClue.getClueDescription(),currentClue.getHuntName() + currentClue.getClueTitle());
@@ -92,6 +95,7 @@ public class ClueFeedbackActivity extends BaseActivity {
         mDatabaseRef.setValue(progress.intValue());
         mDatabaseRef = mDatabase.getReference(getString(R.string.huntsToLeaders) + "/" + currentHunt.getHuntName() +"/"+session.getUserName());
         mDatabaseRef.setValue(progress.intValue());
+        currentHunt.setProgress(progress);
         double previousProgress = (double) (currentClue.getSequenceNumberInHunt() - 1) * 100 / totalCluesInCurrentHunt;
         double incrementScore = progress - previousProgress;
         incrementScoreInProfile(incrementScore);
@@ -112,6 +116,8 @@ public class ClueFeedbackActivity extends BaseActivity {
                         if (mutableData.getValue() != null) {
                             userScore = (double) mutableData.getValue();
                             userScore += incrementScore;
+                            Double score = userScore;
+                            session.getUserProfile().setPointsEarned(score.intValue());
                         }
                         mutableData.setValue(userScore);
                         return Transaction.success(mutableData);
