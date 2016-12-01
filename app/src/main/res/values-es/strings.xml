@@ -132,4 +132,13 @@
     <string name="start_date">Fecha de Inicio</string>
     <string name="score">puntos</string>
     <string name="requestToJoin">" ha solicitado participar en"</string>
+    <string name="end_date_warning">La fecha de finalización debe ser siguiente a la fecha de inicio</string>
+    <string name="gps_cancel">Cancelar</string>
+    <string name="gps_disabled_mdisplay_message">El GPS está inhabilitado en el dispositivo. ¿Desea habilitarlo?</string>
+    <string name="offline_close_app">Cierra la aplicación</string>
+    <string name="gps_goto_settings">Ir a la Configuración para habilitar GPS</string>
+    <string name="offline_display_message">Por favor mire su conexion a internet</string>
+    <string name="offline_goto_settings">Ir a la página de configuración inalámbrica</string>
+    <string name="start_date_warning">La fecha de inicio debe ser anterior a la fecha de finalización</string>
+    <string name="offline_toast">¡Tu no estás conectado!</string>
 </resources>
