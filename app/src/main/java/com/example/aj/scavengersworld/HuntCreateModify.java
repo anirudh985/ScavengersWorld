@@ -506,7 +506,8 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 	@Override
 	public void onBackPressed(){
-		removeHuntFromSession(hunt);
+		if(newHunt)
+			removeHuntFromSession(hunt);
 		super.onBackPressed();
 	}
 
