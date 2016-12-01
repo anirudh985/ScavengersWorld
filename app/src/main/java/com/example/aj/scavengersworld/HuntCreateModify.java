@@ -8,6 +8,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -58,7 +60,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	private DatabaseReference mDatabaseRefClues;
 	private DatabaseReference mDatabaseRefUserHunts;
 	private DatabaseReference mDatabaseSearchableHunts;
-
+	private String blockCharacterSet = ".#$[]";
 	private int numberOfPlayers;
 	private String searchableHuntKey;
 
@@ -67,13 +69,22 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 	private final int startID = Integer.MAX_VALUE-1;
 	private final int endID = Integer.MAX_VALUE-2;
+	private InputFilter filter = new InputFilter() {
 
+		@Override
+		public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+
+			if (source != null && blockCharacterSet.contains(("" + source))) {
+				return "";
+			}
+			return null;
+		}
+	};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent createdIntent = getIntent();
         Bundle extrasBundle = createdIntent.getExtras();
-
 		start_date = (Button) findViewById(R.id.start_date);
 		end_date = (Button) findViewById(R.id.end_date);
 
@@ -109,6 +120,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
         editName = (EditText) findViewById(R.id.editHuntName);
 		editName.setText(mHuntName);
+		editName.setFilters(new InputFilter[] { filter });
 		if(newHunt) {
 			editName.addTextChangedListener(this);
 		}
@@ -118,6 +130,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 		EditText editDescription = (EditText) findViewById(R.id.editHuntDescription);
 		editDescription.setText(mHuntDescription);
+		editDescription.setFilters(new InputFilter[] { filter });
 		editDescription.addTextChangedListener(new TextWatcher() {
 
 			public void afterTextChanged(Editable s) {
@@ -283,6 +296,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	@Override
 	public void beforeTextChanged(CharSequence s, int start,
 								  int count, int after) {
+
 	}
 
 	@Override
@@ -384,8 +398,8 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		if(currentHunt == null){
 			return -1;
 		}
-		double maxDistance = -1;
-		if(currentHunt.getClueList() != null && currentHunt.getClueList().size() != 0){
+		double maxDistance = 0;
+		if(currentHunt.getClueList() != null && currentHunt.getClueList().size() > 1){
 			List<Clue> clueList = currentHunt.getClueList();
 			double distanceBetweenClues;
 			for(int i = 0; i < clueList.size(); i++){

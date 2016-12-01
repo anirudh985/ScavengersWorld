@@ -168,6 +168,14 @@ public class PopularHuntsFeedFragment extends Fragment {
                 .addListenerForSingleValueEvent(initialLoadHuntListener);
     }
 
+    private boolean isCurrentTimeBetweenStartAndEnd(long startTime, long endTime){
+        long currentTime = System.currentTimeMillis();
+        if(currentTime >= startTime && currentTime < endTime){
+            return true;
+        }
+        return false;
+    }
+
     private ValueEventListener initialLoadHuntListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -175,6 +183,9 @@ public class PopularHuntsFeedFragment extends Fragment {
             int numberOfItemsRetrieved = 0;
             for(DataSnapshot searchableHuntSnapshot : dataSnapshot.getChildren()){
                 SearchableHunt searchableHunt = searchableHuntSnapshot.getValue(SearchableHunt.class);
+                if(!isCurrentTimeBetweenStartAndEnd(searchableHunt.getStartTime(), searchableHunt.getEndTime())){
+                    continue;
+                }
                 if(!popularHuntsList.contains(searchableHunt)){
                     numberOfItemsRetrieved++;
                     popularHuntsList.add(searchableHunt);

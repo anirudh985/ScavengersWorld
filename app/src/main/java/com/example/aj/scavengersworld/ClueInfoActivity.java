@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,10 +29,21 @@ public class ClueInfoActivity extends BaseActivity implements View.OnClickListen
     private EditText mClueDesctiptionEditText;
     private EditText mClueLandmarkEditText;
     private Button mBackToHuntButton;
+    private String blockCharacterSet = ".#$[]";
     private final String LOG_TAG = getClass().getSimpleName();
     private Clue currentClue;
     private int RESULT_CODE;
+    private InputFilter filter = new InputFilter() {
 
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+
+            if (source != null && blockCharacterSet.contains(("" + source))) {
+                return "";
+            }
+            return null;
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +53,11 @@ public class ClueInfoActivity extends BaseActivity implements View.OnClickListen
         mLongitudelabel = (TextView) findViewById(R.id.longitudeLabel);
         mLocationEditButton = (Button) findViewById(R.id.editLocationButton);
         mClueNameEditText = (EditText)  findViewById(R.id.edit_clue_name);
+        mClueNameEditText.setFilters(new InputFilter[] { filter });
         mClueDesctiptionEditText = (EditText)  findViewById(R.id.edit_clue_description);
+        mClueDesctiptionEditText.setFilters(new InputFilter[] { filter });
         mClueLandmarkEditText = (EditText)  findViewById(R.id.edit_clue_landmark);
+        mClueLandmarkEditText.setFilters(new InputFilter[] { filter });
         mLocationEditButton.setOnClickListener(this);
         mBackToHuntButton = (Button) findViewById(R.id.back_to_hunts_button);
         mBackToHuntButton.setOnClickListener(this);
