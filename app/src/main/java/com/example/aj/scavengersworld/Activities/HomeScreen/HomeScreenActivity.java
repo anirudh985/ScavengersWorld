@@ -290,7 +290,6 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
                 Clue newClue = userToHuntsSnapshot.getValue(Clue.class);
                 newClue.setHuntName(currentHunt.getHuntName());
                 currentHunt.addClueToClueList(newClue);
-                int a  = 1;
             }
             numberOfClueEventListeners-=1;
             if(numberOfClueEventListeners == 0)

@@ -3,6 +3,7 @@ package com.example.aj.scavengersworld.CluesRelated;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,8 +14,16 @@ import com.example.aj.scavengersworld.Model.Clue;
 import com.example.aj.scavengersworld.Model.Hunt;
 import com.example.aj.scavengersworld.R;
 import com.example.aj.scavengersworld.UserSessionManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
+
+import java.sql.Date;
+import java.util.Calendar;
 
 import static com.example.aj.scavengersworld.Constants.COMPLETED;
 
@@ -28,6 +37,8 @@ public class ClueFeedbackActivity extends BaseActivity {
     private TextView clueFeedbackView;
     private TextView clueDescriptionView;
     private Button gameplayButton;
+
+    private final String LOG_TAG = getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +55,6 @@ public class ClueFeedbackActivity extends BaseActivity {
             Intent createdIntent = getIntent();
             updateElementsFromIntent(createdIntent);
         }
-
     }
     private void updateUIElements(String resultString, String feedbackString, String descriptionString){
         clueResultView.setText(resultString);
@@ -83,6 +93,38 @@ public class ClueFeedbackActivity extends BaseActivity {
         mDatabaseRef.setValue(progress.intValue());
         mDatabaseRef = mDatabase.getReference(getString(R.string.huntsToLeaders) + "/" + currentHunt.getHuntName() +"/"+session.getUserName());
         mDatabaseRef.setValue(progress.intValue());
+        double previousProgress = (double) (currentClue.getSequenceNumberInHunt() - 1) * 100 / totalCluesInCurrentHunt;
+        double incrementScore = progress - previousProgress;
+        incrementScoreInProfile(incrementScore);
+
+    }
+
+
+    private void incrementScoreInProfile(double scoreToIncrement){
+        final double incrementScore = scoreToIncrement;
+        mDatabase.getReference(getString(R.string.userToProfile) + getString(R.string.pathSeparator) +
+                                session.getUniqueUserId() + getString(R.string.pathSeparator) +
+                                session.getUserProfileKey() + getString(R.string.pathSeparator) +
+                                "pointsEarned").
+                runTransaction(new Transaction.Handler() {
+                    @Override
+                    public Transaction.Result doTransaction(MutableData mutableData) {
+                        double userScore = 0.0;
+                        if (mutableData.getValue() != null) {
+                            userScore = (double) mutableData.getValue();
+                            userScore += incrementScore;
+                        }
+                        mutableData.setValue(userScore);
+                        return Transaction.success(mutableData);
+                    }
+
+                    @Override
+                    public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                        if (databaseError != null) {
+                            Log.d(LOG_TAG, "postTransaction Error: Error in updating database \n" + databaseError);
+                        }
+                    }
+                });
     }
 
     @Override

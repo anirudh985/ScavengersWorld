@@ -130,4 +130,8 @@
             android:exported="true"></service>
     </application>
 
+    <!--<instrumentation-->
+        <!--android:name="android.test.InstrumentationTestRunner"-->
+        <!--android:targetPackage="com.example.aj.scavengersworld"/>-->
+
 </manifest>
