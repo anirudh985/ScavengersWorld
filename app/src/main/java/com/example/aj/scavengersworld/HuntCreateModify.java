@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.aj.scavengersworld.Activities.BaseActivity;
@@ -553,18 +554,29 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		if(view.getId()==startID) {
 			Calendar startDate = Calendar.getInstance();
 			startDate.set(view.getYear(), view.getMonth(), view.getDayOfMonth(), 0, 0, 0);
-			hunt.setStartDate(startDate.getTimeInMillis());
-			String date = Integer.toString(startDate.get(Calendar.MONTH)+1) + "/" + Integer.toString(startDate.get(Calendar.DAY_OF_MONTH)) + "/" + Integer.toString(startDate.get(Calendar.YEAR));
-			start_date.setText(date);
-			changed=true;
+			if(startDate.after(hunt.getEndDate())) {
+				Toast warning = Toast.makeText(this, R.string.start_date_warning,Toast.LENGTH_LONG);
+				warning.show();
+			}
+			else {
+				hunt.setStartDate(startDate.getTimeInMillis());
+				String date = Integer.toString(startDate.get(Calendar.MONTH) + 1) + "/" + Integer.toString(startDate.get(Calendar.DAY_OF_MONTH)) + "/" + Integer.toString(startDate.get(Calendar.YEAR));
+				start_date.setText(date);
+				changed = true;
+			}
 		} else if(view.getId()==endID) {
 			Calendar endDate = Calendar.getInstance();
 			endDate.set(view.getYear(), view.getMonth(), view.getDayOfMonth(), 0, 0, 0);
-			hunt.setEndDate(endDate.getTimeInMillis());
-			end_date.setText(endDate.toString());
-			String date = Integer.toString(endDate.get(Calendar.MONTH)+1) + "/" + Integer.toString(endDate.get(Calendar.DAY_OF_MONTH)) + "/" + Integer.toString(endDate.get(Calendar.YEAR));
-			end_date.setText(date);
-			changed=true;
+			if(endDate.before(hunt.getStartDate())) {
+				Toast warning = Toast.makeText(this, R.string.end_date_warning,Toast.LENGTH_LONG);
+				warning.show();
+			} else {
+				hunt.setEndDate(endDate.getTimeInMillis());
+				end_date.setText(endDate.toString());
+				String date = Integer.toString(endDate.get(Calendar.MONTH) + 1) + "/" + Integer.toString(endDate.get(Calendar.DAY_OF_MONTH)) + "/" + Integer.toString(endDate.get(Calendar.YEAR));
+				end_date.setText(date);
+				changed = true;
+			}
 		}
 	}
 

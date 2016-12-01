@@ -147,6 +147,8 @@
     <string name="private_event">Private Event?</string>
     <string name="save_button">Save Hunt</string>
     <string name="duplicateHunt">Hunt with the given name already exists. Please modify the name of the hunt and save again</string>
+    <string name="start_date_warning">Start Date must be before End Date</string>
+    <string name="end_date_warning">End Date must be after Start Date</string>
 
     <!-- LEADERBOARD ACTIVITY -->
     <string name="leaderboard_header">Leaderboard</string>
@@ -227,10 +229,10 @@
     <!-- warning messages-->
     <string name="offline_toast">You are not online!!!!</string>
     <string name="offline_display_message">Please check your internet connection</string>
-    <string name="offline_goto_settings">Goto wireless Settings Page</string>
+    <string name="offline_goto_settings">Go to wireless Settings page</string>
     <string name="offline_close_app">Close application</string>
     <string name="gps_disabled_mdisplay_message">GPS is disabled in your device. Would you like to enable it?</string>
-    <string name="gps_goto_settings">Goto Settings Page To Enable GPS</string>
+    <string name="gps_goto_settings">Go to Settings to enable GPS</string>
     <string name="gps_cancel">Cancel</string>
 
 
