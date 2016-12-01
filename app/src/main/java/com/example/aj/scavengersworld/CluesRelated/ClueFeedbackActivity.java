@@ -25,6 +25,7 @@ import java.sql.Date;
 import java.util.Calendar;
 
 import static com.example.aj.scavengersworld.Constants.COMPLETED;
+import static com.example.aj.scavengersworld.Constants.INPROGRESS;
 
 public class ClueFeedbackActivity extends BaseActivity {
     private boolean clueResult;
@@ -75,8 +76,8 @@ public class ClueFeedbackActivity extends BaseActivity {
                 mDatabaseRef = mDatabase.getReference(getString(R.string.userToHunts) + "/" + session.getUniqueUserId()+"/"+ currentHunt.getHuntName() +"/"+getString(R.string.hunt_state));
                 mDatabaseRef.setValue(COMPLETED);
                 currentHunt.setState(COMPLETED);
-                session.getParticipatingHuntsList().remove(currentHunt);
-                session.getCompletedHuntsList().add(currentHunt);
+                session.removeHunt(INPROGRESS,currentHunt);
+                session.addHunt(COMPLETED,currentHunt);
             }
             else{
                 updateUIElements(getString(R.string.clue_feedback_success),currentClue.getClueDescription(),currentClue.getHuntName() + currentClue.getClueTitle());

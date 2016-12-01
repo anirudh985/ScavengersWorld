@@ -280,20 +280,28 @@ public enum UserSessionManager {
         this.participatingHuntsList = new ArrayList<>();
         this.completedHuntsList = new ArrayList<>();
     }
-
+    private boolean checkIfExists(HashMap map, Hunt aHunt ){
+        return (map.get(aHunt.getHuntName()) != null);
+    }
     public void addHunt(String typeOfHunt, Hunt hunt){
         if(hunt != null){
             if(typeOfHunt.equals(INPROGRESS)){
-                participatingHunts.put(hunt.getHuntName(), hunt);
-                participatingHuntsList.add(hunt);
+                if(!checkIfExists(participatingHunts,hunt)) {
+                    participatingHunts.put(hunt.getHuntName(), hunt);
+                    participatingHuntsList.add(hunt);
+                }
             }
             else if(typeOfHunt.equals(ADMIN)){
-                adminHunts.put(hunt.getHuntName(), hunt);
-                adminHuntsList.add(hunt);
+                if(!checkIfExists(adminHunts,hunt)) {
+                    adminHunts.put(hunt.getHuntName(), hunt);
+                    adminHuntsList.add(hunt);
+                }
             }
             else if(typeOfHunt.equals(COMPLETED)){
-                completedHunts.put(hunt.getHuntName(), hunt);
-                completedHuntsList.add(hunt);
+                if(!checkIfExists(completedHunts,hunt)) {
+                    completedHunts.put(hunt.getHuntName(), hunt);
+                    completedHuntsList.add(hunt);
+                }
             }
         }
     }
