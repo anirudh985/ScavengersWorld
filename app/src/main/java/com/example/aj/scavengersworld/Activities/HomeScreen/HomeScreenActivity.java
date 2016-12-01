@@ -269,6 +269,7 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
         List<Hunt> allHuntsList = session.getAllHuntsList();
         for(Hunt curHunt : allHuntsList){
             numberOfClueEventListeners+=1;
+            curHunt.getClueList().clear();
             mDatabaseRefHuntClues = mDatabase.getReference(getString(R.string.huntsToClues) + "/" +curHunt.getHuntName());
             mDatabaseRefHuntClues.addListenerForSingleValueEvent(huntsToCluesListener);
         }

@@ -14,6 +14,8 @@ public class SearchableHunt implements Parcelable {
     private Location locationOfFirstClue;
     private boolean privateHunt;
     private double maxRadius;
+    private long startTime;
+    private long endTime;
 
     public SearchableHunt(){
 
@@ -59,13 +61,31 @@ public class SearchableHunt implements Parcelable {
         this.maxRadius = maxRadius;
     }
 
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
+    }
+
+
     protected SearchableHunt(Parcel in) {
         huntName = in.readString();
         numberOfPlayers = in.readInt();
-        locationOfFirstClue = in.readParcelable(Location.class.getClassLoader());
-//        locationOfFirstClue = (Location) in.readValue(Location.class.getClassLoader());
+        locationOfFirstClue = (Location) in.readValue(Location.class.getClassLoader());
         privateHunt = in.readByte() != 0x00;
         maxRadius = in.readDouble();
+        startTime = in.readLong();
+        endTime = in.readLong();
     }
 
     @Override
@@ -77,10 +97,11 @@ public class SearchableHunt implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(huntName);
         dest.writeInt(numberOfPlayers);
-        dest.writeParcelable(locationOfFirstClue, flags);
-//        dest.writeValue(locationOfFirstClue);
+        dest.writeValue(locationOfFirstClue);
         dest.writeByte((byte) (privateHunt ? 0x01 : 0x00));
         dest.writeDouble(maxRadius);
+        dest.writeLong(startTime);
+        dest.writeLong(endTime);
     }
 
     @SuppressWarnings("unused")
