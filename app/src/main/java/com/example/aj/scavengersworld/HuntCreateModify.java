@@ -477,11 +477,6 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		session.removeHunt(ADMIN, hunt);
 	}
 
-	public void showTimePickerDialog(View v) {
-		DialogFragment newFragment = new TimePickerFragment();
-		newFragment.show(getSupportFragmentManager(), "timePicker");
-	}
-
 	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = new DatePickerFragment();
 		newFragment.show(getSupportFragmentManager(), "datePicker");
@@ -494,7 +489,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				Calendar startDate = Calendar.getInstance();
 				startDate.set(view.getYear(), view.getMonth(), view.getDayOfMonth(), 0, 0, 0);
 				hunt.setStartDate(startDate.getTimeInMillis());
-
+				long test = hunt.getStartDate();
 				start_date.setText(startDate.toString()); //TODO
 				changed = true;
  				break;
