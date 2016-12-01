@@ -60,7 +60,8 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 	private DatabaseReference mDatabaseRefClues;
 	private DatabaseReference mDatabaseRefUserHunts;
 	private DatabaseReference mDatabaseSearchableHunts;
-	private String blockCharacterSet = ".#$[]";
+	private String blockCharacterSetKey = ".#$[]";
+	private String blockCharacterSetValue = "#$[]";
 	private int numberOfPlayers;
 	private String searchableHuntKey;
 
@@ -69,12 +70,23 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 	private final int startID = Integer.MAX_VALUE-1;
 	private final int endID = Integer.MAX_VALUE-2;
-	private InputFilter filter = new InputFilter() {
+	private InputFilter filterKey = new InputFilter() {
 
 		@Override
 		public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
 
-			if (source != null && blockCharacterSet.contains(("" + source))) {
+			if (source != null && blockCharacterSetKey.contains(("" + source))) {
+				return "";
+			}
+			return null;
+		}
+	};
+	private InputFilter filterdescription = new InputFilter() {
+
+		@Override
+		public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+
+			if (source != null && blockCharacterSetValue.contains(("" + source))) {
 				return "";
 			}
 			return null;
@@ -120,7 +132,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
         editName = (EditText) findViewById(R.id.editHuntName);
 		editName.setText(mHuntName);
-		editName.setFilters(new InputFilter[] { filter });
+		editName.setFilters(new InputFilter[] { filterKey });
 		if(newHunt) {
 			editName.addTextChangedListener(this);
 		}
@@ -130,7 +142,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 		EditText editDescription = (EditText) findViewById(R.id.editHuntDescription);
 		editDescription.setText(mHuntDescription);
-		editDescription.setFilters(new InputFilter[] { filter });
+		editDescription.setFilters(new InputFilter[] { filterdescription });
 		editDescription.addTextChangedListener(new TextWatcher() {
 
 			public void afterTextChanged(Editable s) {

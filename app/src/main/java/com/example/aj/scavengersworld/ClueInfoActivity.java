@@ -29,7 +29,7 @@ public class ClueInfoActivity extends BaseActivity implements View.OnClickListen
     private EditText mClueDesctiptionEditText;
     private EditText mClueLandmarkEditText;
     private Button mBackToHuntButton;
-    private String blockCharacterSet = ".#$[]";
+    private String blockCharacterSet = "#$[]";
     private final String LOG_TAG = getClass().getSimpleName();
     private Clue currentClue;
     private int RESULT_CODE;

@@ -275,6 +275,8 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
         }
     }
     public void checkAndRefreshFirebaseInstanceId(){
+        if(session.getUniqueUserId() == null)
+            return;
         mFirebaseInstanceId = FirebaseInstanceId.getInstance();
         //FirebaseMessaging.getInstance().send();
         mFirebaseInstanceToken = mFirebaseInstanceId.getToken();
