@@ -383,8 +383,8 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		if(currentHunt == null){
 			return -1;
 		}
-		double maxDistance = -1;
-		if(currentHunt.getClueList() != null && currentHunt.getClueList().size() != 0){
+		double maxDistance = 0;
+		if(currentHunt.getClueList() != null && currentHunt.getClueList().size() > 1){
 			List<Clue> clueList = currentHunt.getClueList();
 			double distanceBetweenClues;
 			for(int i = 0; i < clueList.size(); i++){
