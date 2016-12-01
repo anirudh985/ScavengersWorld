@@ -20,7 +20,7 @@ import static com.example.aj.scavengersworld.Constants.RADIUS_OF_ACCEPTANCE;
 /**
  * Created by kalyan on 11/3/16.
  */
-
+import static com.example.aj.scavengersworld.Constants.COMPLETED;
 public class ClueItemRecyclerViewAdapter extends RecyclerView.Adapter<ClueItemRecyclerViewAdapter.ViewHolder> {
     private final ColorGenerator mGenerator = ColorGenerator.MATERIAL;
     private String[] mDataset;
@@ -71,7 +71,7 @@ public class ClueItemRecyclerViewAdapter extends RecyclerView.Adapter<ClueItemRe
         if(cluesDisplayMode == CurrentClueActivity.CluesDisplayMode.CURRENTCLUES){
             int count = 0;
             for(Hunt hunt : session.getParticipatingHuntsList()){
-                if(hunt.getClueList() != null) {
+                if (hunt.getClueList() != null && hunt.getClueList().size() >0 && hunt.getState()!= COMPLETED) {
                     count += 1;
                     if (count-1 == position){
                         Clue currentClue =  hunt.getCurrentClue();
@@ -114,7 +114,7 @@ public class ClueItemRecyclerViewAdapter extends RecyclerView.Adapter<ClueItemRe
         }
         else {
             for (Hunt hunt : session.getParticipatingHuntsList()) {
-                if (hunt.getClueList() != null && hunt.getClueList().size() >0)
+                if (hunt.getClueList() != null && hunt.getClueList().size() >0 && hunt.getState()!= COMPLETED)
                     count += 1;
             }
         }
