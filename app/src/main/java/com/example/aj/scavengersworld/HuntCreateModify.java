@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -64,6 +63,9 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 	private Button start_date;
 	private Button end_date;
+
+	private final int startID = Integer.MAX_VALUE-1;
+	private final int endID = Integer.MAX_VALUE-2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +132,15 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 									  int before, int count) {
 			}
 		});
+
+		if(!newHunt) {
+			Calendar startDate = hunt.getStartDate();
+			String sDate = Integer.toString(startDate.get(Calendar.MONTH)+1) + "/" + Integer.toString(startDate.get(Calendar.DAY_OF_MONTH)) + "/" + Integer.toString(startDate.get(Calendar.YEAR));
+			start_date.setText(sDate);
+			Calendar endDate = hunt.getEndDate();
+			String eDate = Integer.toString(endDate.get(Calendar.MONTH)+1) + "/" + Integer.toString(endDate.get(Calendar.DAY_OF_MONTH)) + "/" + Integer.toString(endDate.get(Calendar.YEAR));
+			end_date.setText(eDate);
+		}
 
 		ToggleButton toggle = (ToggleButton) findViewById(R.id.public_private_toggle);
 		toggle.setChecked(hunt.isPrivateHunt());
@@ -223,7 +234,7 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 				break;
 			case R.id.public_private_toggle:
 				ToggleButton toggle = (ToggleButton) findViewById(R.id.public_private_toggle);
-				boolean isPrivate = toggle.isChecked(); //TODO ensure this isn't reversed
+				boolean isPrivate = toggle.isChecked();
 				if(isPrivate != hunt.isPrivateHunt()) {
 					changed = true;
 					hunt.setPrivateHunt(isPrivate);
@@ -244,8 +255,9 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 						finish();
 					}
 
+				} else if(!newHunt) {
+					finish();
 				}
-				//finish();
 				break;
 		}
 	}
@@ -478,36 +490,65 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 		session.removeHunt(ADMIN, hunt);
 	}
 
-	public void showDatePickerDialog(View v) {
+	public void showDatePickerDialogStart(View v) {
 		final Calendar c = Calendar.getInstance();
 		int year = c.get(Calendar.YEAR);
 		int month = c.get(Calendar.MONTH);
 		int day = c.get(Calendar.DAY_OF_MONTH);
 
-		// Create a new instance of DatePickerDialog and return it
-		DatePickerDialog datePickerDialog =  new DatePickerDialog(this, this, year, month, day);
-		datePickerDialog.show();
+		DatePickerDialog datePickerDialogStart;
+
+		if(!newHunt) {
+			// Create a new instance of DatePickerDialog
+			Calendar startDate = hunt.getStartDate();
+			datePickerDialogStart =  new DatePickerDialog(this, this, startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH), startDate.get(Calendar.DAY_OF_MONTH));
+		} else {
+			datePickerDialogStart = new DatePickerDialog(this, this, year, month, day);
+		}
+
+		datePickerDialogStart.show();
+
+		datePickerDialogStart.getDatePicker().setId(startID);
+	}
+
+	public void showDatePickerDialogEnd(View v) {
+		final Calendar c = Calendar.getInstance();
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH);
+		int day = c.get(Calendar.DAY_OF_MONTH);
+
+		DatePickerDialog datePickerDialogEnd;
+
+		if(!newHunt) {
+			// Create a new instance of DatePickerDialog
+			Calendar endDate = hunt.getEndDate();
+			datePickerDialogEnd =  new DatePickerDialog(this, this, endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH), endDate.get(Calendar.DAY_OF_MONTH));
+		} else {
+			datePickerDialogEnd = new DatePickerDialog(this, this, year, month, day);
+		}
+
+		datePickerDialogEnd.show();
+
+		datePickerDialogEnd.getDatePicker().setId(endID);
 	}
 
 	@Override
 	public void onDateSet(DatePicker view, int year, int month, int day) {
-		switch(view.getId()) {
-			case R.id.start_date:
-				Calendar startDate = Calendar.getInstance();
-				startDate.set(view.getYear(), view.getMonth(), view.getDayOfMonth(), 0, 0, 0);
-				hunt.setStartDate(startDate.getTimeInMillis());
-				long test = hunt.getStartDate();
-				start_date.setText(startDate.toString()); //TODO
-				changed = true;
- 				break;
-			case R.id.end_date:
-				Calendar endDate = Calendar.getInstance();
-				endDate.set(view.getYear(), view.getMonth(), view.getDayOfMonth(), 0, 0, 0);
-				hunt.setEndDate(endDate.getTimeInMillis());
-
-				end_date.setText(endDate.toString());
-				changed = true;
-				break;
+		if(view.getId()==startID) {
+			Calendar startDate = Calendar.getInstance();
+			startDate.set(view.getYear(), view.getMonth(), view.getDayOfMonth(), 0, 0, 0);
+			hunt.setStartDate(startDate.getTimeInMillis());
+			String date = Integer.toString(startDate.get(Calendar.MONTH)+1) + "/" + Integer.toString(startDate.get(Calendar.DAY_OF_MONTH)) + "/" + Integer.toString(startDate.get(Calendar.YEAR));
+			start_date.setText(date);
+			changed=true;
+		} else if(view.getId()==endID) {
+			Calendar endDate = Calendar.getInstance();
+			endDate.set(view.getYear(), view.getMonth(), view.getDayOfMonth(), 0, 0, 0);
+			hunt.setEndDate(endDate.getTimeInMillis());
+			end_date.setText(endDate.toString());
+			String date = Integer.toString(endDate.get(Calendar.MONTH)+1) + "/" + Integer.toString(endDate.get(Calendar.DAY_OF_MONTH)) + "/" + Integer.toString(endDate.get(Calendar.YEAR));
+			end_date.setText(date);
+			changed=true;
 		}
 	}
 
