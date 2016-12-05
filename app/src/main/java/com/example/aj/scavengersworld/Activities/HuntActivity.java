@@ -153,23 +153,13 @@ public class HuntActivity extends BaseActivity implements View.OnClickListener {
 				mAdapter = new RequestedUserItemRecyclerViewAdapter(currentHunt);
 				mRecyclerView.setAdapter(mAdapter);
 			} else if (userHuntStatus.equals(REQUESTED)) {
-				join.setText(R.string.request_hunt);
+				join.setText(R.string.requestPending);
 				join.setOnClickListener(new View.OnClickListener() {
 
 					@Override
 					public void onClick(View view) {
-						HashMap<String, String> pendingRequests = hunt.getPendingRequests();
-						if (pendingRequests == null) {
-							pendingRequests = new HashMap<>();
-						}
-						pendingRequests.put(session.getUniqueUserId(), session.getUserName());
-						hunt.setPendingRequests(pendingRequests);
-						updateHuntStatus(REQUESTED);
-						updateHuntsTableWithNewRequestedUser();
-						sendNotificationToAdmin();
 						Toast requestSent = Toast.makeText(HuntActivity.this, R.string.requestSent, Toast.LENGTH_LONG);
 						requestSent.show();
-						join.setText(R.string.requestPending);
 					}
 				});
 			}
