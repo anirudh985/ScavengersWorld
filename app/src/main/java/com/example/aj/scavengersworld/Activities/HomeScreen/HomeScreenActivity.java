@@ -295,8 +295,8 @@ public class HomeScreenActivity extends BaseActivity implements YourHuntsFragmen
                 currentHunt.addClueToClueList(newClue);
             }
             numberOfClueEventListeners-=1;
-            if(numberOfClueEventListeners == 0)
-                updateUI();
+//            if(numberOfClueEventListeners == 0)
+//                updateUI();
         }
 
         @Override
