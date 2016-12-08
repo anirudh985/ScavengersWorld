@@ -174,8 +174,8 @@ public class HuntCreateModify extends BaseActivity implements View.OnClickListen
 
 		//get all clues for this hunt
 		if(!newHunt) {
-			DatabaseReference mDataBaseRef = mDatabase.getReference(getString(R.string.huntsToClues) + "/" + mHuntName);
-			mDataBaseRef.addListenerForSingleValueEvent(huntsToCluesListener);
+			//DatabaseReference mDataBaseRef = mDatabase.getReference(getString(R.string.huntsToClues) + "/" + mHuntName);
+			//mDataBaseRef.addListenerForSingleValueEvent(huntsToCluesListener);
 		}
 
 		//set up "clues" recycler

@@ -86,12 +86,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Goo
 
         @Override
         public void onCancel() {
+            Log.d(LOG_TAG, "Cancelled");
 
         }
 
         @Override
         public void onError(FacebookException error) {
-
+            Log.d(LOG_TAG, "FB error");
         }
     };
 

@@ -326,7 +326,7 @@ public enum UserSessionManager {
     public List<Hunt> getAllHuntsList(){
         allHuntsList.clear();
         allHuntsList.addAll(participatingHuntsList);
-//        allHuntsList.addAll(adminHuntsList);
+        allHuntsList.addAll(adminHuntsList);
         allHuntsList.addAll(completedHuntsList);
         return allHuntsList;
     }
@@ -334,7 +334,7 @@ public enum UserSessionManager {
     public HashMap<String, Hunt> getAllHunts(){
         allHunts.clear();
         allHunts.putAll(participatingHunts);
-//        allHunts.putAll(adminHunts);
+        allHunts.putAll(adminHunts);
         allHunts.putAll(completedHunts);
         return allHunts;
     }

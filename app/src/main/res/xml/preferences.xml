@@ -10,7 +10,7 @@
         android:summary="This option if selected will show only private hunts in the search."
         android:key="@string/showPrivateHunts" />
     <EditTextPreference
-        android:title="Max Radius in km"
+        android:title="Max Radius in miles"
         android:key="@string/maxRadius"
         android:summary="Provide the maximum radius of all the clues"
         android:inputType="number"/>

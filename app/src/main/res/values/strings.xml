@@ -9,7 +9,7 @@
     <string name="log_onRestart" translatable="false">* onRestart() *</string>
 
     <!-- FACEBOOK -->
-    <string name="facebook_app_id" translatable="false">566074280252089</string>
+    <string name="facebook_app_id" translatable="false">167717000370193</string>
 
     <!-- FIREBASE -->
     <string name="fb_login_protocol_scheme" translatable="false">fb566074280252089</string>
