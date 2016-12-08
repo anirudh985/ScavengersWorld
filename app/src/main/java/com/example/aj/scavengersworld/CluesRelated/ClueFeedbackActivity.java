@@ -105,7 +105,7 @@ public class ClueFeedbackActivity extends BaseActivity {
 
 
     private void incrementScoreInProfile(double scoreToIncrement){
-        final double incrementScore = scoreToIncrement;
+        final long incrementScore = (long)scoreToIncrement;
         mDatabase.getReference(getString(R.string.userToProfile) + getString(R.string.pathSeparator) +
                                 session.getUniqueUserId() + getString(R.string.pathSeparator) +
                                 session.getUserProfileKey() + getString(R.string.pathSeparator) +
@@ -115,7 +115,7 @@ public class ClueFeedbackActivity extends BaseActivity {
                     public Transaction.Result doTransaction(MutableData mutableData) {
                         double userScore = 0.0;
                         if (mutableData.getValue() != null) {
-                            userScore = (double) mutableData.getValue();
+                            userScore = (long)mutableData.getValue();
                             userScore += incrementScore;
                             Double score = userScore;
                             session.getUserProfile().setPointsEarned(score.intValue());
@@ -156,6 +156,8 @@ public class ClueFeedbackActivity extends BaseActivity {
     private void updateElementsFromBundle(Bundle outState){
         updateUIElements(outState.getString("resultString"),outState.getString("feedbackString"),outState.getString("descriptionString"));
         currentHunt = session.getParticipatingHuntByName(outState.getString("huntName"));
+        if(currentHunt == null)
+            currentHunt = session.getCompletedHuntByName(outState.getString("huntName"));
         clueResult = outState.getBoolean("currentResult");
     }
 

@@ -2,6 +2,7 @@ package com.example.aj.scavengersworld;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -26,9 +29,12 @@ import static com.example.aj.scavengersworld.Constants.REJECTED;
 
 public class RequestedUserItemRecyclerViewAdapter extends RecyclerView.Adapter<RequestedUserItemRecyclerViewAdapter.ViewHolder> {
     private Hunt currentHunt;
+    private FirebaseDatabase mDatabase;
+    private final String LOG_TAG = getClass().getSimpleName();
 
     public RequestedUserItemRecyclerViewAdapter(Hunt currentHunt){
         this.currentHunt = currentHunt;
+        mDatabase = FirebaseDatabase.getInstance();
     }
 
     @Override
@@ -80,7 +86,6 @@ public class RequestedUserItemRecyclerViewAdapter extends RecyclerView.Adapter<R
 
         @Override
         public void onClick(View v) {
-            FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
             DatabaseReference mUserHuntsDatabaseRef = mDatabase.getReference(v.getContext().getString(R.string.userToHunts) + "/" + userId+"/"+ currentHunt.getHuntName() +"/"+v.getContext().getString(R.string.hunt_state));
             boolean isAccepted = false;
             switch (v.getId()) {
@@ -96,8 +101,59 @@ public class RequestedUserItemRecyclerViewAdapter extends RecyclerView.Adapter<R
                     break;
             }
             sendNotificationToAdmin(v.getContext(),userId,isAccepted);
-            currentHunt.getPendingRequests().remove(userId);
+            clearPendingRequests(v.getContext());
             notifyDataSetChanged();
+            incrementNumberOfPlayersInHunt(v.getContext());
+        }
+        private void incrementNumberOfPlayersInHunt(final Context context) {
+            mDatabase.getReference(context.getString(R.string.searchableHuntsTable))
+                    .orderByChild(context.getString(R.string.orderByHuntName))
+                    .equalTo(currentHunt.getHuntName()).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot searchableHuntSnapshot : dataSnapshot.getChildren()) {
+                                String key = searchableHuntSnapshot.getKey();
+                                if (key != null) {
+                                    DatabaseReference dbRef = mDatabase.getReference(context.getString(R.string.searchableHuntsTable) +
+                                            context.getString(R.string.pathSeparator) +
+                                            key +
+                                            context.getString(R.string.pathSeparator) +
+                                            context.getString(R.string.orderByNumPlayers));
+                                    dbRef.runTransaction(new Transaction.Handler() {
+                                        @Override
+                                        public Transaction.Result doTransaction(MutableData mutableData) {
+                                            long numberOfPlayers = 0;
+                                            if (mutableData.getValue() != null) {
+                                                numberOfPlayers = (long) mutableData.getValue();
+                                                numberOfPlayers++;
+                                            }
+                                            mutableData.setValue(numberOfPlayers);
+                                            return Transaction.success(mutableData);
+                                        }
+
+                                        @Override
+                                        public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                                            if (databaseError != null) {
+                                                Log.d(LOG_TAG, "postTransaction Error: Error in updating database \n" + databaseError);
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+        }
+        private void clearPendingRequests(Context context){
+            currentHunt.getPendingRequests().remove(userId);
+            FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+            DatabaseReference mPendingRequestsReference = mDatabase.getReference(context.getString(R.string.hunts)+"/"+currentHunt.getHuntName()+"/"+context.getString(R.string.pendingRequests)+"/"+userId);
+            mPendingRequestsReference.setValue(null);
         }
         private void sendNotificationToAdmin(Context context, String userIdToSend,Boolean isRequestAccepted){
             FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
